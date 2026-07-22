@@ -1,1 +1,897 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EEE Academic Dashboard - University of Dhaka</title>
+    <style>
+        :root {
+            --primary: #006a4e;
+            --primary-light: #008a66;
+            --primary-dark: #004d38;
+            --accent: #ffb81c;
+            --danger: #dc3545;
+            --bg: #f4f7f6;
+            --surface: rgba(255, 255, 255, 0.75);
+            --surface-solid: #ffffff;
+            --text-main: #111111;
+            --text-muted: #555555;
+            --border: rgba(0, 106, 78, 0.2);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+            --radius: 20px;
+            --font-main: 'SolaimanLipi', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
+        [data-theme="dark"] {
+            --primary: #00b386;
+            --primary-light: #00e6ac;
+            --primary-dark: #008060;
+            --bg: #121212;
+            --surface: rgba(30, 30, 30, 0.75);
+            --surface-solid: #1e1e1e;
+            --text-main: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .glass {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: var(--glass-shadow);
+            border-radius: var(--radius);
+        }
+
+        .glass-card {
+            background: var(--surface);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: var(--transition);
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        #sidebar {
+            width: 260px;
+            height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        #main-content {
+            flex: 1;
+            height: 100vh;
+            padding: 20px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        #right-panel {
+            width: 320px;
+            height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+        
+        .logo-container h2 {
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
+
+        .logo-container svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--primary);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            margin-bottom: 25px;
+            border-radius: var(--radius);
+        }
+
+        .header-left h1 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            font-weight: 800;
+        }
+        .header-left p {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            background: var(--surface-solid);
+            border: 1px solid var(--border);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+        .icon-btn:hover {
+            background: var(--border);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .col-span-2 {
+            grid-column: span 2;
+        }
+        
+        @media (max-width: 1024px) {
+            .col-span-2 {
+                grid-column: span 1;
+            }
+        }
+
+        .widget-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+        }
+
+        .routine-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .routine-table th, .routine-table td {
+            padding: 14px 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        
+        .routine-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+        }
+        
+        .routine-table .today-col {
+            background: rgba(0, 106, 78, 0.1);
+            font-weight: 800;
+        }
+
+        .course-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .course-name { font-size: 0.95rem; font-weight: 700; }
+        .course-code { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+        
+        .current-class {
+            animation: pulse 2s infinite;
+            border: 2px solid var(--accent) !important;
+            background: rgba(255, 184, 28, 0.1) !important;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 184, 28, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 184, 28, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 184, 28, 0); }
+        }
+
+        .progress-container {
+            width: 100%;
+            background: var(--border);
+            height: 14px;
+            border-radius: 7px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 1s ease-in-out;
+        }
+
+        .exam-card {
+            border-left: 6px solid var(--danger);
+            background: linear-gradient(to right, rgba(220,53,69,0.12), transparent);
+        }
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .cd-box {
+            background: var(--surface-solid);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .cd-num { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
+        .cd-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .course-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .course-card h3 {
+            font-weight: 800;
+            font-size: 1.15rem;
+        }
+        .course-type-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            background: var(--primary-light);
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+            margin-top: 15px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--border);
+            border-radius: 3px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 22px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid var(--bg);
+        }
+        .timeline-date { font-size: 0.85rem; color: var(--text-muted); font-weight: 700;}
+        .timeline-content { font-size: 1rem; font-weight: 600; }
+
+        .menu-toggle { display: none; }
+        
+        @media (max-width: 1024px) {
+            #right-panel { display: none; }
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                position: fixed;
+                left: -260px;
+                background: var(--surface-solid);
+                transition: var(--transition);
+            }
+            #sidebar.open { left: 0; }
+            .menu-toggle { display: block; }
+            header { flex-direction: column; gap: 15px; align-items: flex-start;}
+        }
+
+        svg { display: inline-block; vertical-align: middle; }
+        
+        .views-container > div {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .views-container > div.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="glass">
+        <div class="logo-container">
+            <svg viewBox="0 0 24 24"><path d="M12 3L1 9L5 11.18V17.18L12 21L19 17.18V11.18L21 10.09V17H23V9L12 3ZM18.82 9L12 12.72L5.18 9L12 5.28L18.82 9ZM12 18.72L7 15.99V12.27L12 15L17 12.27V15.99L12 18.72Z"/></svg>
+            <h2>EEE Dashboard</h2>
+        </div>
+        <nav>
+            <a class="nav-item active" data-target="view-dashboard">
+                <svg viewBox="0 0 24 24"><path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z"/></svg>
+                Dashboard
+            </a>
+            <a class="nav-item" data-target="view-routine">
+                <svg viewBox="0 0 24 24"><path d="M19 3H18V1H16V3H8V1H6V3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V9H19V19ZM5 7V5H19V7H5Z"/></svg>
+                Weekly Routine
+            </a>
+            <a class="nav-item" data-target="view-courses">
+                <svg viewBox="0 0 24 24"><path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3ZM18.82 9L12 12.72L5.18 9L12 5.28L18.82 9Z"/></svg>
+                Courses
+            </a>
+            <a class="nav-item" data-target="view-calendar">
+                <svg viewBox="0 0 24 24"><path d="M17 12H12V17H17V12ZM16 1V3H8V1H6V3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V8H19V19Z"/></svg>
+                Academic Calendar
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Header -->
+        <header class="glass">
+            <div class="header-left">
+                <button class="icon-btn menu-toggle" id="menu-btn" aria-label="Menu">
+                    <svg viewBox="0 0 24 24"><path d="M3 18H21V16H3V18ZM3 13H21V11H3V13ZM3 6V8H21V6H3Z"/></svg>
+                </button>
+                <h1>University of Dhaka - EEE</h1>
+                <p>3rd Year, 2nd Semester (2025–26)</p>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" id="theme-toggle" aria-label="Toggle Theme">
+                    <svg viewBox="0 0 24 24" id="theme-icon"><path d="M12 7C9.24 7 7 9.24 7 12C7 14.76 9.24 17 12 17C14.76 17 17 14.76 17 12C17 9.24 14.76 7 12 7ZM12 15C10.34 15 9 13.66 9 12C9 10.34 10.34 9 12 9C13.66 9 15 10.34 15 12C15 13.66 13.66 15 12 15ZM11 2V5H13V2H11ZM11 19V22H13V19H11ZM3.51 5.62L2.1 7.03L4.22 9.15L5.63 7.74L3.51 5.62ZM19.78 14.85L18.37 16.26L20.49 18.38L21.9 16.97L19.78 14.85ZM2 11H5V13H2V11ZM19 11H22V13H19V11ZM4.22 14.85L2.1 16.97L3.51 18.38L5.63 16.26L4.22 14.85ZM18.37 7.74L19.78 9.15L21.9 7.03L20.49 5.62L18.37 7.74Z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Views Container -->
+        <div class="views-container">
+            
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="active">
+                <div class="grid-container">
+                    
+                    <!-- Next Day's Classes -->
+                    <div class="glass-card col-span-2">
+                        <div class="widget-title">
+                            <svg viewBox="0 0 24 24" width="24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            Tomorrow's Classes (<span id="tomorrow-day-name"></span>)
+                        </div>
+                        <div id="next-day-classes-container">
+                            <!-- JS will populate -->
+                        </div>
+                    </div>
+
+                    <!-- Exam Tracker (Red Card) -->
+                    <div class="glass-card exam-card col-span-2">
+                        <div class="widget-title" style="color: var(--danger);">
+                            <svg viewBox="0 0 24 24" width="24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                            Important Exams: Statistics (Retake) & In-Course
+                        </div>
+                        <p style="font-weight: 700;">Status: Upcoming | Category: Examination</p>
+                        <p class="timeline-date" style="margin-top: 10px;">Statistics Retake: 1-10 September 2026 (Tentative)</p>
+                        <p class="timeline-date">In-Course Exams Begin: 13 September 2026</p>
+                        
+                        <div class="countdown-grid" id="exam-countdown">
+                            <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-label">Days</div></div>
+                            <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-label">Hours</div></div>
+                            <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-label">Mins</div></div>
+                            <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-label">Secs</div></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Routine View -->
+            <div id="view-routine">
+                <div class="glass-card" style="overflow-x: auto;">
+                    <div class="widget-title">Weekly Routine</div>
+                    <table class="routine-table" id="routine-table">
+                        <thead>
+                            <tr>
+                                <th>Day / Time</th>
+                                <th>8:30 – 9:50</th>
+                                <th>10:00 – 11:20</th>
+                                <th>11:30 – 12:50</th>
+                                <th>1:30 – 4:30 (Lab)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- JS will populate -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Courses View -->
+            <div id="view-courses">
+                <div class="glass-card">
+                    <div class="widget-title">Course List</div>
+                    <div class="course-grid" id="course-grid">
+                        <!-- JS will populate -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar View -->
+            <div id="view-calendar">
+                <div class="grid-container">
+                    <div class="glass-card col-span-2">
+                        <div class="widget-title">Academic Calendar & Progress</div>
+                        
+                        <div style="margin: 20px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 800;">
+                                <span>Semester Progress</span>
+                                <span id="progress-percent">0%</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" id="sem-progress-bar"></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 700; color: var(--text-muted);">
+                                <span id="days-completed">Completed: 0 Days</span>
+                                <span id="days-remaining">Remaining: 0 Days</span>
+                            </div>
+                        </div>
+
+                        <div class="timeline" id="academic-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">19 July 2026</div>
+                                <div class="timeline-content">Semester Starts</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">1-10 September 2026</div>
+                                <div class="timeline-content">Statistics Retake Exam (Tentative)</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">13 September 2026</div>
+                                <div class="timeline-content">In-Course Exams Begin</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">20 Nov - 4 Dec 2026</div>
+                                <div class="timeline-content">Preparation Leave (PL)</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">6 December 2026</div>
+                                <div class="timeline-content">Final Exams Start (Tentative)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Right Information Panel -->
+    <aside id="right-panel">
+        
+        <!-- Live Clock & Date -->
+        <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.6rem; font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums;" id="live-clock">--:--:--</div>
+            <div style="font-size: 1.15rem; font-weight: 600; color: var(--text-muted);" id="live-date">--</div>
+        </div>
+
+        <!-- Smart Event Priority -->
+        <div class="glass-card">
+            <div class="widget-title" style="font-size: 1.1rem;">Next Events</div>
+            <div id="next-event-display" style="padding: 12px; background: rgba(0, 106, 78, 0.1); border-radius: 12px; font-weight: 700; border: 1px solid var(--border);">
+                <!-- JS populated -->
+            </div>
+        </div>
+
+    </aside>
+
+    <script>
+        // Data Definition
+        const courses = [
+            { code: "EEE 3201", name: "Power System I", type: "Theory", faculty: "MMI", room: "208", credits: 3.0 },
+            { code: "EEE 3202", name: "Power System Protection Laboratory", type: "Lab", faculty: "SKA, MMI", room: "New Bldg, 14th Floor", credits: 1.5 },
+            { code: "EEE 3203", name: "Digital Signal Processing", type: "Theory", faculty: "AKA", room: "208", credits: 3.0 },
+            { code: "EEE 3204", name: "Digital Signal Processing Laboratory", type: "Lab", faculty: "MUA, AKA", room: "New Bldg, 14th Floor", credits: 1.5 },
+            { code: "EEE 3205", name: "Material Science", type: "Theory", faculty: "IA", room: "208", credits: 3.0 },
+            { code: "EEE 3207", name: "Optoelectronics and Photonics", type: "Theory", faculty: "SH", room: "208", credits: 3.0 },
+            { code: "EEE 3209", name: "Communication Theory", type: "Theory", faculty: "ASMM", room: "208", credits: 3.0 },
+            { code: "EEE 3212", name: "Electrical Services Design and Drafting", type: "Lab", faculty: "MSP", room: "208", credits: 1.5 },
+            { code: "GED 3201", name: "Financial Accounting and Cost Management", type: "Theory", faculty: "MNI", room: "208", credits: 3.0 }
+        ];
+
+        // Faculty Mapping
+        const facultyNames = {
+            "IA": "Imtiaz Ahmed",
+            "MMI": "Md. Minarul Islam",
+            "AKA": "Abul Kalam Azad",
+            "ASMM": "A. S. M. Moslehuddin",
+            "SH": "Shakhawat Hossain",
+            "MSP": "Md. Shahin Parvej",
+            "MUA": "Mosabber Uddin Ahmed",
+            "SKA": "Subrata Kumar Aditya",
+            "MNI": "Md. Noyon Islam",
+            "MUA, AKA": "Mosabber Uddin Ahmed, Abul Kalam Azad",
+            "SKA, MMI": "Subrata Kumar Aditya, Md. Minarul Islam"
+        };
+
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        
+        // Time Slots
+        const slots = [
+            { id: 1, label: "8:30 - 9:50", startMin: 8*60+30, endMin: 9*60+50 },
+            { id: 2, label: "10:00 - 11:20", startMin: 10*60+0, endMin: 11*60+20 },
+            { id: 3, label: "11:30 - 12:50", startMin: 11*60+30, endMin: 12*60+50 },
+            { id: 4, label: "1:30 - 4:30", startMin: 13*60+30, endMin: 16*60+30 }
+        ];
+
+        // Construct Routine (Matched precisely to image reference)
+        const routine = {
+            0: { 1: "EEE 3205", 2: "GED 3201", 3: "EEE 3207", 4: null }, // Sunday
+            1: { 1: "EEE 3201", 2: "EEE 3212", 3: "EEE 3203", 4: "EEE 3204" }, // Monday
+            2: { 1: "EEE 3201", 2: null,       3: null,       4: "EEE 3202" }, // Tuesday
+            3: { 1: "EEE 3205", 2: "EEE 3209", 3: "EEE 3203", 4: null }, // Wednesday
+            4: { 1: "EEE 3207", 2: "EEE 3209", 3: "GED 3201", 4: null }  // Thursday
+        };
+
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+                
+                const targetId = this.getAttribute('data-target');
+                document.querySelectorAll('.views-container > div').forEach(view => {
+                    view.classList.remove('active');
+                });
+                document.getElementById(targetId).classList.add('active');
+                
+                if(window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            });
+        });
+
+        // Mobile Menu Toggle
+        document.getElementById('menu-btn').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlDoc = document.documentElement;
+        
+        // Load theme from storage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlDoc.setAttribute('data-theme', savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = htmlDoc.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            htmlDoc.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+
+        // Date and Time Logic
+        function updateClock() {
+            const now = new Date();
+            
+            // Format time: HH:MM:SS AM/PM
+            let h = now.getHours();
+            let m = now.getMinutes();
+            let s = now.getSeconds();
+            let ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            
+            const timeStr = `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')} ${ampm}`;
+            document.getElementById('live-clock').innerText = timeStr;
+
+            // Format date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('en-US', options);
+            document.getElementById('live-date').innerText = dateStr;
+
+            checkCurrentClass(now);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Render Routine Table
+        function renderRoutine() {
+            const tbody = document.querySelector('#routine-table tbody');
+            const todayIdx = new Date().getDay();
+            
+            for(let d=0; d<5; d++) {
+                const tr = document.createElement('tr');
+                
+                // Day Column
+                const tdDay = document.createElement('td');
+                tdDay.innerText = days[d];
+                tdDay.style.fontWeight = '800';
+                if(d === todayIdx) tdDay.classList.add('today-col');
+                tr.appendChild(tdDay);
+
+                // Slot Columns
+                for(let s=1; s<=4; s++) {
+                    const td = document.createElement('td');
+                    if(d === todayIdx) td.classList.add('today-col');
+                    
+                    const cCode = routine[d][s];
+                    if(cCode) {
+                        const course = courses.find(c => c.code === cCode);
+                        td.innerHTML = `
+                            <div class="course-cell" id="cell-${d}-${s}">
+                                <span class="course-name">${course.name}</span>
+                                <span class="course-code">${course.code} | Room: ${course.room}</span>
+                            </div>
+                        `;
+                    } else {
+                        td.innerHTML = `<span style="color:var(--border); font-weight:800;">-</span>`;
+                    }
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+            }
+        }
+        
+        function checkCurrentClass(now) {
+            const todayIdx = now.getDay();
+            const currMins = now.getHours() * 60 + now.getMinutes();
+            
+            // Reset animations
+            document.querySelectorAll('.current-class').forEach(el => el.classList.remove('current-class'));
+            
+            if(todayIdx >= 0 && todayIdx <= 4) { // Sun-Thu
+                slots.forEach((slot, idx) => {
+                    if(currMins >= slot.startMin && currMins <= slot.endMin) {
+                        const cell = document.getElementById(`cell-${todayIdx}-${slot.id}`);
+                        if(cell) {
+                            cell.parentElement.classList.add('current-class');
+                        }
+                    }
+                });
+            }
+        }
+
+        // Render Dashboard Next Day's Classes
+        function renderNextDayClasses() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const tomorrowIdx = tomorrow.getDay();
+            document.getElementById('tomorrow-day-name').innerText = days[tomorrowIdx] || '';
+            const container = document.getElementById('next-day-classes-container');
+            
+            if(tomorrowIdx > 4) {
+                container.innerHTML = `<div class="empty-state">No classes scheduled for tomorrow.</div>`;
+                return;
+            }
+
+            const tomorrowRoutine = routine[tomorrowIdx];
+            let hasClasses = false;
+            let html = '<div style="display: flex; flex-direction: column; gap: 12px;">';
+            
+            for(let s=1; s<=4; s++) {
+                const cCode = tomorrowRoutine[s];
+                if(cCode) {
+                    hasClasses = true;
+                    const course = courses.find(c => c.code === cCode);
+                    const slotStr = slots[s-1].label;
+                    html += `
+                        <div style="background: var(--surface-solid); padding: 16px; border-radius: 12px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                            <div>
+                                <h4 style="color: var(--primary); font-size: 1.15rem; font-weight: 800; margin-bottom: 5px;">${course.name}</h4>
+                                <p style="font-size: 0.9rem; font-weight: 600; color: var(--text-muted);">${course.code} • Faculty: ${facultyNames[course.faculty] || course.faculty} • Room: ${course.room}</p>
+                            </div>
+                            <div style="background: rgba(0, 106, 78, 0.1); padding: 8px 12px; border-radius: 8px; font-weight: 800; font-size: 0.95rem; color: var(--primary);">
+                                ${slotStr}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            html += '</div>';
+            
+            if(hasClasses) {
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = `<div class="empty-state">No classes scheduled for tomorrow.</div>`;
+            }
+        }
+
+        // Render Course Cards
+        function renderCourses() {
+            const grid = document.getElementById('course-grid');
+            courses.forEach(c => {
+                const isLab = c.type === 'Lab';
+                const fName = facultyNames[c.faculty] ? facultyNames[c.faculty] : c.faculty;
+                grid.innerHTML += `
+                    <div class="glass-card course-card">
+                        <div class="course-type-badge" style="${isLab ? 'background:var(--accent); color:#111;' : ''}">${c.type}</div>
+                        <h3 style="margin-bottom: 5px; padding-right: 50px;">${c.name}</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 800; margin-bottom: 15px;">${c.code}</p>
+                        
+                        <div style="font-size: 0.9rem; font-weight: 600; line-height: 1.8;">
+                            <strong>Faculty:</strong> ${fName} (${c.faculty})<br>
+                            <strong>Room:</strong> ${c.room}<br>
+                            <strong>Credits:</strong> ${c.credits}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Academic Progress and Exam Countdown
+        function setupCalendarAndEvents() {
+            const now = new Date();
+            const semStart = new Date('2026-07-19T00:00:00');
+            const semEnd = new Date('2026-12-06T00:00:00');
+            
+            const totalDays = (semEnd - semStart) / (1000 * 60 * 60 * 24);
+            const passedDays = Math.max(0, (now - semStart) / (1000 * 60 * 60 * 24));
+            
+            let percent = (passedDays / totalDays) * 100;
+            if(percent > 100) percent = 100;
+            if(percent < 0) percent = 0;
+
+            document.getElementById('sem-progress-bar').style.width = `${percent}%`;
+            document.getElementById('progress-percent').innerText = `${percent.toFixed(1)}%`;
+            
+            document.getElementById('days-completed').innerText = `Completed: ${Math.floor(passedDays)} Days`;
+            document.getElementById('days-remaining').innerText = `Remaining: ${Math.max(0, Math.ceil(totalDays - passedDays))} Days`;
+
+            // Setup Retake Countdown Target: Sept 1, 2026 (Nearest bound)
+            const retakeTarget = new Date('2026-09-01T00:00:00').getTime();
+            
+            setInterval(() => {
+                const current = new Date().getTime();
+                const diff = retakeTarget - current;
+
+                if (diff > 0) {
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    document.getElementById('cd-days').innerText = days;
+                    document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
+                    document.getElementById('cd-mins').innerText = mins.toString().padStart(2, '0');
+                    document.getElementById('cd-secs').innerText = secs.toString().padStart(2, '0');
+                } else {
+                    document.getElementById('exam-countdown').innerHTML = `<div style="grid-column: span 4; color: var(--danger); font-weight: 800; font-size: 1.2rem;">Exam is ongoing or has concluded!</div>`;
+                }
+            }, 1000);
+
+            // Smart Event Logic
+            const events = [
+                { name: "Statistics Retake (Tentative)", date: new Date('2026-09-01T00:00:00') },
+                { name: "In-Course Exams Begin", date: new Date('2026-09-13T00:00:00') },
+                { name: "Preparation Leave (PL)", date: new Date('2026-11-20T00:00:00') },
+                { name: "Final Examination", date: new Date('2026-12-06T00:00:00') }
+            ];
+
+            const upcomingEvents = events.filter(e => e.date > now).slice(0, 2);
+            let eventHtml = '';
+
+            if(upcomingEvents.length > 0) {
+                upcomingEvents.forEach((evt, index) => {
+                    const daysLeft = Math.ceil((evt.date - now)/(1000*60*60*24));
+                    eventHtml += `
+                        <div style="${index > 0 ? 'margin-top: 15px; padding-top: 10px; border-top: 1px dashed var(--border);' : ''}">
+                            <div style="font-size: 1.10rem; font-weight: 800;">${evt.name}</div>
+                            <div style="color: var(--primary-dark); font-weight: 700; margin-top: 5px;">${daysLeft} Days Left</div>
+                        </div>
+                    `;
+                });
+                document.getElementById('next-event-display').innerHTML = eventHtml;
+            } else {
+                document.getElementById('next-event-display').innerText = "Semester Concluded!";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderRoutine();
+            renderNextDayClasses();
+            renderCourses();
+            setupCalendarAndEvents();
+        });
+
+    </script>
+</body>
+</html>
