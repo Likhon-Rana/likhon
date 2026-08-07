@@ -4,25 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life OS - Dashboard</title>
+    <title>Life OS - Overview</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        .greeting { font-size: 2.2rem; font-weight: 900; color: var(--primary); margin-bottom: 5px; }
-        .urgent-card { background: rgba(220, 53, 69, 0.05); border: 2px solid rgba(220, 53, 69, 0.3); }
-        .habit-check { display: flex; align-items: center; gap: 12px; font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; cursor: pointer; color: var(--text-main); }
-        .habit-check input { width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); }
-        .focus-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-solid); font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-top: 20px; outline: none; transition: 0.3s; }
-        .focus-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.1); }
-        .mini-progress { height: 10px; background: var(--border); border-radius: 5px; margin-top: 8px; overflow: hidden; }
-        .mini-progress-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
-        .task-row { display: flex; align-items: center; justify-content: space-between; background: var(--surface-solid); padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--border); font-weight: 600;}
+        :root {
+            --primary: #0F766E;
+            --primary-light: #14B8A6;
+            --danger: #EF4444;
+            --accent: #F59E0B;
+            --surface-hover: rgba(15, 118, 110, 0.05);
+            --radius-lg: 18px;
+        }
+
+        .dash-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; margin-top: 15px; }
+        .col-3 { grid-column: span 3; }
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+        .col-8 { grid-column: span 8; }
+        .col-12 { grid-column: span 12; }
+
+        @media (max-width: 1200px) { .col-3, .col-4 { grid-column: span 6; } .col-6, .col-8 { grid-column: span 12; } }
+        @media (max-width: 768px) { .col-3, .col-4, .col-6, .col-8, .col-12 { grid-column: span 12; } }
+
+        .glass-card { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; box-shadow: 0 8px 32px rgba(0,0,0,0.04); transition: 0.3s; }
+        .glass-card:hover { box-shadow: 0 12px 40px rgba(15, 118, 110, 0.08); transform: translateY(-2px); }
+        
+        .sec-title { font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .sec-title i { margin-right: 8px; }
+
+        /* Header Details */
+        .greeting-text { font-size: 1.8rem; font-weight: 900; color: var(--primary); }
+        .live-clock { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
+        .live-date { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+
+        /* Focus Card */
+        .focus-input { width: 100%; padding: 12px; border: none; border-bottom: 2px dashed var(--border); background: transparent; font-size: 1.2rem; font-weight: 700; color: var(--text-main); outline: none; transition: 0.3s; text-align: center; }
+        .focus-input:focus { border-bottom-color: var(--primary); }
+
+        /* Smart Reminders */
+        .reminder-list { display: flex; flex-direction: column; gap: 10px; }
+        .reminder-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; background: rgba(15, 118, 110, 0.05); border-left: 4px solid var(--primary); border-radius: 0 10px 10px 0; font-weight: 600; font-size: 0.95rem; }
+        .reminder-item.warning { border-left-color: var(--accent); background: rgba(245, 158, 11, 0.05); }
+        .reminder-item.danger { border-left-color: var(--danger); background: rgba(239, 68, 68, 0.05); }
+
+        /* Deadlines */
+        .deadline-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; }
+        .dl-name { font-weight: 800; font-size: 0.95rem; }
+        .dl-days { font-size: 1.2rem; font-weight: 900; color: var(--danger); }
+
+        /* Summaries */
+        .summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .sum-box { padding: 12px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 10px; }
+        .sum-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; display: block;}
+        .sum-val { font-size: 1.1rem; font-weight: 800; color: var(--text-main); display: flex; align-items: baseline; gap: 5px;}
+        .sum-val small { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+
+        /* Quick Links */
+        .link-group { margin-bottom: 15px; }
+        .link-group-title { font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+        .links-wrapper { display: flex; flex-wrap: wrap; gap: 8px; }
+        .q-link { padding: 8px 12px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-decoration: none; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .q-link:hover { border-color: var(--primary); color: var(--primary); background: var(--surface-hover); transform: translateY(-2px); }
+        .delete-link { color: var(--danger); cursor: pointer; margin-left: 5px; font-size: 0.9rem; }
+
+        /* Quick Actions */
+        .action-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .action-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.2s; text-decoration: none; text-align: center; }
+        .action-btn:hover { background: var(--primary-light); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(15, 118, 110, 0.3); }
+        .action-btn i { font-size: 1.5rem; }
+
+        .prog-bg { width: 100%; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 5px; }
+        .prog-fill { height: 100%; background: var(--primary); }
     </style>
 </head>
 <body>
     <aside id="sidebar" class="glass">
-        <div style="padding: 10px; margin-bottom: 20px;">
-            <h2 style="color: var(--primary); font-weight: 800; font-size: 1.8rem;">Life OS</h2>
-        </div>
+        <div style="padding: 10px; margin-bottom: 20px;"><h2 style="color: var(--primary); font-weight: 900; font-size: 1.8rem;">Life OS</h2></div>
         <nav>
             <a href="index.html" class="nav-item active">Overview</a>
             <a href="academic.html" class="nav-item">Academic Hub</a>
@@ -33,172 +92,344 @@
     </aside>
 
     <main id="main-content">
-        <header class="glass">
+        
+        <!-- SECTION 1: Header -->
+        <header class="glass" style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <h1 style="color: var(--primary);">University of Dhaka - EEE</h1>
-                <p style="color: var(--text-muted); font-weight: 700;">3rd Year, 2nd Semester</p>
+                <div class="greeting-text" id="greeting">Good Morning!</div>
+                <div style="display: flex; gap: 15px; align-items: baseline; margin-top: 5px;">
+                    <span class="live-clock" id="clock">--:--:--</span>
+                    <span class="live-date" id="date">--</span>
+                </div>
             </div>
-            <button id="theme-toggle" class="btn btn-outline" style="width: auto;">Toggle Theme</button>
+            <button id="theme-toggle" class="btn btn-outline" style="width: auto; padding: 10px 15px;"><i class="fas fa-moon"></i></button>
         </header>
 
-        <div class="grid-container">
+        <div class="dash-grid">
             
-            <!-- Welcome Banner & Daily Focus -->
-            <div class="glass-card col-span-2" style="background: linear-gradient(135deg, rgba(0,106,78,0.1) 0%, rgba(0,0,0,0) 100%);">
-                <div id="dynamic-greeting" class="greeting">Good Morning!</div>
-                <div id="live-date" style="font-size: 1.2rem; color: var(--text-muted); font-weight: 700; margin-bottom: 10px;">--</div>
-                <div id="live-clock" style="font-size: 2.8rem; font-weight: 900; color: var(--primary);">--:--:--</div>
-                
-                <input type="text" id="daily-focus" class="focus-input" placeholder="🎯 What is your main focus for today? (Type and press Enter)">
-            </div>
-
-            <!-- Today's Tasks -->
-            <div class="glass-card">
-                <div class="widget-title">Today's Action Plan</div>
-                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <input type="text" id="quick-task-input" placeholder="Add a quick task..." style="flex:1; padding:10px; border-radius:8px; border:1px solid var(--border); background: var(--surface-solid); color: var(--text-main);">
-                    <button class="btn btn-primary" style="width:auto; margin:0; padding: 10px 15px;" onclick="addIndexTask()">+</button>
-                </div>
-                <div id="index-task-list"></div>
-            </div>
-
-            <!-- Urgent Deadline Alert -->
-            <div class="glass-card urgent-card">
-                <div class="widget-title" style="color: var(--danger);">🚨 Immediate Deadline</div>
-                <h3 style="margin-bottom: 5px; font-size: 1.4rem;">Statistics (Retake)</h3>
-                <p style="font-size: 1rem; color: var(--text-muted); margin-bottom: 15px; font-weight: 600;">31 August 2026</p>
-                <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid rgba(220, 53, 69, 0.2);">
-                    <span id="urgent-days" style="font-size: 2.5rem; font-weight: 900; color: var(--danger);">--</span>
-                    <span style="font-size: 1.2rem; font-weight: 700; color: var(--danger);"> Days Left</span>
+            <!-- SECTION 2: Today's Focus -->
+            <div class="glass-card col-12" style="background: linear-gradient(135deg, rgba(15, 118, 110, 0.05) 0%, rgba(0,0,0,0) 100%);">
+                <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                    <div style="font-size: 0.9rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 10px;"><i class="fas fa-crosshairs"></i> Today's Main Focus</div>
+                    <input type="text" id="daily-focus" class="focus-input" placeholder="What is your main goal for today?">
+                    <button class="btn btn-primary" style="width: auto; margin: 15px auto 0; padding: 8px 20px; font-size: 0.85rem;" onclick="saveFocus()">Save Focus</button>
                 </div>
             </div>
 
-            <!-- Daily Check-in -->
-            <div class="glass-card">
-                <div class="widget-title">Daily Check-in</div>
-                <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
-                    <label class="habit-check">
-                        <input type="checkbox" id="chk-wake" onchange="saveDailyHabits()"> ⏰ Woke up at 7:45 AM
-                    </label>
-                    <label class="habit-check" style="margin-bottom: 0;">
-                        <input type="checkbox" id="chk-gym" onchange="saveDailyHabits()"> 🏋️‍♂️ Gym Session Done
-                    </label>
+            <!-- SECTION 7: Smart Daily Reminder -->
+            <div class="glass-card col-8">
+                <div class="sec-title"><span><i class="fas fa-bell"></i> Smart Reminders</span></div>
+                <div class="reminder-list" id="reminders-container">
+                    <!-- JS Populated -->
                 </div>
             </div>
 
-            <!-- Mini Progress -->
-            <div class="glass-card">
-                <div class="widget-title">Quick Progress</div>
-                <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px;">
-                    <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1rem;">
-                        <span>Machine Learning</span><span id="idx-ml-pct" style="color: var(--primary);">0%</span>
+            <!-- SECTION 3: Upcoming Deadlines -->
+            <div class="glass-card col-4">
+                <div class="sec-title"><span><i class="fas fa-hourglass-half"></i> Deadlines</span></div>
+                <div id="deadlines-container">
+                    <!-- JS Populated -->
+                </div>
+            </div>
+
+            <!-- SECTION 4: Quick Summary -->
+            <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0;"><span><i class="fas fa-chart-pie"></i> Quick Summaries</span></div></div>
+
+            <div class="glass-card col-3">
+                <div style="font-weight: 800; margin-bottom: 12px; color: var(--primary);"><i class="fas fa-graduation-cap"></i> Academic</div>
+                <div class="summary-grid" style="grid-template-columns: 1fr;">
+                    <div class="sum-box">
+                        <span class="sum-label">Semester Progress</span>
+                        <span class="sum-val" id="sum-sem-pct">0%</span>
+                        <div class="prog-bg"><div class="prog-fill" id="sum-sem-bar" style="width: 0%;"></div></div>
                     </div>
-                    <div class="mini-progress"><div class="mini-progress-fill" id="idx-ml-fill" style="width: 0%;"></div></div>
                 </div>
-                <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
-                    <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1rem;">
-                        <span>Grammar (10MS)</span><span id="idx-gr-pct" style="color: var(--primary);">0%</span>
+            </div>
+
+            <div class="glass-card col-3">
+                <div style="font-weight: 800; margin-bottom: 12px; color: #3B82F6;"><i class="fas fa-laptop-code"></i> Learning</div>
+                <div class="summary-grid" style="grid-template-columns: 1fr;">
+                    <div class="sum-box">
+                        <span class="sum-label">Machine Learning</span>
+                        <span class="sum-val" id="sum-ml-pct">0% <small>Completed</small></span>
                     </div>
-                    <div class="mini-progress"><div class="mini-progress-fill" id="idx-gr-fill" style="width: 0%;"></div></div>
+                    <div class="sum-box">
+                        <span class="sum-label">Grammar Course</span>
+                        <span class="sum-val" id="sum-gr-pct">0% <small>Completed</small></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card col-3">
+                <div style="font-weight: 800; margin-bottom: 12px; color: #EF4444;"><i class="fas fa-heart-pulse"></i> Today's Fitness</div>
+                <div class="summary-grid">
+                    <div class="sum-box"><span class="sum-label">Gym</span><span class="sum-val" id="sum-gym">Missed</span></div>
+                    <div class="sum-box"><span class="sum-label">Calories</span><span class="sum-val" id="sum-cal">0 <small>kcal</small></span></div>
+                    <div class="sum-box"><span class="sum-label">Protein</span><span class="sum-val" id="sum-pro">0 <small>g</small></span></div>
+                    <div class="sum-box"><span class="sum-label">Water</span><span class="sum-val" id="sum-wat">0 <small>L</small></span></div>
+                </div>
+            </div>
+
+            <div class="glass-card col-3">
+                <div style="font-weight: 800; margin-bottom: 12px; color: #F59E0B;"><i class="fas fa-wallet"></i> Personal</div>
+                <div class="summary-grid" style="grid-template-columns: 1fr;">
+                    <div class="sum-box">
+                        <span class="sum-label">Remaining Budget</span>
+                        <span class="sum-val" id="sum-budget" style="color: #F59E0B;">0 <small>BDT</small></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: Quick Actions -->
+            <div class="glass-card col-5">
+                <div class="sec-title"><span><i class="fas fa-bolt"></i> Quick Actions</span></div>
+                <div class="action-grid">
+                    <a href="health.html" class="action-btn"><i class="fas fa-utensils"></i> Log Nutrition</a>
+                    <a href="health.html" class="action-btn"><i class="fas fa-dumbbell"></i> Update Gym</a>
+                    <a href="personal.html" class="action-btn" style="background: var(--accent);"><i class="fas fa-plus-circle"></i> Add Expense</a>
+                    <a href="skills.html" class="action-btn" style="background: #3B82F6;"><i class="fas fa-laptop"></i> Complete ML</a>
+                    <a href="health.html" class="action-btn" style="background: var(--danger);"><i class="fas fa-bed"></i> Log Sleep</a>
+                    <a href="health.html" class="action-btn"><i class="fas fa-weight-scale"></i> Log Weight</a>
+                </div>
+            </div>
+
+            <!-- SECTION 5: Quick Links -->
+            <div class="glass-card col-7">
+                <div class="sec-title">
+                    <span><i class="fas fa-link"></i> Quick Links</span>
+                    <button class="btn btn-outline btn-sm" style="padding: 4px 10px;" onclick="addLinkPrompt()"><i class="fas fa-plus"></i> Add Link</button>
+                </div>
+                <div id="links-container">
+                    <!-- JS Populated -->
                 </div>
             </div>
 
         </div>
     </main>
 
-    <script src="js/data.js"></script>
     <script src="js/app.js"></script>
     <script>
-        // Dynamic Greeting
-        const hour = new Date().getHours();
-        let greeting = "Good Evening!";
-        if(hour < 12) greeting = "Good Morning!";
-        else if(hour < 18) greeting = "Good Afternoon!";
-        document.getElementById('dynamic-greeting').innerText = greeting;
+        // --- 1. Header (Clock & Greeting) ---
+        function updateHeader() {
+            const now = new Date();
+            const h = now.getHours();
+            
+            let greeting = "Good Evening!";
+            if(h < 12) greeting = "Good Morning!";
+            else if(h < 18) greeting = "Good Afternoon!";
+            document.getElementById('greeting').innerText = greeting;
 
-        // Daily Focus Logic
+            document.getElementById('clock').innerText = now.toLocaleTimeString('en-US');
+            document.getElementById('date').innerText = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+        setInterval(updateHeader, 1000);
+        updateHeader();
+
+        // --- 2. Today's Focus ---
         const focusInput = document.getElementById('daily-focus');
-        focusInput.value = localStorage.getItem('daily_focus') || '';
-        focusInput.addEventListener('keypress', (e) => {
-            if(e.key === 'Enter') {
-                localStorage.setItem('daily_focus', focusInput.value);
-                focusInput.blur();
-            }
-        });
-
-        // Urgent Countdown Logic (Stats Retake)
-        const targetDate = new Date("2026-08-31T00:00:00").getTime();
-        setInterval(() => {
-            const now = new Date().getTime();
-            const diff = targetDate - now;
-            if(diff > 0) {
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                document.getElementById('urgent-days').innerText = days;
-            } else {
-                document.getElementById('urgent-days').innerText = "0";
-            }
-        }, 1000);
-
-        // Daily Check-in Logic (Resets daily)
-        const todayStr = new Date().toDateString();
-        let savedHabits = JSON.parse(localStorage.getItem('daily_habits')) || { date: '', wake: false, gym: false };
-        if(savedHabits.date !== todayStr) {
-            savedHabits = { date: todayStr, wake: false, gym: false }; // Reset for new day
-            localStorage.setItem('daily_habits', JSON.stringify(savedHabits));
-        }
-        document.getElementById('chk-wake').checked = savedHabits.wake;
-        document.getElementById('chk-gym').checked = savedHabits.gym;
-
-        function saveDailyHabits() {
-            savedHabits.wake = document.getElementById('chk-wake').checked;
-            savedHabits.gym = document.getElementById('chk-gym').checked;
-            localStorage.setItem('daily_habits', JSON.stringify(savedHabits));
+        focusInput.value = localStorage.getItem('lifeos_daily_focus') || '';
+        function saveFocus() {
+            localStorage.setItem('lifeos_daily_focus', focusInput.value);
+            const btn = document.querySelector('button[onclick="saveFocus()"]');
+            btn.innerText = "Saved!";
+            setTimeout(() => btn.innerText = "Save Focus", 2000);
         }
 
-        // Load Course Progress from skills page data
-        let progress = JSON.parse(localStorage.getItem('course_progress')) || { ml: 0, gr: 0 };
-        document.getElementById('idx-ml-pct').innerText = `${progress.ml}%`;
-        document.getElementById('idx-ml-fill').style.width = `${progress.ml}%`;
-        document.getElementById('idx-gr-pct').innerText = `${progress.gr}%`;
-        document.getElementById('idx-gr-fill').style.width = `${progress.gr}%`;
+        // --- Data Fetching from LocalStorage ---
+        const todayStr = new Date().toISOString().split('T')[0];
+        
+        const fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || { weight:[], gym:[], nutrition:[], water:[], sleep:[] };
+        const pDB = JSON.parse(localStorage.getItem('lifeos_finance_v3')) || { budget: 8000, expenses: [] };
+        const lDB = JSON.parse(localStorage.getItem('lifeos_learning_db')) || { courses: { ml: {total:1, completed:0}, grammar: {total:1, completed:0} } };
 
-        // Quick Tasks Logic
-        let idxTasks = JSON.parse(localStorage.getItem('index_tasks')) || [];
-        function renderIndexTasks() {
-            const list = document.getElementById('index-task-list');
-            list.innerHTML = '';
-            idxTasks.forEach((t, i) => {
-                list.innerHTML += `
-                <div class="task-row">
-                    <span style="${t.done ? 'text-decoration:line-through; color:var(--text-muted);' : ''}">${t.text}</span>
-                    <input type="checkbox" style="width:18px; height:18px; cursor:pointer;" ${t.done ? 'checked' : ''} onchange="toggleIdxTask(${i})">
-                </div>`;
+        // --- 4. Quick Summaries ---
+        function loadSummaries() {
+            // Fitness
+            const tGym = fDB.gym.find(x => x.date === todayStr);
+            document.getElementById('sum-gym').innerText = tGym ? (tGym.attended ? '✅ Done' : '❌ Missed') : 'Pending';
+            
+            const tNut = fDB.nutrition.find(x => x.date === todayStr);
+            document.getElementById('sum-cal').innerHTML = `${tNut ? tNut.cal : 0} <small>kcal</small>`;
+            document.getElementById('sum-pro').innerHTML = `${tNut ? tNut.pro : 0} <small>g</small>`;
+            
+            const tWat = fDB.water.find(x => x.date === todayStr);
+            document.getElementById('sum-wat').innerHTML = `${tWat ? tWat.val : 0} <small>L</small>`;
+
+            // Personal Budget
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            const monthlyExps = pDB.expenses.filter(e => {
+                const ed = new Date(e.date);
+                return ed.getMonth() === currentMonth && ed.getFullYear() === currentYear;
+            });
+            const totalSpent = monthlyExps.reduce((sum, e) => sum + e.amount, 0);
+            document.getElementById('sum-budget').innerHTML = `${(pDB.budget - totalSpent).toLocaleString()} <small>BDT</small>`;
+
+            // Learning
+            const cML = lDB.courses.ml || {total:1, completed:0};
+            const cGr = lDB.courses.grammar || {total:1, completed:0};
+            document.getElementById('sum-ml-pct').innerHTML = `${cML.total>0 ? Math.round((cML.completed/cML.total)*100) : 0}% <small>Completed</small>`;
+            document.getElementById('sum-gr-pct').innerHTML = `${cGr.total>0 ? Math.round((cGr.completed/cGr.total)*100) : 0}% <small>Completed</small>`;
+
+            // Academic (Hardcoded dates for demo)
+            const semStart = new Date('2026-07-19T00:00:00');
+            const semEnd = new Date('2026-12-06T00:00:00');
+            const now = new Date();
+            let semPct = ((now - semStart) / (semEnd - semStart)) * 100;
+            if(semPct < 0) semPct = 0; if(semPct > 100) semPct = 100;
+            document.getElementById('sum-sem-pct').innerText = `${semPct.toFixed(1)}%`;
+            document.getElementById('sum-sem-bar').style.width = `${semPct}%`;
+        }
+
+        // --- 3 & 7. Deadlines and Smart Reminders ---
+        function loadDeadlinesAndReminders() {
+            const deadlines = [
+                { name: "Statistics Retake", date: new Date('2026-08-31T00:00:00') },
+                { name: "In-Course Exams", date: new Date('2026-09-13T00:00:00') },
+                { name: "Preparation Leave", date: new Date('2026-11-20T00:00:00') },
+                { name: "Final Exams", date: new Date('2026-12-06T00:00:00') }
+            ];
+
+            const now = new Date();
+            const dlContainer = document.getElementById('deadlines-container');
+            const remContainer = document.getElementById('reminders-container');
+            
+            // Sort Deadlines
+            const upcoming = deadlines.filter(d => d.date > now).sort((a,b) => a.date - b.date);
+            
+            dlContainer.innerHTML = '';
+            upcoming.slice(0, 3).forEach(dl => {
+                const daysLeft = Math.ceil((dl.date - now) / (1000*60*60*24));
+                dlContainer.innerHTML += `
+                    <div class="deadline-item">
+                        <span class="dl-name">${dl.name}</span>
+                        <span class="dl-days">${daysLeft} <small style="font-size:0.7rem; color:var(--text-muted);">Days</small></span>
+                    </div>
+                `;
+            });
+
+            // Smart Reminders logic
+            let reminders = [];
+
+            // Gym
+            const tGym = fDB.gym.find(x => x.date === todayStr);
+            if(!tGym) reminders.push({ type: 'warning', text: "🏋️‍♂️ Gym is not completed today." });
+
+            // Nutrition
+            const tNut = fDB.nutrition.find(x => x.date === todayStr);
+            if(!tNut || tNut.pro < 100) {
+                const p = tNut ? tNut.pro : 0;
+                reminders.push({ type: 'danger', text: `🥩 You still need ${100 - p}g protein today.` });
+            }
+
+            // Water
+            const tWat = fDB.water.find(x => x.date === todayStr);
+            if(!tWat || tWat.val < 3.0) {
+                const w = tWat ? tWat.val : 0;
+                reminders.push({ type: '', text: `💧 Drink ${(3.0 - w).toFixed(1)}L more water.` });
+            }
+
+            // Learning
+            const cML = lDB.courses.ml || {total:1, completed:0};
+            if(cML.completed < cML.total) {
+                reminders.push({ type: '', text: "🤖 Complete one ML module today to stay on schedule." });
+            }
+
+            // Deadlines
+            if(upcoming.length > 0) {
+                const closest = upcoming[0];
+                const dLeft = Math.ceil((closest.date - now) / (1000*60*60*24));
+                if(dLeft <= 30) {
+                    reminders.push({ type: 'warning', text: `🚨 ${closest.name} is in ${dLeft} days.` });
+                }
+            }
+
+            remContainer.innerHTML = '';
+            reminders.forEach(r => {
+                remContainer.innerHTML += `<div class="reminder-item ${r.type}">${r.text}</div>`;
             });
         }
-        function addIndexTask() {
-            const input = document.getElementById('quick-task-input');
-            if(input.value) { 
-                idxTasks.push({text: input.value, done: false}); 
-                localStorage.setItem('index_tasks', JSON.stringify(idxTasks)); 
-                input.value = ''; 
-                renderIndexTasks(); 
+
+        // --- 5. Quick Links Management ---
+        const defaultLinks = [
+            { category: "University", links: [
+                { name: "DU Website", url: "https://du.ac.bd" },
+                { name: "Google Classroom", url: "https://classroom.google.com" },
+                { name: "UniSync", url: "https://uni-sync-beige.vercel.app/#/" }
+            ]},
+            { category: "Learning", links: [
+                { name: "Coursera", url: "https://coursera.org" },
+                { name: "10MS Grammar", url: "https://10minuteschool.com" },
+                { name: "GitHub", url: "https://github.com" }
+            ]},
+            { category: "AI Tools", links: [
+                { name: "ChatGPT", url: "https://chat.openai.com" },
+                { name: "Gemini", url: "https://gemini.google.com" }
+            ]}
+        ];
+
+        let qLinks = JSON.parse(localStorage.getItem('lifeos_quick_links')) || defaultLinks;
+
+        function renderLinks() {
+            const container = document.getElementById('links-container');
+            container.innerHTML = '';
+
+            qLinks.forEach((cat, catIndex) => {
+                let catHtml = `<div class="link-group"><div class="link-group-title">${cat.category}</div><div class="links-wrapper">`;
+                cat.links.forEach((link, linkIndex) => {
+                    catHtml += `
+                        <div style="display:inline-flex; align-items:center;">
+                            <a href="${link.url}" target="_blank" class="q-link">
+                                <img src="https://www.google.com/s2/favicons?domain=${link.url}&sz=32" alt="" style="width:16px; height:16px; border-radius:4px;">
+                                ${link.name}
+                            </a>
+                            <span class="delete-link" onclick="deleteLink(${catIndex}, ${linkIndex})"><i class="fas fa-times"></i></span>
+                        </div>
+                    `;
+                });
+                catHtml += `</div></div>`;
+                container.innerHTML += catHtml;
+            });
+        }
+
+        function addLinkPrompt() {
+            const cat = prompt("Enter Category (e.g., Learning, AI Tools):", "General");
+            if(!cat) return;
+            const name = prompt("Enter Link Name:");
+            if(!name) return;
+            const url = prompt("Enter URL (include https://):");
+            if(!url) return;
+
+            let catObj = qLinks.find(c => c.category.toLowerCase() === cat.toLowerCase());
+            if(catObj) {
+                catObj.links.push({name, url});
+            } else {
+                qLinks.push({ category: cat, links: [{name, url}] });
+            }
+            saveLinks();
+        }
+
+        function deleteLink(catIdx, linkIdx) {
+            if(confirm("Delete this link?")) {
+                qLinks[catIdx].links.splice(linkIdx, 1);
+                if(qLinks[catIdx].links.length === 0) {
+                    qLinks.splice(catIdx, 1);
+                }
+                saveLinks();
             }
         }
-        function toggleIdxTask(i) { 
-            idxTasks[i].done = !idxTasks[i].done; 
-            localStorage.setItem('index_tasks', JSON.stringify(idxTasks)); 
-            renderIndexTasks(); 
-            
-            // Auto remove done tasks after 1.5 seconds for a cleaner look
-            if(idxTasks[i].done) {
-                setTimeout(() => {
-                    idxTasks.splice(i, 1);
-                    localStorage.setItem('index_tasks', JSON.stringify(idxTasks));
-                    renderIndexTasks();
-                }, 1500);
-            }
+
+        function saveLinks() {
+            localStorage.setItem('lifeos_quick_links', JSON.stringify(qLinks));
+            renderLinks();
         }
-        renderIndexTasks();
+
+        // --- Init ---
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSummaries();
+            loadDeadlinesAndReminders();
+            renderLinks();
+        });
     </script>
 </body>
 </html>
