@@ -6,11 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Life OS - Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .greeting { font-size: 2.2rem; font-weight: 900; color: var(--primary); margin-bottom: 5px; }
+        .urgent-card { background: rgba(220, 53, 69, 0.05); border: 2px solid rgba(220, 53, 69, 0.3); }
+        .habit-check { display: flex; align-items: center; gap: 12px; font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; cursor: pointer; color: var(--text-main); }
+        .habit-check input { width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); }
+        .focus-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-solid); font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-top: 20px; outline: none; transition: 0.3s; }
+        .focus-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.1); }
+        .mini-progress { height: 10px; background: var(--border); border-radius: 5px; margin-top: 8px; overflow: hidden; }
+        .mini-progress-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
+        .task-row { display: flex; align-items: center; justify-content: space-between; background: var(--surface-solid); padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--border); font-weight: 600;}
+    </style>
 </head>
 <body>
     <aside id="sidebar" class="glass">
         <div style="padding: 10px; margin-bottom: 20px;">
-            <h2 style="color: var(--primary); font-weight: 800;">Life OS</h2>
+            <h2 style="color: var(--primary); font-weight: 800; font-size: 1.8rem;">Life OS</h2>
         </div>
         <nav>
             <a href="index.html" class="nav-item active">Overview</a>
@@ -25,57 +36,169 @@
         <header class="glass">
             <div>
                 <h1 style="color: var(--primary);">University of Dhaka - EEE</h1>
-                <p style="color: var(--text-muted); font-weight: 600;">3rd Year, 2nd Semester</p>
+                <p style="color: var(--text-muted); font-weight: 700;">3rd Year, 2nd Semester</p>
             </div>
             <button id="theme-toggle" class="btn btn-outline" style="width: auto;">Toggle Theme</button>
         </header>
 
         <div class="grid-container">
-            <!-- Clock & Quote -->
-            <div class="glass-card col-span-2" style="text-align: center; padding: 40px;">
-                <div id="live-clock" style="font-size: 3rem; font-weight: 900; color: var(--primary);">--:--:--</div>
-                <div id="live-date" style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 20px;">--</div>
-                <p style="font-style: italic; font-weight: 600; font-size: 1.1rem; border-top: 1px solid var(--border); padding-top: 20px;" id="quote-display"></p>
+            
+            <!-- Welcome Banner & Daily Focus -->
+            <div class="glass-card col-span-2" style="background: linear-gradient(135deg, rgba(0,106,78,0.1) 0%, rgba(0,0,0,0) 100%);">
+                <div id="dynamic-greeting" class="greeting">Good Morning!</div>
+                <div id="live-date" style="font-size: 1.2rem; color: var(--text-muted); font-weight: 700; margin-bottom: 10px;">--</div>
+                <div id="live-clock" style="font-size: 2.8rem; font-weight: 900; color: var(--primary);">--:--:--</div>
+                
+                <input type="text" id="daily-focus" class="focus-input" placeholder="🎯 What is your main focus for today? (Type and press Enter)">
             </div>
 
-            <!-- CGPA Snapshot -->
+            <!-- Today's Tasks -->
             <div class="glass-card">
-                <div class="widget-title">Academic Target</div>
-                <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2rem; margin-bottom: 10px;">
-                    <span>Current CGPA:</span> <span style="color: var(--danger);" id="c-cgpa">--</span>
+                <div class="widget-title">Today's Action Plan</div>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="quick-task-input" placeholder="Add a quick task..." style="flex:1; padding:10px; border-radius:8px; border:1px solid var(--border); background: var(--surface-solid); color: var(--text-main);">
+                    <button class="btn btn-primary" style="width:auto; margin:0; padding: 10px 15px;" onclick="addIndexTask()">+</button>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2rem;">
-                    <span>Target CGPA:</span> <span style="color: var(--primary);" id="t-cgpa">--</span>
-                </div>
-                <p style="margin-top: 15px; color: var(--text-muted); font-size: 0.9rem;">Credits Completed: <span id="c-cred"></span></p>
+                <div id="index-task-list"></div>
             </div>
 
-            <!-- Quick Links -->
-            <div class="glass-card">
-                <div class="widget-title">Quick Links</div>
-                <div id="links-container"></div>
+            <!-- Urgent Deadline Alert -->
+            <div class="glass-card urgent-card">
+                <div class="widget-title" style="color: var(--danger);">🚨 Immediate Deadline</div>
+                <h3 style="margin-bottom: 5px; font-size: 1.4rem;">Statistics (Retake)</h3>
+                <p style="font-size: 1rem; color: var(--text-muted); margin-bottom: 15px; font-weight: 600;">31 August 2026</p>
+                <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid rgba(220, 53, 69, 0.2);">
+                    <span id="urgent-days" style="font-size: 2.5rem; font-weight: 900; color: var(--danger);">--</span>
+                    <span style="font-size: 1.2rem; font-weight: 700; color: var(--danger);"> Days Left</span>
+                </div>
             </div>
+
+            <!-- Daily Check-in -->
+            <div class="glass-card">
+                <div class="widget-title">Daily Check-in</div>
+                <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
+                    <label class="habit-check">
+                        <input type="checkbox" id="chk-wake" onchange="saveDailyHabits()"> ⏰ Woke up at 7:45 AM
+                    </label>
+                    <label class="habit-check" style="margin-bottom: 0;">
+                        <input type="checkbox" id="chk-gym" onchange="saveDailyHabits()"> 🏋️‍♂️ Gym Session Done
+                    </label>
+                </div>
+            </div>
+
+            <!-- Mini Progress -->
+            <div class="glass-card">
+                <div class="widget-title">Quick Progress</div>
+                <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1rem;">
+                        <span>Machine Learning</span><span id="idx-ml-pct" style="color: var(--primary);">0%</span>
+                    </div>
+                    <div class="mini-progress"><div class="mini-progress-fill" id="idx-ml-fill" style="width: 0%;"></div></div>
+                </div>
+                <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
+                    <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1rem;">
+                        <span>Grammar (10MS)</span><span id="idx-gr-pct" style="color: var(--primary);">0%</span>
+                    </div>
+                    <div class="mini-progress"><div class="mini-progress-fill" id="idx-gr-fill" style="width: 0%;"></div></div>
+                </div>
+            </div>
+
         </div>
     </main>
 
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
     <script>
-        // Populate Dashboard Data
-        document.getElementById('quote-display').innerText = `"${lifeData.quote}"`;
-        document.getElementById('c-cgpa').innerText = lifeData.profile.currentCGPA;
-        document.getElementById('t-cgpa').innerText = lifeData.profile.targetCGPA;
-        document.getElementById('c-cred').innerText = lifeData.profile.completedCredits;
+        // Dynamic Greeting
+        const hour = new Date().getHours();
+        let greeting = "Good Evening!";
+        if(hour < 12) greeting = "Good Morning!";
+        else if(hour < 18) greeting = "Good Afternoon!";
+        document.getElementById('dynamic-greeting').innerText = greeting;
 
-        const linksContainer = document.getElementById('links-container');
-        lifeData.links.forEach(link => {
-            const a = document.createElement('a');
-            a.href = link.url;
-            a.target = "_blank";
-            a.className = "btn btn-outline";
-            a.innerText = link.name;
-            linksContainer.appendChild(a);
+        // Daily Focus Logic
+        const focusInput = document.getElementById('daily-focus');
+        focusInput.value = localStorage.getItem('daily_focus') || '';
+        focusInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') {
+                localStorage.setItem('daily_focus', focusInput.value);
+                focusInput.blur();
+            }
         });
+
+        // Urgent Countdown Logic (Stats Retake)
+        const targetDate = new Date("2026-08-31T00:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            if(diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById('urgent-days').innerText = days;
+            } else {
+                document.getElementById('urgent-days').innerText = "0";
+            }
+        }, 1000);
+
+        // Daily Check-in Logic (Resets daily)
+        const todayStr = new Date().toDateString();
+        let savedHabits = JSON.parse(localStorage.getItem('daily_habits')) || { date: '', wake: false, gym: false };
+        if(savedHabits.date !== todayStr) {
+            savedHabits = { date: todayStr, wake: false, gym: false }; // Reset for new day
+            localStorage.setItem('daily_habits', JSON.stringify(savedHabits));
+        }
+        document.getElementById('chk-wake').checked = savedHabits.wake;
+        document.getElementById('chk-gym').checked = savedHabits.gym;
+
+        function saveDailyHabits() {
+            savedHabits.wake = document.getElementById('chk-wake').checked;
+            savedHabits.gym = document.getElementById('chk-gym').checked;
+            localStorage.setItem('daily_habits', JSON.stringify(savedHabits));
+        }
+
+        // Load Course Progress from skills page data
+        let progress = JSON.parse(localStorage.getItem('course_progress')) || { ml: 0, gr: 0 };
+        document.getElementById('idx-ml-pct').innerText = `${progress.ml}%`;
+        document.getElementById('idx-ml-fill').style.width = `${progress.ml}%`;
+        document.getElementById('idx-gr-pct').innerText = `${progress.gr}%`;
+        document.getElementById('idx-gr-fill').style.width = `${progress.gr}%`;
+
+        // Quick Tasks Logic
+        let idxTasks = JSON.parse(localStorage.getItem('index_tasks')) || [];
+        function renderIndexTasks() {
+            const list = document.getElementById('index-task-list');
+            list.innerHTML = '';
+            idxTasks.forEach((t, i) => {
+                list.innerHTML += `
+                <div class="task-row">
+                    <span style="${t.done ? 'text-decoration:line-through; color:var(--text-muted);' : ''}">${t.text}</span>
+                    <input type="checkbox" style="width:18px; height:18px; cursor:pointer;" ${t.done ? 'checked' : ''} onchange="toggleIdxTask(${i})">
+                </div>`;
+            });
+        }
+        function addIndexTask() {
+            const input = document.getElementById('quick-task-input');
+            if(input.value) { 
+                idxTasks.push({text: input.value, done: false}); 
+                localStorage.setItem('index_tasks', JSON.stringify(idxTasks)); 
+                input.value = ''; 
+                renderIndexTasks(); 
+            }
+        }
+        function toggleIdxTask(i) { 
+            idxTasks[i].done = !idxTasks[i].done; 
+            localStorage.setItem('index_tasks', JSON.stringify(idxTasks)); 
+            renderIndexTasks(); 
+            
+            // Auto remove done tasks after 1.5 seconds for a cleaner look
+            if(idxTasks[i].done) {
+                setTimeout(() => {
+                    idxTasks.splice(i, 1);
+                    localStorage.setItem('index_tasks', JSON.stringify(idxTasks));
+                    renderIndexTasks();
+                }, 1500);
+            }
+        }
+        renderIndexTasks();
     </script>
 </body>
 </html>
