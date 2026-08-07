@@ -72,7 +72,6 @@
         /* Form Controls */
         .form-control { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-solid); color: var(--text-main); font-weight: 600; font-size: 0.9rem; outline: none; transition: 0.2s; }
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); }
-        .form-row { display: flex; gap: 10px; }
 
         .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .stat-box { background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
@@ -134,9 +133,9 @@
                 </div>
                 <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-bottom: 20px;">Enter the total number of hours studied today.</p>
                 
-                <form onsubmit="logStudyHours(event)" class="form-row">
-                    <input type="number" step="0.1" id="study-hours" class="form-control" placeholder="Hours (e.g., 2.5)" required style="flex: 1; font-size: 1.5rem; text-align: center; font-weight: 900; color: var(--primary);">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 1rem;"><i class="fas fa-save"></i> Save</button>
+                <form onsubmit="logStudyHours(event)" style="display: flex; gap: 10px; width: 100%;">
+                    <input type="number" step="0.1" id="study-hours" class="form-control" placeholder="Hours (e.g., 2.5)" required style="flex: 1; font-size: 1.2rem; text-align: left; font-weight: 900; color: var(--primary);">
+                    <button type="submit" class="btn btn-primary" style="flex: 0 0 auto; width: auto; padding: 10px 25px; font-size: 1rem;"><i class="fas fa-save"></i> Save</button>
                 </form>
             </div>
 
@@ -339,7 +338,7 @@
             updateDashboard();
         }
 
-        // --- 4. Study Logging (Direct Input) ---
+        // --- 4. Study Logging ---
         function logStudyHours(e) {
             e.preventDefault();
             const date = document.getElementById('study-date').value;
