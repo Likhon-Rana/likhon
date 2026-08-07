@@ -26,7 +26,7 @@
         @media (max-width: 768px) { .col-3, .col-4, .col-6, .col-8, .col-12 { grid-column: span 12; } }
 
         .os-card { background: var(--surface-solid); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; transition: 0.2s ease; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.015); }
-        .os-card:hover { border-color: rgba(15, 118, 110, 0.3); box-shadow: 0 6px 24px rgba(0,0,0,0.03); }
+        .os-card:hover { border-color: rgba(15, 118, 110, 0.3); box-shadow: 0 6px 24px rgba(0,0,0,0.04); }
         .card-header { font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
         .card-header i { margin-right: 6px; color: var(--primary); font-size: 0.9rem; }
 
@@ -41,8 +41,8 @@
         /* Hero Header */
         .hero-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 20px 0; border-bottom: 1px dashed var(--border); margin-bottom: 20px;}
         .greeting { font-size: 1.6rem; font-weight: 900; color: var(--text-main); margin-bottom: 4px; }
-        .live-clock { font-size: 3rem; font-weight: 900; color: var(--primary); font-variant-numeric: tabular-nums; letter-spacing: -2px; line-height: 1; }
-        .time-date { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); display: flex; gap: 10px; align-items: center; margin-top: 5px; }
+        .live-clock { font-size: 3.5rem; font-weight: 900; color: var(--primary); font-variant-numeric: tabular-nums; letter-spacing: -2px; line-height: 1.1; }
+        .time-date { font-size: 0.95rem; font-weight: 700; color: var(--text-muted); display: flex; gap: 10px; align-items: center; margin-top: 5px; }
         
         .life-score-wrapper { display: flex; align-items: center; gap: 15px; background: var(--surface-solid); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
         .ls-circle { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.1rem; background: conic-gradient(var(--primary) calc(var(--score) * 1%), var(--border) 0); color: var(--primary); position: relative; }
@@ -68,7 +68,7 @@
         .pri-success { background: rgba(16, 185, 129, 0.05); color: #047857; border-color: rgba(16, 185, 129, 0.2); border-left: 4px solid #10B981; }
         
         /* Exam Countdown Pulse */
-        .live-exam-cd { font-family: monospace; font-size: 1.4rem; font-weight: 900; color: var(--danger); letter-spacing: -0.5px; text-shadow: 0 0 10px rgba(239,68,68,0.2); }
+        .live-exam-cd { font-family: monospace; font-size: 1.6rem; font-weight: 900; color: var(--danger); letter-spacing: -0.5px; text-shadow: 0 0 10px rgba(239,68,68,0.2); }
 
         /* Overall Mastery */
         .north-star { background: linear-gradient(135deg, rgba(15, 118, 110, 0.05) 0%, rgba(0,0,0,0) 100%); border: 1px solid var(--primary-light); padding: 25px; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;}
@@ -223,7 +223,7 @@
                     <div class="card-header"><i class="fas fa-hourglass-half"></i> Statistics (Retake) Exam Countdown</div>
                     <div style="background: rgba(239, 68, 68, 0.05); border: 1px dashed var(--danger); padding: 20px; border-radius: 12px; text-align: center;">
                         <div class="live-exam-cd" id="stat-live-cd">Loading...</div>
-                        <div style="font-size: 0.8rem; font-weight: 800; color: var(--danger); text-transform: uppercase; margin-top: 8px;">Time is running out</div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: var(--danger); text-transform: uppercase; margin-top: 8px;">Time is running out. Stop procrastinating.</div>
                     </div>
                 </div>
                 <div style="flex: 1; overflow-y: auto;">
@@ -306,20 +306,15 @@
         const todayStr = getLocalDateStr(now);
         const currentMonthStr = todayStr.substring(0, 7); // e.g. "2026-08"
 
-        // --- Database Connections (Fixed BUG: Wipes expenses cleanly ONCE to remove ghost data) ---
-        let fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || { weight:[], gym:[], nutrition:[], sleep:[] };
-        let pDB = JSON.parse(localStorage.getItem('lifeos_personal_db')) || { budget: 8000, expenses: [], savings: [], habits: [] };
-        let lDB = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || { checkedItems: {}, history: [] };
-        let aDB = JSON.parse(localStorage.getItem('lifeos_academic_db')) || { studyLogs: [] };
+        // --- Database Connections ---
+        const fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || { weight:[], gym:[], nutrition:[], sleep:[] };
+        const lDB = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || { checkedItems: {}, history: [] };
+        const aDB = JSON.parse(localStorage.getItem('lifeos_academic_db')) || { studyLogs: [] };
         let sysReviews = JSON.parse(localStorage.getItem('lifeos_system_reviews')) || [];
 
-        // 🚨 CRITICAL BUG FIX: Clear old ghost data so the user can start fresh as requested.
-        if (!localStorage.getItem('lifeos_expense_bug_fixed_v2')) {
-            pDB.expenses = []; // Wipe expenses to [ ] as requested
-            localStorage.setItem('lifeos_personal_db', JSON.stringify(pDB));
-            localStorage.setItem('lifeos_expense_bug_fixed_v2', 'true');
-        }
-
+        // 🚨 FINANCE FIX: We strictly pull expenses from 'lifeos_finance_v3' (which your Personal page uses)
+        const finDB = JSON.parse(localStorage.getItem('lifeos_finance_v3')) || { budget: 8000, expenses: [], savings: [] };
+        
         // --- Quotes Engine ---
         const quotes = [
             "Discipline equals freedom. Keep pushing forward.",
@@ -439,11 +434,11 @@
             if(fGym && fGym.attended) score += 15;
             if(fNut && fNut.pro >= 80) score += 10;
 
-            const monthlyExps = pDB.expenses.filter(e => e.date && e.date.startsWith(currentMonthStr));
+            const monthlyExps = finDB.expenses.filter(e => e.date && e.date.startsWith(currentMonthStr));
             const spent = monthlyExps.reduce((s, e) => s + parseFloat(e.amount), 0);
             
-            const budgetPace = (pDB.budget / 30) * now.getDate();
-            if(spent <= budgetPace) score += 25; else if(spent <= pDB.budget) score += 10;
+            const budgetPace = (finDB.budget / 30) * now.getDate();
+            if(spent <= budgetPace) score += 25; else if(spent <= finDB.budget) score += 10;
 
             document.getElementById('life-score-val').innerText = score;
             document.getElementById('life-score-circle').style.setProperty('--score', score);
@@ -480,7 +475,7 @@
             const fNut = fDB.nutrition.find(x => x.date === todayStr);
             const fGym = fDB.gym.find(x => x.date === todayStr);
             
-            const monthlyExps = pDB.expenses.filter(e => e.date && e.date.startsWith(currentMonthStr));
+            const monthlyExps = finDB.expenses.filter(e => e.date && e.date.startsWith(currentMonthStr));
             const spent = monthlyExps.reduce((s, e) => s + parseFloat(e.amount), 0);
 
             // 1. Fitness Logic
@@ -500,9 +495,9 @@
             else if(!aToday || aToday.hours === 0) alerts.push({ p: 85, t: "🚨 WAKE UP: You are destroying your future. Zero study hours logged today!", c: 'pri-critical', push: true, type: 'danger' });
 
             // 3. Finance Logic
-            if(spent > pDB.budget) {
-                alerts.push({ p: 110, t: `💀 FINANCIAL RUIN: You've blown past your budget (${spent}/${pDB.budget})! STOP SPENDING IMMEDIATELY.`, c: 'pri-critical', push: true, type: 'danger' });
-            } else if(spent > pDB.budget * 0.8) {
+            if(spent > finDB.budget) {
+                alerts.push({ p: 110, t: `💀 FINANCIAL RUIN: You've blown past your budget (${spent}/${finDB.budget})! STOP SPENDING IMMEDIATELY.`, c: 'pri-critical', push: true, type: 'danger' });
+            } else if(spent > finDB.budget * 0.8) {
                 alerts.push({ p: 88, t: "💸 WARNING: You have spent over 80% of your monthly budget. Lock your wallet.", c: 'pri-warning', type: 'warning' });
             }
 
@@ -558,13 +553,13 @@
             document.getElementById('snap-gym').innerHTML = fGym ? (fGym.attended ? '<span class="badge badge-green">Done</span>' : '<span class="badge badge-red">Missed</span>') : '<span class="badge" style="background:var(--border);">Pending</span>';
 
             // Finance
-            const monthlyExps = pDB.expenses.filter(e => e.date && e.date.startsWith(currentMonthStr));
+            const monthlyExps = finDB.expenses.filter(e => e.date && e.date.startsWith(currentMonthStr));
             const spent = monthlyExps.reduce((s, e) => s + parseFloat(e.amount), 0);
             
-            document.getElementById('snap-budget').innerHTML = `${Math.max(0, pDB.budget - spent).toLocaleString()}`;
-            document.getElementById('snap-bdg-bar').style.width = `${Math.min((spent/pDB.budget)*100, 100)}%`;
+            document.getElementById('snap-budget').innerHTML = `${Math.max(0, finDB.budget - spent).toLocaleString()}`;
+            document.getElementById('snap-bdg-bar').style.width = `${Math.min((spent/finDB.budget)*100, 100)}%`;
 
-            const sav = pDB.savings ? pDB.savings.reduce((s, e) => s + parseFloat(e.amount), 0) : 0;
+            const sav = finDB.savings ? finDB.savings.reduce((s, e) => s + parseFloat(e.amount), 0) : 0;
             document.getElementById('ns-sav').innerText = `${sav.toLocaleString()}`;
         }
 
@@ -583,7 +578,7 @@
             const wSlp = fDB.sleep.filter(x => x.date >= wStartStr);
             document.getElementById('sum-w-slp').innerText = `${wSlp.length ? (wSlp.reduce((s,x)=>s+parseFloat(x.duration),0)/wSlp.length).toFixed(1) : 0}h`;
 
-            const wExp = pDB.expenses.filter(x => x.date >= wStartStr).reduce((s,x)=>s+parseFloat(x.amount),0);
+            const wExp = finDB.expenses.filter(x => x.date >= wStartStr).reduce((s,x)=>s+parseFloat(x.amount),0);
             document.getElementById('sum-w-spent').innerText = wExp;
 
             // Monthly
@@ -601,7 +596,7 @@
             let allMonths = new Set();
             aDB.studyLogs.forEach(x => { if(x.date) allMonths.add(x.date.substring(0, 7)); });
             fDB.gym.forEach(x => { if(x.date) allMonths.add(x.date.substring(0, 7)); });
-            pDB.expenses.forEach(x => { if(x.date) allMonths.add(x.date.substring(0, 7)); });
+            finDB.expenses.forEach(x => { if(x.date) allMonths.add(x.date.substring(0, 7)); });
             lDB.history.forEach(x => { if(x.rawDate) allMonths.add(x.rawDate.substring(0, 7)); });
 
             let newReviewAdded = false;
@@ -612,13 +607,13 @@
 
                 const mStudy = aDB.studyLogs.filter(x => x.date && x.date.startsWith(monthStr)).reduce((s,x)=>s+parseFloat(x.hours), 0);
                 const mGym = fDB.gym.filter(x => x.date && x.date.startsWith(monthStr) && x.attended).length;
-                const mSpent = pDB.expenses.filter(x => x.date && x.date.startsWith(monthStr)).reduce((s,x)=>s+parseFloat(x.amount), 0);
+                const mSpent = finDB.expenses.filter(x => x.date && x.date.startsWith(monthStr)).reduce((s,x)=>s+parseFloat(x.amount), 0);
                 const mLms = lDB.history.filter(x => x.rawDate && x.rawDate.startsWith(monthStr)).length;
 
                 let score = 0;
                 if(mStudy >= 60) score += 25; else if(mStudy >= 30) score += 15; else score += 5;
                 if(mGym >= 20) score += 25; else if(mGym >= 10) score += 15; else score += 5;
-                if(mSpent <= pDB.budget) score += 25; else if(mSpent <= pDB.budget * 1.1) score += 10; else score += 0;
+                if(mSpent <= finDB.budget) score += 25; else if(mSpent <= finDB.budget * 1.1) score += 10; else score += 0;
                 if(mLms >= 20) score += 25; else if(mLms >= 10) score += 15; else score += 5;
 
                 let text = `Your overall Life Score for this month was ${score}/100. `;
@@ -660,7 +655,7 @@
                             <div>Study: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.study}h</span></div>
                             <div>Gym: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.gym}d</span></div>
                             <div>LMS: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.lms}</span></div>
-                            <div>Spent: <br><span style="color:${r.stats.spent > pDB.budget ? 'var(--danger)' : 'var(--primary)'}; font-size:1.1rem;">${r.stats.spent}</span></div>
+                            <div>Spent: <br><span style="color:${r.stats.spent > finDB.budget ? 'var(--danger)' : 'var(--primary)'}; font-size:1.1rem;">${r.stats.spent}</span></div>
                         </div>
                         <div style="font-size:0.9rem; color:var(--text-main); font-weight:600; background:rgba(15, 118, 110, 0.05); padding:10px; border-radius:8px; border-left:3px solid var(--primary);">
                             <strong>AI Verdict:</strong> ${r.feedback}
