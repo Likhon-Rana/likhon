@@ -1,0 +1,73 @@
+<!-- health.html -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life OS - Fitness</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .tracker-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 15px; }
+        .day-circle { aspect-ratio: 1; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .day-circle.active { background: var(--primary); color: white; border-color: var(--primary); }
+    </style>
+</head>
+<body>
+    <aside id="sidebar" class="glass">
+        <div style="padding: 10px; margin-bottom: 20px;"><h2 style="color: var(--primary); font-weight: 800;">Life OS</h2></div>
+        <nav>
+            <a href="index.html" class="nav-item">Overview</a>
+            <a href="academic.html" class="nav-item">Academic Hub</a>
+            <a href="skills.html" class="nav-item">Skills & Projects</a>
+            <a href="health.html" class="nav-item active">Fitness & Wellness</a>
+            <a href="personal.html" class="nav-item">Personal & Habits</a>
+        </nav>
+    </aside>
+
+    <main id="main-content">
+        <header class="glass">
+            <div><h1 style="color: var(--primary);">Fitness & Wellness</h1><p style="color: var(--text-muted);">Gym & Sleep Monitor</p></div>
+        </header>
+
+        <div class="grid-container">
+            <!-- Gym Tracker -->
+            <div class="glass-card">
+                <div class="widget-title">Gym Tracker (4-5 Days/Week)</div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Click on the days you worked out this week:</p>
+                <div class="tracker-grid" id="gym-tracker"></div>
+            </div>
+
+            <!-- Sleep Tracker -->
+            <div class="glass-card">
+                <div class="widget-title">Sleep Target</div>
+                <div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;">
+                    🎯 Goal: 7.5 - 8.5 Hours
+                </div>
+                <div style="background: rgba(0, 106, 78, 0.1); padding: 15px; border-radius: 12px; font-weight: bold; color: var(--primary);">
+                    ⏰ Wake Up Time: 7:45 AM (Strict)
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-muted);">Ensure you are in bed by 11:30 PM to 12:00 AM to meet the target.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        const daysShort = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+        let gymDays = JSON.parse(localStorage.getItem('gym_tracker')) || [false,false,false,false,false,false,false];
+        
+        const grid = document.getElementById('gym-tracker');
+        daysShort.forEach((d, i) => {
+            const circle = document.createElement('div');
+            circle.className = `day-circle ${gymDays[i] ? 'active' : ''}`;
+            circle.innerText = d;
+            circle.onclick = () => {
+                gymDays[i] = !gymDays[i];
+                circle.classList.toggle('active');
+                localStorage.setItem('gym_tracker', JSON.stringify(gymDays));
+            };
+            grid.appendChild(circle);
+        });
+    </script>
+</body>
+</html>
