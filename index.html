@@ -26,7 +26,7 @@
         @media (max-width: 768px) { .col-3, .col-4, .col-6, .col-8, .col-12 { grid-column: span 12; } }
 
         .os-card { background: var(--surface-solid); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; transition: 0.2s ease; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.015); }
-        .os-card:hover { border-color: rgba(15, 118, 110, 0.3); box-shadow: 0 6px 24px rgba(0,0,0,0.04); }
+        .os-card:hover { border-color: rgba(15, 118, 110, 0.3); box-shadow: 0 6px 24px rgba(0,0,0,0.03); }
         .card-header { font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
         .card-header i { margin-right: 6px; color: var(--primary); font-size: 0.9rem; }
 
@@ -279,6 +279,13 @@
                 </div>
             </div>
 
+            <!-- 13. System Reviews -->
+            <div class="os-card col-12">
+                <div class="card-header"><i class="fas fa-file-invoice"></i> Past Monthly System Reviews</div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 15px;">Automated holistic OS reviews generated at the end of every month.</p>
+                <div id="system-reviews-container"></div>
+            </div>
+
         </div>
     </main>
 
@@ -299,23 +306,12 @@
         const todayStr = getLocalDateStr(now);
         const currentMonthStr = todayStr.substring(0, 7); // e.g. "2026-08"
 
-        // --- Database Connections (With Safety Merges) ---
+        // --- Database Connections (Fixed strictly to exact keys, no merging) ---
         const fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || { weight:[], gym:[], nutrition:[], sleep:[] };
+        const pDB = JSON.parse(localStorage.getItem('lifeos_personal_db')) || { budget: 8000, expenses: [], savings: [], habits: [] };
         const lDB = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || { checkedItems: {}, history: [] };
         const aDB = JSON.parse(localStorage.getItem('lifeos_academic_db')) || { studyLogs: [] };
-        
-        // Fix for missing budget data: Merge 'lifeos_personal_db' and 'lifeos_finance_v3' securely
-        let pDB = JSON.parse(localStorage.getItem('lifeos_personal_db')) || { budget: 8000, expenses: [], savings: [], habits: [] };
-        let backupFinance = JSON.parse(localStorage.getItem('lifeos_finance_v3'));
-        
-        if (backupFinance && backupFinance.expenses && backupFinance.expenses.length > 0) {
-            // Merge expenses preventing duplicates by ID
-            const existingIds = new Set(pDB.expenses.map(e => e.id));
-            backupFinance.expenses.forEach(e => {
-                if(!existingIds.has(e.id)) pDB.expenses.push(e);
-            });
-            localStorage.setItem('lifeos_personal_db', JSON.stringify(pDB)); // Save merged data
-        }
+        let sysReviews = JSON.parse(localStorage.getItem('lifeos_system_reviews')) || [];
 
         // --- Quotes Engine ---
         const quotes = [
@@ -368,6 +364,17 @@
             }
         }
 
+        function enableNotifications() {
+            if (!("Notification" in window)) return alert("Browser does not support desktop notifications.");
+            if (Notification.permission === "granted") return alert("Alerts already active.");
+            Notification.requestPermission().then(p => {
+                if(p === "granted") {
+                    new Notification("Life OS Active", { body: "Smart alert engine is running." });
+                    document.getElementById('btn-notify').innerHTML = '<i class="fas fa-bell-slash"></i>';
+                }
+            });
+        }
+
         function testNotification() {
             triggerSmartPush("test", "Test Notification", "The notification engine is working perfectly. Get back to work.", "danger");
         }
@@ -385,6 +392,8 @@
             const semStart = new Date('2026-07-19T00:00:00');
             const diffWeeks = Math.floor(Math.max(0, now - semStart) / (1000 * 60 * 60 * 24 * 7)) + 1;
             document.getElementById('sem-week').innerText = `Sem Week ${diffWeeks}`;
+            
+            if(Notification.permission === "granted") document.getElementById('btn-notify').innerHTML = '<i class="fas fa-bell-slash"></i>';
         }
 
         function updateClock() {
@@ -580,6 +589,80 @@
             document.getElementById('sum-m-score').innerText = document.getElementById('life-score-val').innerText + "%";
         }
 
+        // --- System Reviews (Monthly Automated AI) ---
+        function generateSystemReviews() {
+            let allMonths = new Set();
+            aDB.studyLogs.forEach(x => { if(x.date) allMonths.add(x.date.substring(0, 7)); });
+            fDB.gym.forEach(x => { if(x.date) allMonths.add(x.date.substring(0, 7)); });
+            pDB.expenses.forEach(x => { if(x.date) allMonths.add(x.date.substring(0, 7)); });
+            lDB.history.forEach(x => { if(x.rawDate) allMonths.add(x.rawDate.substring(0, 7)); });
+
+            let newReviewAdded = false;
+
+            allMonths.forEach(monthStr => {
+                if(monthStr === currentMonthStr) return; // Skip current ongoing month
+                if(sysReviews.find(r => r.month === monthStr)) return; // Skip already reviewed
+
+                const mStudy = aDB.studyLogs.filter(x => x.date && x.date.startsWith(monthStr)).reduce((s,x)=>s+parseFloat(x.hours), 0);
+                const mGym = fDB.gym.filter(x => x.date && x.date.startsWith(monthStr) && x.attended).length;
+                const mSpent = pDB.expenses.filter(x => x.date && x.date.startsWith(monthStr)).reduce((s,x)=>s+parseFloat(x.amount), 0);
+                const mLms = lDB.history.filter(x => x.rawDate && x.rawDate.startsWith(monthStr)).length;
+
+                let score = 0;
+                if(mStudy >= 60) score += 25; else if(mStudy >= 30) score += 15; else score += 5;
+                if(mGym >= 20) score += 25; else if(mGym >= 10) score += 15; else score += 5;
+                if(mSpent <= pDB.budget) score += 25; else if(mSpent <= pDB.budget * 1.1) score += 10; else score += 0;
+                if(mLms >= 20) score += 25; else if(mLms >= 10) score += 15; else score += 5;
+
+                let text = `Your overall Life Score for this month was ${score}/100. `;
+                if(score >= 80) text += "Outstanding performance! You displayed elite discipline across all domains. You are well on your way to your PhD.";
+                else if(score >= 60) text += "Good effort, but there is room for improvement. Keep optimizing your routines to reach the next level.";
+                else text += "Warning: Your discipline slipped this month. You need to refocus and regain control of your habits to achieve your goals.";
+
+                const dateObj = new Date(`${monthStr}-01`);
+                const monthName = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+                sysReviews.unshift({
+                    id: Date.now() + Math.random(),
+                    month: monthStr, monthName: monthName,
+                    stats: { score, study: mStudy.toFixed(1), gym: mGym, spent: mSpent, lms: mLms },
+                    feedback: text
+                });
+                newReviewAdded = true;
+            });
+
+            if(newReviewAdded) localStorage.setItem('lifeos_system_reviews', JSON.stringify(sysReviews));
+        }
+
+        function renderSystemReviews() {
+            const container = document.getElementById('system-reviews-container');
+            container.innerHTML = '';
+            if(sysReviews.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-weight:700; padding: 20px;">No system reviews generated yet. (They generate automatically when a month ends).</div>`;
+                return;
+            }
+            sysReviews.forEach(r => {
+                let scoreColor = r.stats.score >= 80 ? '#10B981' : (r.stats.score >= 50 ? '#F59E0B' : '#EF4444');
+                container.innerHTML += `
+                    <div style="background:var(--surface-solid); border:1px solid var(--border); border-radius:12px; padding:15px; margin-bottom:10px;">
+                        <div style="display:flex; justify-content:space-between; font-weight:900; color:var(--primary); font-size:1.1rem; border-bottom:1px dashed var(--border); padding-bottom:8px; margin-bottom:10px;">
+                            <span>${r.monthName} Report</span>
+                            <span style="color:${scoreColor};">Score: ${r.stats.score}/100</span>
+                        </div>
+                        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; font-size:0.85rem; font-weight:700; margin-bottom:10px;">
+                            <div>Study: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.study}h</span></div>
+                            <div>Gym: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.gym}d</span></div>
+                            <div>LMS: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.lms}</span></div>
+                            <div>Spent: <br><span style="color:${r.stats.spent > pDB.budget ? 'var(--danger)' : 'var(--primary)'}; font-size:1.1rem;">${r.stats.spent}</span></div>
+                        </div>
+                        <div style="font-size:0.9rem; color:var(--text-main); font-weight:600; background:rgba(15, 118, 110, 0.05); padding:10px; border-radius:8px; border-left:3px solid var(--primary);">
+                            <strong>AI Verdict:</strong> ${r.feedback}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
         // --- Tasks ---
         let tasks = JSON.parse(localStorage.getItem('lifeos_tasks_v2')) || [];
         function renderTasks() {
@@ -613,6 +696,8 @@
             runEngine();
             renderSnapshots();
             renderSummaries();
+            generateSystemReviews();
+            renderSystemReviews();
             renderTasks();
         });
     </script>
