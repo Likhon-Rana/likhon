@@ -19,7 +19,7 @@
         }
 
         /* Minimal Linear-style layout tweaks */
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text-main); }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text-main); overflow-x: hidden; }
         .dash-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-top: 15px; }
         .col-3 { grid-column: span 3; } .col-4 { grid-column: span 4; } .col-6 { grid-column: span 6; } .col-8 { grid-column: span 8; } .col-12 { grid-column: span 12; }
         @media (max-width: 1200px) { .col-3, .col-4 { grid-column: span 6; } .col-6, .col-8 { grid-column: span 12; } }
@@ -62,22 +62,21 @@
         .pri-warning { background: rgba(245, 158, 11, 0.08); color: #b45309; border-left: 3px solid var(--accent); }
         .pri-info { background: rgba(15, 118, 110, 0.08); color: var(--primary); border-left: 3px solid var(--primary); }
 
-        /* Next Class */
-        .next-class-card { background: linear-gradient(135deg, rgba(15, 118, 110, 0.9) 0%, rgba(15, 118, 110, 1) 100%); color: white; border: none; }
-        .nc-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; }
-        .nc-detail { font-size: 0.9rem; font-weight: 600; opacity: 0.9; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-        .nc-countdown { margin-top: auto; font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
-
-        /* North Star */
-        .north-star { background: var(--bg); border: 1px solid var(--primary-light); padding: 25px; border-radius: var(--radius-lg); text-align: center; }
-        .ns-goal { font-size: 1.6rem; font-weight: 900; color: var(--primary); letter-spacing: -0.5px; margin: 10px 0; }
-        .ns-pill-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
-        .ns-pill { padding: 6px 12px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 20px; font-size: 0.8rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
+        /* Overall Mastery */
+        .north-star { background: var(--bg); border: 1px solid var(--primary-light); padding: 25px; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+        .ns-pill-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; }
+        .ns-pill { padding: 8px 16px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 20px; font-size: 0.9rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
 
         /* Quick Links */
-        .q-links { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding-bottom: 5px; }
-        .q-tag { padding: 8px 16px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 10px; font-size: 0.85rem; font-weight: 600; color: var(--text-main); text-decoration: none; transition: 0.2s; white-space: nowrap; }
-        .q-tag:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+        .q-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding-bottom: 15px; }
+        @media (max-width: 768px) { .q-links { grid-template-columns: repeat(2, 1fr); } }
+        .q-tag { padding: 12px 16px; border-radius: 12px; font-size: 0.95rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .q-tag:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        
+        .q-classroom { background: #E8F5E9; color: #047857; border: 1px solid #A7F3D0; }
+        .q-unisync { background: #F3E8FF; color: #4338CA; border: 1px solid #C7D2FE; }
+        .q-grammar { background: #E0F2FE; color: #1D4ED8; border: 1px solid #BAE6FD; }
+        .q-ml { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; }
 
         /* Utilities */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -88,6 +87,15 @@
         
         .btn-icon { background: var(--surface-solid); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-muted); transition: 0.2s; }
         .btn-icon:hover { color: var(--primary); border-color: var(--primary); }
+
+        .form-control { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-solid); color: var(--text-main); font-weight: 600; font-size: 0.9rem; outline: none; }
+        .form-row { display: flex; gap: 10px; }
+
+        /* In-App Notification Overlay */
+        #in-app-notification { position: fixed; top: 20px; right: -400px; width: 320px; background: var(--surface-solid); border-left: 5px solid var(--danger); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 15px 20px; z-index: 9999; transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; gap: 5px; }
+        #in-app-notification.show { right: 20px; }
+        .in-app-title { font-size: 1rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .in-app-body { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -104,7 +112,7 @@
 
     <main id="main-content" style="max-width: 1400px; margin: 0 auto;">
         
-        <!-- 1. Hero Section -->
+        <!-- Hero Section -->
         <div class="hero-header">
             <div>
                 <div class="greeting" id="greeting">Good Morning.</div>
@@ -124,49 +132,37 @@
                     </div>
                     <div class="ls-circle" id="life-score-circle" style="--score: 0;"><span id="life-score-val">0</span></div>
                 </div>
-                <button class="btn-icon" onclick="enableNotifications()" title="Enable Smart Alerts" id="btn-notify"><i class="fas fa-bell"></i></button>
+                <button class="btn-icon" onclick="testNotification()" title="Test Alerts" id="btn-notify"><i class="fas fa-bell"></i></button>
                 <button class="btn-icon" id="theme-toggle" title="Toggle Theme"><i class="fas fa-moon"></i></button>
             </div>
         </div>
 
-        <!-- 4. Quick Links -->
-        <div class="q-links" id="quick-links-container">
-            <a href="https://du.ac.bd" target="_blank" class="q-tag"><i class="fas fa-university"></i> DU Web</a>
-            <a href="https://classroom.google.com" target="_blank" class="q-tag"><i class="fas fa-chalkboard"></i> Classroom</a>
-            <a href="https://coursera.org" target="_blank" class="q-tag"><i class="fas fa-robot"></i> ML Coursera</a>
-            <a href="https://chat.openai.com" target="_blank" class="q-tag"><i class="fas fa-sparkles"></i> ChatGPT</a>
-            <a href="https://github.com" target="_blank" class="q-tag"><i class="fab fa-github"></i> GitHub</a>
-            <button class="q-tag" style="background:transparent; border-style:dashed;" onclick="addLinkPrompt()"><i class="fas fa-plus"></i> Add Link</button>
+        <!-- Custom Fixed 4 Quick Links -->
+        <div class="q-links">
+            <a href="https://classroom.google.com" target="_blank" class="q-tag q-classroom"><i class="fas fa-chalkboard-teacher"></i> Google Classroom</a>
+            <a href="https://uni-sync-beige.vercel.app/#/" target="_blank" class="q-tag q-unisync"><i class="fas fa-sync-alt"></i> UniSync</a>
+            <a href="https://app.10minuteschool.com/skills/courses/learn/english-grammar-course/overview" target="_blank" class="q-tag q-grammar"><i class="fas fa-spell-check"></i> Grammar Course</a>
+            <a href="https://www.coursera.org/learn/machine-learning/home/module/1" target="_blank" class="q-tag q-ml"><i class="fas fa-robot"></i> ML Coursera</a>
         </div>
 
         <div class="dash-grid">
             
-            <!-- 2. Today's Mission -->
-            <div class="os-card col-4">
+            <!-- Today's Mission -->
+            <div class="os-card col-6">
                 <div class="card-header"><i class="fas fa-crosshairs"></i> Today's Mission</div>
                 <ul class="mission-list" id="mission-list"></ul>
                 <input type="text" id="mission-input" class="add-mission-input" placeholder="+ Add mission and press Enter" onkeypress="handleMissionEnter(event)">
             </div>
 
-            <!-- 3. Smart Priorities -->
-            <div class="os-card col-4">
+            <!-- Smart Priorities -->
+            <div class="os-card col-6">
                 <div class="card-header"><i class="fas fa-bolt"></i> Smart Priorities</div>
                 <div id="priorities-container" style="display: flex; flex-direction: column; gap: 8px;">
                     <!-- Auto Generated -->
                 </div>
             </div>
 
-            <!-- 6. Next Class -->
-            <div class="os-card col-4 next-class-card" id="next-class-card">
-                <div class="card-header" style="color: rgba(255,255,255,0.7);"><i class="fas fa-location-arrow" style="color: rgba(255,255,255,0.7);"></i> Next Scheduled Event</div>
-                <div class="nc-title" id="nc-name">Loading...</div>
-                <div class="nc-detail"><i class="fas fa-user-tie"></i> <span id="nc-teacher">--</span></div>
-                <div class="nc-detail"><i class="fas fa-door-open"></i> <span id="nc-room">--</span></div>
-                <div class="nc-countdown" id="nc-countdown">--:--:--</div>
-                <div style="font-size: 0.8rem; font-weight: 600; opacity: 0.8; margin-top: 5px;" id="nc-time-text">--</div>
-            </div>
-
-            <!-- 5. Today Snapshot -->
+            <!-- Today Snapshot -->
             <div class="col-12"><div class="card-header" style="margin: 10px 0 0 0;"><i class="fas fa-camera"></i> Today Snapshot</div></div>
             
             <a href="academic.html" style="text-decoration: none;" class="os-card col-3">
@@ -177,10 +173,17 @@
             </a>
 
             <a href="skills.html" style="text-decoration: none;" class="os-card col-3">
-                <div class="card-header"><i class="fas fa-laptop-code"></i> Learning</div>
-                <div class="metric-title">ML Progress</div>
-                <div class="metric-value" id="snap-ml-pct">0%</div>
-                <div class="prog-slim"><div class="prog-slim-fill" id="snap-ml-bar" style="width: 0%; background: #3B82F6;"></div></div>
+                <div class="card-header"><i class="fas fa-laptop-code"></i> Learning Courses</div>
+                <div style="display: flex; justify-content: space-between;">
+                    <div>
+                        <div class="metric-title">ML Progress</div>
+                        <div class="metric-value" id="snap-ml-pct" style="font-size: 1.1rem; color: #3B82F6;">0%</div>
+                    </div>
+                    <div>
+                        <div class="metric-title">Grammar</div>
+                        <div class="metric-value" id="snap-gr-pct" style="font-size: 1.1rem; color: var(--primary);">0%</div>
+                    </div>
+                </div>
             </a>
 
             <a href="health.html" style="text-decoration: none;" class="os-card col-3">
@@ -204,20 +207,7 @@
                 <div class="prog-slim"><div class="prog-slim-fill" id="snap-bdg-bar" style="width: 0%; background: #F59E0B;"></div></div>
             </a>
 
-            <!-- 12. North Star Card -->
-            <div class="os-card col-6 north-star">
-                <div class="card-header" style="justify-content: center;"><i class="fas fa-star" style="color: #F59E0B;"></i> The North Star</div>
-                <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-top: 10px;">Primary Goal</div>
-                <div class="ns-goal">Fully Funded PhD in USA</div>
-                <div class="ns-pill-container">
-                    <div class="ns-pill"><i class="fas fa-graduation-cap" style="color: #10B981;"></i> CGPA: 3.45</div>
-                    <div class="ns-pill"><i class="fas fa-robot" style="color: #3B82F6;"></i> ML: <span id="ns-ml">0%</span></div>
-                    <div class="ns-pill"><i class="fas fa-spell-check" style="color: var(--primary);"></i> English: <span id="ns-gr">0%</span></div>
-                    <div class="ns-pill"><i class="fas fa-piggy-bank" style="color: #F59E0B;"></i> Savings: <span id="ns-sav">0</span></div>
-                </div>
-            </div>
-
-            <!-- 7 & 8. Deadlines and Alerts -->
+            <!-- Imminent Deadlines & System Alerts -->
             <div class="os-card col-6" style="display: flex; flex-direction: column; gap: 15px;">
                 <div>
                     <div class="card-header"><i class="fas fa-hourglass-half"></i> Imminent Deadlines</div>
@@ -229,7 +219,17 @@
                 </div>
             </div>
 
-            <!-- 9. Today's Tasks -->
+            <!-- Overall Mastery (Replaced North Star) -->
+            <div class="os-card col-6 north-star">
+                <div class="card-header" style="justify-content: center;"><i class="fas fa-star" style="color: #F59E0B;"></i> Overall Progress & Mastery</div>
+                <div class="ns-pill-container">
+                    <div class="ns-pill"><i class="fas fa-robot" style="color: #3B82F6;"></i> Machine Learning: <span id="ns-ml">0%</span></div>
+                    <div class="ns-pill"><i class="fas fa-spell-check" style="color: var(--primary);"></i> English Grammar: <span id="ns-gr">0%</span></div>
+                    <div class="ns-pill"><i class="fas fa-piggy-bank" style="color: #F59E0B;"></i> Total Savings: <span id="ns-sav">0</span> BDT</div>
+                </div>
+            </div>
+
+            <!-- Secondary Tasks -->
             <div class="os-card col-12">
                 <div class="card-header"><i class="fas fa-list-check"></i> Secondary Tasks</div>
                 <form class="form-row" onsubmit="addTask(event)" style="margin-bottom: 15px;">
@@ -245,7 +245,7 @@
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px;" id="task-list"></div>
             </div>
 
-            <!-- 10 & 11. Compact Summaries -->
+            <!-- Compact Summaries -->
             <div class="os-card col-6">
                 <div class="card-header"><i class="fas fa-calendar-week"></i> 7-Day Performance</div>
                 <div class="grid-4">
@@ -260,7 +260,7 @@
                 <div class="card-header"><i class="fas fa-calendar-alt"></i> Month to Date</div>
                 <div class="grid-4">
                     <div><div class="metric-title">Gym Days</div><div class="metric-value" style="font-size:1.1rem;" id="sum-m-gym">0</div></div>
-                    <div><div class="metric-title">LMS Items</div><div class="metric-value" style="font-size:1.1rem;" id="sum-m-lms">0</div></div>
+                    <div><div class="metric-title">Lessons Done</div><div class="metric-value" style="font-size:1.1rem;" id="sum-m-lms">0</div></div>
                     <div><div class="metric-title">Avg Study</div><div class="metric-value" style="font-size:1.1rem;" id="sum-m-study">0h</div></div>
                     <div><div class="metric-title">Score</div><div class="metric-value" style="font-size:1.1rem; color:var(--primary);" id="sum-m-score">0%</div></div>
                 </div>
@@ -268,6 +268,12 @@
 
         </div>
     </main>
+
+    <!-- In-App Guaranteed Notification System -->
+    <div id="in-app-notification">
+        <div class="in-app-title"><i class="fas fa-bell" style="color: var(--danger);"></i> <span id="in-app-heading">Alert</span></div>
+        <div class="in-app-body" id="in-app-text">Message goes here.</div>
+    </div>
 
     <script src="js/app.js"></script>
     <script>
@@ -285,28 +291,41 @@
         const lDB = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || { checkedItems: {}, history: [] };
         const aDB = JSON.parse(localStorage.getItem('lifeos_academic_db')) || { studyLogs: [] };
 
-        // --- 13. Smart Notification Engine ---
-        let notificationsEnabled = Notification.permission === "granted";
-        function enableNotifications() {
-            if (!("Notification" in window)) return alert("Browser does not support notifications.");
-            if (Notification.permission === "granted") return alert("Alerts already active.");
-            Notification.requestPermission().then(p => {
-                if(p === "granted") {
-                    notificationsEnabled = true;
-                    new Notification("Life OS Active", { body: "Smart alert engine is running." });
-                }
-            });
+        // --- In-App Guaranteed Notification System ---
+        function showInAppNotification(title, text) {
+            const popup = document.getElementById('in-app-notification');
+            document.getElementById('in-app-heading').innerText = title;
+            document.getElementById('in-app-text').innerText = text;
+            
+            popup.classList.add('show');
+            
+            // Auto hide after 6 seconds
+            setTimeout(() => {
+                popup.classList.remove('show');
+            }, 6000);
         }
 
         function triggerSmartPush(id, title, body) {
-            if(!notificationsEnabled) return;
             const lastSent = sessionStorage.getItem(`notify_${id}`);
             const timeNow = new Date().getTime();
-            // Prevent spam: only send same notification once per 4 hours
+            
+            // Prevent spam: only send same notification once per 4 hours (14,400,000 ms)
             if(!lastSent || (timeNow - parseInt(lastSent)) > 14400000) {
-                new Notification(title, { body });
+                
+                // 1. Guaranteed In-App UI Notification
+                showInAppNotification(title, body);
+
+                // 2. Attempt Native OS Notification
+                if ("Notification" in window && Notification.permission === "granted") {
+                    new Notification(title, { body: body, icon: 'https://cdn-icons-png.flaticon.com/512/564/564276.png' });
+                }
+
                 sessionStorage.setItem(`notify_${id}`, timeNow.toString());
             }
+        }
+
+        function testNotification() {
+            triggerSmartPush("test", "Test Notification", "The notification engine is working perfectly.");
         }
 
         // --- Header & Hero ---
@@ -351,10 +370,19 @@
             if(fNut && fNut.pro >= 80) fScore += 10;
             score += fScore;
 
-            // Finance (25): Under daily budget allowance
+            // Finance (25): Strictly calculated Remaining Budget
             const currentMonth = now.getMonth();
-            const monthlyExps = pDB.expenses.filter(e => new Date(e.date).getMonth() === currentMonth);
+            const currentYear = now.getFullYear();
+            
+            // Only count expenses matching this exact year and month
+            const monthlyExps = pDB.expenses.filter(e => {
+                const dateParts = e.date.split('-'); // e.g. "2026-08-07"
+                const expYear = parseInt(dateParts[0]);
+                const expMonth = parseInt(dateParts[1]) - 1; // 0-indexed
+                return expYear === currentYear && expMonth === currentMonth;
+            });
             const spent = monthlyExps.reduce((s, e) => s + e.amount, 0);
+            
             const budgetPace = (pDB.budget / 30) * now.getDate();
             if(spent <= budgetPace) score += 25;
             else if(spent <= pDB.budget) score += 10;
@@ -399,95 +427,7 @@
             }
         }
 
-        // --- 6. Next Class Engine ---
-        const courseDetails = {
-            "EEE 3201": { name: "Power System I", teacher: "MMI", room: "208" },
-            "EEE 3202": { name: "Power System Protection Lab", teacher: "SKA, MMI", room: "14th Fl" },
-            "EEE 3203": { name: "DSP", teacher: "AKA", room: "208" },
-            "EEE 3204": { name: "DSP Lab", teacher: "MUA, AKA", room: "14th Fl" },
-            "EEE 3205": { name: "Material Science", teacher: "IA", room: "208" },
-            "EEE 3207": { name: "Optoelectronics", teacher: "SH", room: "208" },
-            "EEE 3209": { name: "Communication Theory", teacher: "ASMM", room: "208" },
-            "EEE 3212": { name: "Electrical Drafting Lab", teacher: "MSP", room: "208" },
-            "GED 3201": { name: "Financial Accounting", teacher: "MNI", room: "208" }
-        };
-        // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu. 
-        // Slots: 0=8:30(8.5), 1=10:00(10.0), 2=11:30(11.5), 3=13:30(13.5)
-        const routineMatrix = {
-            0: [{t:8.5, c:"EEE 3205"}, {t:10.0, c:"GED 3201"}, {t:11.5, c:"EEE 3207"}],
-            1: [{t:8.5, c:"EEE 3201"}, {t:10.0, c:"EEE 3212"}, {t:11.5, c:"EEE 3203"}, {t:13.5, c:"EEE 3204"}],
-            2: [{t:8.5, c:"EEE 3201"}, {t:10.0, c:"GED 3201"}, {t:11.5, c:"EEE 3212"}, {t:13.5, c:"EEE 3202"}],
-            3: [{t:8.5, c:"EEE 3205"}, {t:10.0, c:"EEE 3209"}, {t:11.5, c:"EEE 3203"}],
-            4: [{t:8.5, c:"EEE 3207"}, {t:10.0, c:"EEE 3209"}]
-        };
-
-        let nextClassTargetTime = 0;
-
-        function findNextClass() {
-            let searchDate = new Date(now);
-            let found = null;
-            let daysChecked = 0;
-
-            while(!found && daysChecked < 7) {
-                const dayIdx = searchDate.getDay();
-                const isToday = daysChecked === 0;
-                const currDecTime = now.getHours() + (now.getMinutes() / 60);
-
-                if(routineMatrix[dayIdx]) {
-                    for(let slot of routineMatrix[dayIdx]) {
-                        if(!isToday || slot.t > currDecTime) {
-                            found = { ...slot, dateObj: new Date(searchDate) };
-                            break;
-                        }
-                    }
-                }
-                if(found) break;
-                searchDate.setDate(searchDate.getDate() + 1);
-                daysChecked++;
-            }
-
-            if(found) {
-                const det = courseDetails[found.c];
-                document.getElementById('nc-name').innerText = det.name;
-                document.getElementById('nc-teacher').innerText = det.teacher;
-                document.getElementById('nc-room').innerText = `Room ${det.room}`;
-                
-                // Construct absolute target time
-                found.dateObj.setHours(Math.floor(found.t));
-                found.dateObj.setMinutes((found.t % 1) * 60);
-                found.dateObj.setSeconds(0);
-                nextClassTargetTime = found.dateObj.getTime();
-                
-                const dayName = found.dateObj.getDay() === now.getDay() ? "Today" : found.dateObj.toLocaleDateString('en-US',{weekday:'long'});
-                const timeStr = found.dateObj.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-                document.getElementById('nc-time-text').innerText = `${dayName} at ${timeStr}`;
-
-                // Push Notification Logic
-                const minutesUntil = (nextClassTargetTime - now.getTime()) / 60000;
-                if(minutesUntil > 0 && minutesUntil <= 60) {
-                    triggerSmartPush("class_1h", "Class Starting Soon", `${det.name} in Room ${det.room} starts in less than an hour.`);
-                }
-            } else {
-                document.getElementById('nc-name').innerText = "No Classes Found";
-            }
-        }
-
-        function updateClassCountdown() {
-            if(!nextClassTargetTime) return;
-            const diff = nextClassTargetTime - new Date().getTime();
-            if(diff > 0) {
-                const h = Math.floor(diff / (1000 * 60 * 60));
-                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((diff % (1000 * 60)) / 1000);
-                document.getElementById('nc-countdown').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-            } else {
-                document.getElementById('nc-countdown').innerText = "In Progress";
-                setTimeout(findNextClass, 60000); // Recalculate after 1 min
-            }
-        }
-        findNextClass(); setInterval(updateClassCountdown, 1000);
-
-        // --- 8 & 3. Smart Priorities & Alerts Engine ---
+        // --- Smart Priorities & Alerts Engine ---
         function runEngine() {
             let alerts = [];
 
@@ -513,8 +453,13 @@
             const fNut = fDB.nutrition.find(x => x.date === todayStr);
             const fGym = fDB.gym.find(x => x.date === todayStr);
             
-            const mExps = pDB.expenses.filter(e => new Date(e.date).getMonth() === now.getMonth());
-            const spent = mExps.reduce((s, e) => s + e.amount, 0);
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+            const monthlyExps = pDB.expenses.filter(e => {
+                const dateParts = e.date.split('-');
+                return parseInt(dateParts[0]) === currentYear && (parseInt(dateParts[1]) - 1) === currentMonth;
+            });
+            const spent = monthlyExps.reduce((s, e) => s + e.amount, 0);
 
             // Generate Alerts & Priorities based on severity
             if(!fNut || fNut.pro < 80) alerts.push({ p: 90, t: "Protein extremely low. Eat now.", c: 'pri-warning', push: true });
@@ -542,7 +487,7 @@
             if(alerts.length <= 3) alertCont.innerHTML = `<div style="font-size:0.85rem; color:var(--text-muted);">No secondary alerts.</div>`;
         }
 
-        // --- 5. Today Snapshots ---
+        // --- Today Snapshots ---
         function renderSnapshots() {
             // Academics
             const aToday = aDB.studyLogs.find(x => x.date === todayStr);
@@ -551,14 +496,21 @@
             document.getElementById('snap-study-bar').style.width = `${Math.min((aHrs/3)*100, 100)}%`;
 
             // Learning
-            let mlDone = 0; Object.keys(lDB.checkedItems).forEach(k => { if(lDB.checkedItems[k] && k.startsWith('ml_')) mlDone++; });
-            const mlPct = Math.min(Math.round((mlDone/100)*100), 100);
+            let mlDone = 0; let grDone = 0;
+            Object.keys(lDB.checkedItems).forEach(k => { 
+                if(lDB.checkedItems[k]) {
+                    if(k.startsWith('ml_')) mlDone++; 
+                    if(k.startsWith('gr_')) grDone++;
+                }
+            });
+            
+            const mlPct = Math.min(Math.round((mlDone/100)*100), 100); // ML approx 100 items
+            const grPct = Math.min(Math.round((grDone/50)*100), 100);  // Grammar approx 50 items
+            
             document.getElementById('snap-ml-pct').innerText = `${mlPct}%`;
-            document.getElementById('snap-ml-bar').style.width = `${mlPct}%`;
+            document.getElementById('snap-gr-pct').innerText = `${grPct}%`;
             document.getElementById('ns-ml').innerText = `${mlPct}%`;
-
-            let grDone = 0; Object.keys(lDB.checkedItems).forEach(k => { if(lDB.checkedItems[k] && k.startsWith('gr_')) grDone++; });
-            document.getElementById('ns-gr').innerText = `${Math.min(Math.round((grDone/50)*100), 100)}%`;
+            document.getElementById('ns-gr').innerText = `${grPct}%`;
 
             // Fitness
             const fNut = fDB.nutrition.find(x => x.date === todayStr);
@@ -566,9 +518,15 @@
             const fGym = fDB.gym.find(x => x.date === todayStr);
             document.getElementById('snap-gym').innerHTML = fGym ? (fGym.attended ? '<span class="badge badge-green">Done</span>' : '<span class="badge badge-red">Missed</span>') : '<span class="badge" style="background:var(--border);">Pending</span>';
 
-            // Finance
-            const mExps = pDB.expenses.filter(e => new Date(e.date).getMonth() === now.getMonth());
-            const spent = mExps.reduce((s, e) => s + e.amount, 0);
+            // Strict Finance Logic applied to Overview
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+            const monthlyExps = pDB.expenses.filter(e => {
+                const dateParts = e.date.split('-');
+                return parseInt(dateParts[0]) === currentYear && (parseInt(dateParts[1]) - 1) === currentMonth;
+            });
+            const spent = monthlyExps.reduce((s, e) => s + e.amount, 0);
+            
             document.getElementById('snap-budget').innerHTML = `${(pDB.budget - spent).toLocaleString()}`;
             document.getElementById('snap-bdg-bar').style.width = `${Math.min((spent/pDB.budget)*100, 100)}%`;
 
@@ -576,7 +534,7 @@
             document.getElementById('ns-sav').innerText = `${sav.toLocaleString()}`;
         }
 
-        // --- 10 & 11. Summaries ---
+        // --- Summaries ---
         function renderSummaries() {
             // Weekly
             const wStartObj = new Date(now); wStartObj.setDate(now.getDate() - 7);
@@ -605,7 +563,7 @@
             document.getElementById('sum-m-score').innerText = document.getElementById('life-score-val').innerText + "%";
         }
 
-        // --- 9. Tasks ---
+        // --- Tasks ---
         let tasks = JSON.parse(localStorage.getItem('lifeos_tasks_v2')) || [];
         function renderTasks() {
             const list = document.getElementById('task-list');
