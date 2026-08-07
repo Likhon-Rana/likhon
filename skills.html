@@ -46,8 +46,9 @@
         .accordion-body { padding: 15px; border-top: 1px solid var(--border); display: none; background: rgba(255,255,255,0.4); }
         .accordion-item.active .accordion-body { display: block; }
 
-        /* Checkbox List */
-        .check-group-title { font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin: 10px 0 5px 0; letter-spacing: 0.5px; }
+        /* Checkbox List & Collapsible Subcategories */
+        .check-group-title { font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin: 10px 0 5px 0; letter-spacing: 0.5px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 8px; border-radius: 6px; transition: 0.2s; background: rgba(15, 118, 110, 0.03); border: 1px solid rgba(15, 118, 110, 0.1); }
+        .check-group-title:hover { background: rgba(15, 118, 110, 0.08); }
         .check-item { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .check-item:hover { background: rgba(15, 118, 110, 0.05); }
         .check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
@@ -63,6 +64,10 @@
         .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         .data-table th, .data-table td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); }
         .data-table th { position: sticky; top: 0; background: var(--surface-solid); font-weight: 800; color: var(--text-muted); z-index: 5; }
+        
+        .form-control { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-solid); color: var(--text-main); font-weight: 600; font-size: 0.9rem; outline: none; transition: 0.2s; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); }
+        .inline-input { width: 80px; padding: 4px 8px; font-size: 1rem; text-align: center; border-radius: 6px; border: 1px solid var(--primary-light); background: rgba(15, 118, 110, 0.05); font-weight: 800; color: var(--primary); }
 
         /* Stat Cards & Insights */
         .stat-box { background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
@@ -71,6 +76,8 @@
 
         .warning-box { padding: 15px; background: rgba(239, 68, 68, 0.08); border-left: 4px solid var(--danger); border-radius: 0 10px 10px 0; font-weight: 700; font-size: 0.9rem; color: #b91c1c; margin-top: 10px; }
         .success-box { padding: 15px; background: rgba(15, 118, 110, 0.08); border-left: 4px solid var(--primary); border-radius: 0 10px 10px 0; font-weight: 700; font-size: 0.9rem; color: var(--primary); margin-top: 10px; }
+        .insight-box { padding: 15px; background: linear-gradient(to right, rgba(15, 118, 110, 0.05), transparent); border-left: 4px solid var(--primary); border-radius: 0 10px 10px 0; font-weight: 600; font-size: 0.95rem; line-height: 1.5; margin-bottom: 10px; }
+        .insight-box.warning { border-left-color: var(--danger); background: linear-gradient(to right, rgba(239, 68, 68, 0.05), transparent); }
 
         /* Action Buttons */
         .action-btns { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
@@ -134,8 +141,6 @@
                 <!-- SECTION 8: Quick Links -->
                 <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
                     <a href="https://www.coursera.org/learn/machine-learning/home/module/1" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> Open Course</a>
-                    <a href="#" class="btn btn-outline btn-sm"><i class="fas fa-book"></i> Notes</a>
-                    <a href="#" class="btn btn-outline btn-sm"><i class="fab fa-github"></i> GitHub Repo</a>
                 </div>
             </div>
 
@@ -162,8 +167,6 @@
                 <!-- SECTION 8: Quick Links -->
                 <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
                     <a href="https://app.10minuteschool.com/skills/courses/learn/english-grammar-course/overview" target="_blank" class="btn btn-primary btn-sm" style="background: #3B82F6;"><i class="fas fa-external-link-alt"></i> Open Course</a>
-                    <a href="#" class="btn btn-outline btn-sm"><i class="fas fa-book"></i> Notes</a>
-                    <a href="#" class="btn btn-outline btn-sm"><i class="fas fa-certificate"></i> Certificate</a>
                 </div>
             </div>
 
@@ -179,7 +182,7 @@
             <div class="glass-card col-6">
                 <div class="sec-title">
                     <span><i class="fas fa-brain"></i> Machine Learning Syllabus</span>
-                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);" id="ml-weeks-status">0 / 0 Weeks</span>
+                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);" id="ml-weeks-status">0 / 0 Items</span>
                 </div>
                 <div id="ml-accordion-container">
                     <!-- Dynamic ML Accordions -->
@@ -190,7 +193,7 @@
             <div class="glass-card col-6">
                 <div class="sec-title">
                     <span><i class="fas fa-spell-check"></i> Grammar Course Syllabus</span>
-                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);" id="gr-chaps-status">0 / 0 Chapters</span>
+                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);" id="gr-chaps-status">0 / 0 Items</span>
                 </div>
                 <div id="gr-accordion-container">
                     <!-- Dynamic Grammar Accordions -->
@@ -276,39 +279,106 @@
     <script>
         // --- 1. SYLLABUS DATA STRUCTURES ---
 
-        // Machine Learning Coursera Structure
+        // Exact Machine Learning Coursera Structure provided
         const ML_SYLLABUS = [
             {
-                week: 1, title: "Week 1: Introduction to Machine Learning & Regression",
-                videos: ["Welcome to Machine Learning", "Applications of ML", "Supervised Learning Part 1", "Supervised Learning Part 2", "Unsupervised Learning", "Linear Regression Model", "Cost Function Intuition", "Cost Function Mathematical Formula"],
-                labs: ["Python and NumPy Overview", "Cost Function Visualization"],
-                readings: ["Course Syllabus", "Supervised vs Unsupervised Summary"],
-                quizzes: ["Practice Quiz: Supervised vs Unsupervised", "Practice Quiz: Linear Regression Model"],
-                assignments: ["Programming Assignment: Linear Regression"]
+                week: 1, title: "Week 1: Introduction to Machine Learning",
+                videos: [
+                    "Linear regression model part 1",
+                    "Linear regression model part 2",
+                    "Cost function formula",
+                    "Cost function intuition",
+                    "Visualizing the cost function",
+                    "Visualization examples",
+                    "Gradient descent",
+                    "Implementing gradient descent",
+                    "Gradient descent intuition",
+                    "Learning rate",
+                    "Gradient descent for linear regression",
+                    "Running gradient descent"
+                ],
+                labs: [
+                    "Optional lab: Model representation",
+                    "Optional lab: Cost function",
+                    "Optional lab: Gradient descent"
+                ],
+                readings: [],
+                quizzes: [
+                    "Practice quiz: Regression",
+                    "Practice quiz: Train the model with gradient descent"
+                ],
+                assignments: []
             },
             {
-                week: 2, title: "Week 2: Multiple Linear Regression & Gradient Descent",
-                videos: ["Multiple Features", "Vectorization Part 1", "Vectorization Part 2", "Gradient Descent for Multiple Linear Regression", "Feature Scaling", "Checking Gradient Descent Convergence", "Learning Rate"],
-                labs: ["Multiple Linear Regression Lab", "Feature Scaling & Gradient Descent Lab"],
-                readings: ["Vectorization in Python Guide"],
-                quizzes: ["Practice Quiz: Multiple Features & Vectorization", "Practice Quiz: Gradient Descent"],
-                assignments: ["Programming Assignment: Multiple Variable Gradient Descent"]
+                week: 2, title: "Week 2: Regression with multiple input variables",
+                videos: [
+                    "Multiple features",
+                    "Vectorization part 1",
+                    "Vectorization part 2",
+                    "Gradient descent for multiple linear regression",
+                    "Feature scaling part 1",
+                    "Feature scaling part 2",
+                    "Checking gradient descent for convergence",
+                    "Choosing the learning rate",
+                    "Feature engineering",
+                    "Polynomial regression"
+                ],
+                labs: [
+                    "Optional lab: Python, NumPy and vectorization",
+                    "Optional Lab: Multiple linear regression",
+                    "Optional Lab: Feature scaling and learning rate",
+                    "Optional lab: Feature engineering and Polynomial regression",
+                    "Optional lab: Linear regression with scikit-learn"
+                ],
+                readings: [],
+                quizzes: [
+                    "Practice quiz: Multiple linear regression",
+                    "Practice quiz: Gradient descent in practice"
+                ],
+                assignments: [
+                    "Week 2 practice lab: Linear regression"
+                ]
             },
             {
-                week: 3, title: "Week 3: Logistic Regression & Classification",
-                videos: ["Classification Problem Overview", "Logistic Regression Hypothesis", "Decision Boundary", "Cost Function for Logistic Regression", "Simplified Cost Function", "Gradient Descent for Logistic Regression", "The Problem of Overfitting", "Addressing Overfitting with Regularization"],
-                labs: ["Logistic Regression & Decision Boundary Lab", "Regularized Logistic Regression Lab"],
-                readings: ["Regularization Math Formulations"],
-                quizzes: ["Practice Quiz: Logistic Regression", "Practice Quiz: Overfitting & Regularization"],
-                assignments: ["Programming Assignment: Logistic Regression & Regularization"]
-            },
-            {
-                week: 4, title: "Week 4: Advanced Learning Algorithms & Neural Networks",
-                videos: ["Neurons and Brain Analogies", "Neural Network Model", "Forward Propagation", "TensorFlow Implementation", "Specifying a Neural Network in Code"],
-                labs: ["Neural Networks Forward Prop Lab", "Coffee Roasting Neural Network Lab"],
-                readings: ["TensorFlow Quickstart Guide"],
-                quizzes: ["Practice Quiz: Neural Network Concepts"],
-                assignments: ["Programming Assignment: Neural Network Multiclass Classification"]
+                week: 3, title: "Week 3: Classification",
+                videos: [
+                    "Motivations",
+                    "Logistic regression",
+                    "Decision boundary",
+                    "Cost function for logistic regression",
+                    "Simplified Cost Function for Logistic Regression",
+                    "Gradient Descent Implementation",
+                    "The problem of overfitting",
+                    "Addressing overfitting",
+                    "Cost function with regularization",
+                    "Regularized linear regression",
+                    "Regularized logistic regression",
+                    "Andrew Ng and Fei-Fei Li on Human-Centered AI"
+                ],
+                labs: [
+                    "Optional lab: Classification",
+                    "Optional lab: Sigmoid function and logistic regression",
+                    "Optional lab: Decision boundary",
+                    "Optional lab: Logistic loss",
+                    "Optional lab: Cost function for logistic regression",
+                    "Optional lab: Gradient descent for logistic regression",
+                    "Optional lab: Logistic regression with scikit-learn",
+                    "Optional lab: Overfitting",
+                    "Optional lab: Regularization"
+                ],
+                readings: [
+                    "[IMPORTANT] Reminder about end of access to Lab Notebooks",
+                    "Acknowledgments"
+                ],
+                quizzes: [
+                    "Practice quiz: Classification with logistic regression",
+                    "Practice quiz: Cost function for logistic regression",
+                    "Practice quiz: Gradient descent for logistic regression",
+                    "Practice quiz: The problem of overfitting"
+                ],
+                assignments: [
+                    "Week 3 practice lab: logistic regression"
+                ]
             }
         ];
 
@@ -340,7 +410,7 @@
         // --- 2. LOCAL STORAGE STATE ---
         let lmsData = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || {
             checkedItems: {},
-            history: [] // { date, course, section, item, action }
+            history: [] // { date, rawDate, course, section, item }
         };
 
         let charts = {};
@@ -356,6 +426,19 @@
             localStorage.setItem('lifeos_lms_v1', JSON.stringify(lmsData));
             if(msg) showToast(msg);
             updateDashboard();
+        }
+
+        // Toggle subcategory sections
+        function toggleSubCategory(el) {
+            const list = el.nextElementSibling;
+            const icon = el.querySelector('i');
+            if (list.style.display === 'none') {
+                list.style.display = 'block';
+                icon.className = 'fas fa-chevron-down';
+            } else {
+                list.style.display = 'none';
+                icon.className = 'fas fa-chevron-right';
+            }
         }
 
         // --- 3. RENDERING ACCORDIONS & CHECKBOXES ---
@@ -382,7 +465,12 @@
                 // Categories
                 const renderCategory = (catTitle, items, catPrefix) => {
                     if(!items || items.length === 0) return '';
-                    let subHtml = `<div class="check-group-title">${catTitle}</div>`;
+                    let subHtml = `
+                        <div class="check-group-title" onclick="toggleSubCategory(this)">
+                            <span>${catTitle}</span> <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="sub-category-list" style="display:block; padding-left: 5px; margin-bottom: 10px;">
+                    `;
                     items.forEach((itemTitle, iIdx) => {
                         const itemId = `ml_w${weekData.week}_${catPrefix}_${iIdx}`;
                         const isChecked = !!lmsData.checkedItems[itemId];
@@ -396,6 +484,7 @@
                             </label>
                         `;
                     });
+                    subHtml += `</div>`;
                     return subHtml;
                 };
 
@@ -422,7 +511,7 @@
             document.getElementById('ml-rem-count').innerText = totalMLItems - checkedMLItems;
             document.getElementById('ml-weeks-status').innerText = `${checkedMLItems} / ${totalMLItems} Items Done`;
 
-            return { total: totalMLItems, completed: checkedMLItems };
+            return { total: totalMLItems, completed: checkedMLItems, deadline: "2026-12-06" };
         }
 
         function renderGrammarSyllabus() {
@@ -446,7 +535,12 @@
 
                 const renderCat = (catTitle, items, prefix) => {
                     if(!items || items.length === 0) return '';
-                    let subHtml = `<div class="check-group-title">${catTitle}</div>`;
+                    let subHtml = `
+                        <div class="check-group-title" onclick="toggleSubCategory(this)">
+                            <span>${catTitle}</span> <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="sub-category-list" style="display:block; padding-left: 5px; margin-bottom: 10px;">
+                    `;
                     items.forEach((title, iIdx) => {
                         const itemId = `gr_c${cIdx}_${prefix}_${iIdx}`;
                         const isChecked = !!lmsData.checkedItems[itemId];
@@ -460,6 +554,7 @@
                             </label>
                         `;
                     });
+                    subHtml += `</div>`;
                     return subHtml;
                 };
 
@@ -485,7 +580,7 @@
             document.getElementById('gr-rem-count').innerText = totalGrItems - checkedGrItems;
             document.getElementById('gr-chaps-status').innerText = `${checkedGrItems} / ${totalGrItems} Items Done`;
 
-            return { total: totalGrItems, completed: checkedGrItems };
+            return { total: totalGrItems, completed: checkedGrItems, deadline: "2026-12-06" };
         }
 
         function toggleAccordion(id) {
@@ -537,9 +632,9 @@
                 tbody.innerHTML += `
                     <tr>
                         <td style="font-weight:700;">${l.date}</td>
-                        <td><span class="badge ${l.course === 'ML' ? 'badge-primary' : 'badge-accent'}">${l.course}</span></td>
+                        <td><span class="badge ${l.course === 'ML' ? 'badge-primary' : 'badge-accent'}">${l.course === 'ML' ? 'Machine Learning' : 'English Grammar'}</span></td>
                         <td style="font-weight:700;">${l.section}</td>
-                        <td style="color:var(--text-main); font-weight:600;">${l.item} Completed</td>
+                        <td style="color:var(--text-main); font-weight:600;">${l.item}</td>
                     </tr>
                 `;
             });
@@ -598,10 +693,10 @@
                 alertsContainer.innerHTML += `
                     <div class="warning-box">
                         ⚠️ <strong>Machine Learning Pace Warning:</strong> At your current pace, you will finish after the semester deadline (${semesterEnd.toLocaleDateString()}).
-                        <br>👉 To finish on time, complete at least <strong>${reqMLPerWeek} items per week</strong> (${(reqMLPerWeek/4).toFixed(1)} Weeks of content).
+                        <br>👉 To finish on time, complete at least <strong>${reqMLPerWeek} items per week</strong>.
                     </div>
                 `;
-            } else if(mlRem === 0) {
+            } else if(mlRem === 0 && mlStats.total > 0) {
                 alertsContainer.innerHTML += `<div class="success-box">✅ Machine Learning Specialization is 100% completed!</div>`;
             }
 
@@ -609,10 +704,10 @@
                 alertsContainer.innerHTML += `
                     <div class="warning-box" style="border-left-color: #3B82F6; color: #1e40af; background: rgba(59, 130, 246, 0.08);">
                         ⚠️ <strong>English Grammar Pace Warning:</strong> You need to increase your pace to finish before final exams.
-                        <br>👉 To finish on time, complete at least <strong>${reqGrPerWeek} items per week</strong> (~${Math.ceil(reqGrPerWeek/3)} Grammar Chapters per week).
+                        <br>👉 To finish on time, complete at least <strong>${reqGrPerWeek} items per week</strong>.
                     </div>
                 `;
-            } else if(grRem === 0) {
+            } else if(grRem === 0 && grStats.total > 0) {
                 alertsContainer.innerHTML += `<div class="success-box" style="border-left-color: #3B82F6; color: #1e40af;">✅ English Grammar Course is 100% completed!</div>`;
             }
         }
@@ -736,7 +831,7 @@
                         const imported = JSON.parse(e.target.result);
                         if(imported.checkedItems && imported.history) {
                             lmsData = imported;
-                            saveLMSState("LMS Data imported successfully!");
+                            saveLMSState("Learning Data imported successfully!");
                         }
                     } catch(err) { alert("Invalid LMS backup file."); }
                 };
@@ -758,7 +853,7 @@
         }
 
         function factoryReset() {
-            if(confirm("DANGER: This will delete ALL LMS history and reset ALL checkboxes forever. Continue?")) {
+            if(confirm("DANGER: This will delete ALL learning history and reset progress to 0 forever. Continue?")) {
                 localStorage.removeItem('lifeos_lms_v1');
                 location.reload();
             }
@@ -768,6 +863,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             updateDashboard();
         });
+
     </script>
 </body>
 </html>
