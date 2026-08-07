@@ -64,6 +64,12 @@
         .insight-list { display: flex; flex-direction: column; gap: 10px; }
         .insight-item { padding: 15px; background: linear-gradient(to right, rgba(15, 118, 110, 0.05), transparent); border-left: 4px solid var(--primary); border-radius: 0 10px 10px 0; font-weight: 600; font-size: 0.95rem; line-height: 1.5; }
 
+        /* Monthly Review Styles */
+        .review-card { background: var(--surface-solid); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .review-header { display: flex; justify-content: space-between; font-weight: 900; color: var(--primary); font-size: 1.1rem; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
+        .review-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 0.85rem; font-weight: 700; }
+        .review-text { font-size: 0.9rem; color: var(--text-main); line-height: 1.6; font-weight: 600; background: rgba(15, 118, 110, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--primary); }
+
         /* Action Buttons */
         .action-btns { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
         .btn-sm { padding: 8px 12px; font-size: 0.85rem; }
@@ -99,7 +105,7 @@
         <header class="glass">
             <div>
                 <h1 style="color: var(--primary); font-weight: 900;">Personal & Finance</h1>
-                <p style="color: var(--text-muted); font-weight: 700;">Budget, Savings & Mood Tracking</p>
+                <p style="color: var(--text-muted); font-weight: 700;">Budget, Savings, Mood Tracking & Analysis</p>
             </div>
             <button id="theme-toggle" class="btn btn-outline" style="width: auto;"><i class="fas fa-moon"></i></button>
         </header>
@@ -189,7 +195,7 @@
                 </div>
             </div>
 
-            <!-- SECTION 12: AI Insights (Untouched) -->
+            <!-- AI INSIGHTS -->
             <div class="glass-card col-12">
                 <div class="sec-title"><i class="fas fa-robot"></i> Data-Driven Insights</div>
                 <div class="insight-list" id="insights-container">
@@ -238,6 +244,16 @@
                 <div class="chart-container" style="height: 150px;"><canvas id="chart-mood"></canvas></div>
             </div>
 
+            <!-- MONTHLY PERFORMANCE REVIEW (NEW) -->
+            <div class="glass-card col-12">
+                <div class="sec-title"><i class="fas fa-file-invoice"></i> Past Monthly Financial Reviews</div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 15px;">Automated AI reviews generated at the end of every month based on your financial and personal data.</p>
+                
+                <div id="monthly-reviews-container">
+                    <!-- Reviews JS Populated -->
+                </div>
+            </div>
+
             <!-- SECTION 13: Backup & Data Management -->
             <div class="glass-card col-12">
                 <div class="sec-title"><i class="fas fa-database"></i> Data Management</div>
@@ -247,10 +263,10 @@
                     <button class="btn btn-outline btn-sm" onclick="document.getElementById('import-file').click()"><i class="fas fa-upload"></i> Import Data</button>
                     <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
                     
-                    <!-- Individual Reset Options -->
                     <button class="btn btn-outline btn-sm" style="color: var(--danger); border-color: var(--danger);" onclick="resetMetric('expenses')"><i class="fas fa-wallet"></i> Reset Expenses</button>
                     <button class="btn btn-outline btn-sm" style="color: var(--danger); border-color: var(--danger);" onclick="resetMetric('savings')"><i class="fas fa-piggy-bank"></i> Reset Savings</button>
                     <button class="btn btn-outline btn-sm" style="color: var(--danger); border-color: var(--danger);" onclick="resetMetric('moodLogs')"><i class="fas fa-face-smile"></i> Reset Moods</button>
+                    <button class="btn btn-outline btn-sm" style="color: var(--danger); border-color: var(--danger);" onclick="resetMetric('reviews')"><i class="fas fa-eraser"></i> Clear Reviews</button>
                     
                     <button class="btn btn-danger btn-sm" onclick="factoryReset()"><i class="fas fa-trash-alt"></i> Reset All Data</button>
                 </div>
@@ -264,24 +280,26 @@
     <script src="js/app.js"></script>
     <script>
         // Set Default Dates
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('exp-date').value = today;
-        document.getElementById('sav-date').value = today;
-        document.getElementById('mood-date').value = today;
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('exp-date').value = todayStr;
+        document.getElementById('sav-date').value = todayStr;
+        document.getElementById('mood-date').value = todayStr;
 
         // 1. Data Structure Setup
-        // Included 20,000 BDT initial savings as requested.
         let DB = JSON.parse(localStorage.getItem('lifeos_finance_v3')) || {
             budget: 8000,
             expenses: [],
-            savings: [{ id: 1, date: today, amount: 20000 }], 
-            moodLogs: []
+            savings: [{ id: 1, date: todayStr, amount: 20000 }], 
+            moodLogs: [],
+            reviews: []
         };
+
+        // Ensure reviews array exists if updating from older version
+        if(!DB.reviews) DB.reviews = [];
 
         let charts = {};
         let categoryChartInst = null;
 
-        // Helper: Show Toast
         function showToast(msg) {
             const toast = document.getElementById("toast");
             toast.innerText = msg;
@@ -297,6 +315,8 @@
 
         // 2. Dashboard Logic
         function updateDashboard() {
+            generateMonthlyReviews(); // Process automated monthly reviews first
+
             const now = new Date();
             const currentMonth = now.getMonth();
             const currentYear = now.getFullYear();
@@ -349,9 +369,121 @@
             renderCategoryChart(monthlyExps);
             generateInsights(monthlyExps, dailyAvg, todayDate);
             updateTrendCharts();
+            renderReviews();
         }
 
-        // 3. Data Entry Forms
+        // 3. Automated Monthly Review Generator
+        function generateMonthlyReviews() {
+            const currentMonthStr = todayStr.substring(0, 7); 
+            
+            let allMonths = new Set();
+            [DB.expenses, DB.savings, DB.moodLogs].forEach(arr => {
+                arr.forEach(item => { allMonths.add(item.date.substring(0, 7)); });
+            });
+
+            let newReviewAdded = false;
+
+            allMonths.forEach(monthStr => {
+                if(monthStr === currentMonthStr) return; // Skip current ongoing month
+                if(DB.reviews.find(r => r.month === monthStr)) return; // Skip if already reviewed
+
+                const mExp = DB.expenses.filter(x => x.date.startsWith(monthStr));
+                const mSav = DB.savings.filter(x => x.date.startsWith(monthStr));
+                const mMood = DB.moodLogs.filter(x => x.date.startsWith(monthStr));
+
+                if(mExp.length === 0 && mSav.length === 0 && mMood.length === 0) return;
+
+                const totalSpent = mExp.reduce((s, x) => s + x.amount, 0);
+                const totalSaved = mSav.reduce((s, x) => s + x.amount, 0);
+                const avgMood = mMood.length ? (mMood.reduce((s, x) => s + x.val, 0) / mMood.length) : 0;
+
+                // Find Top Category
+                const catTotals = {};
+                mExp.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + e.amount; });
+                const topCat = Object.keys(catTotals).length > 0 
+                    ? Object.keys(catTotals).reduce((a, b) => catTotals[a] > catTotals[b] ? a : b) 
+                    : "None";
+
+                // AI Feedback Logic
+                let text = "";
+                
+                // Budget Feedback
+                if(totalSpent <= DB.budget && totalSpent > 0) {
+                    text += `Excellent financial discipline! You stayed under your budget by ${(DB.budget - totalSpent)} BDT. `;
+                } else if(totalSpent > DB.budget) {
+                    text += `You exceeded your budget of ${DB.budget} BDT by ${(totalSpent - DB.budget)} BDT. Try to monitor your expenses closer next month. `;
+                } else {
+                    text += `No expenses were logged this month. `;
+                }
+
+                if(topCat !== "None") text += `Your highest spending category was ${topCat}. `;
+
+                // Savings Feedback
+                if(totalSaved > 0) {
+                    text += `Great job adding ${totalSaved.toLocaleString()} BDT to your savings goal! `;
+                } else {
+                    text += `You didn't add any funds to your savings this month. Let's try to save a bit next month. `;
+                }
+
+                // Mood Feedback
+                if(avgMood >= 4) text += `Overall, your mood was highly positive throughout the month!`;
+                else if(avgMood >= 3) text += `Your mood was fairly stable and neutral this month.`;
+                else if(avgMood > 0) text += `It looks like you had a tough time mentally this month. Remember to prioritize self-care.`;
+
+                const dateObj = new Date(`${monthStr}-01`);
+                const monthName = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+                DB.reviews.unshift({
+                    id: Date.now() + Math.random(),
+                    month: monthStr,
+                    monthName: monthName,
+                    stats: { spent: totalSpent, saved: totalSaved, mood: avgMood.toFixed(1), topCat: topCat },
+                    feedback: text
+                });
+                newReviewAdded = true;
+            });
+
+            if(newReviewAdded) {
+                localStorage.setItem('lifeos_finance_v3', JSON.stringify(DB));
+            }
+        }
+
+        function renderReviews() {
+            const container = document.getElementById('monthly-reviews-container');
+            container.innerHTML = '';
+            
+            if(!DB.reviews || DB.reviews.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-weight:700; padding: 20px;">No monthly reviews generated yet. (Reviews are automatically generated at the end of each month).</div>`;
+                return;
+            }
+
+            DB.reviews.forEach(r => {
+                let moodEmoji = "😐";
+                if(r.stats.mood >= 4.5) moodEmoji = "😀";
+                else if(r.stats.mood >= 3.5) moodEmoji = "🙂";
+                else if(r.stats.mood < 2.5 && r.stats.mood > 0) moodEmoji = "😔";
+
+                container.innerHTML += `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span>${r.monthName} Performance</span>
+                            <i class="fas fa-file-invoice-dollar" style="color:var(--accent);"></i>
+                        </div>
+                        <div class="review-stats">
+                            <div>Total Spent: <br><span style="color:var(--danger); font-size:1.1rem;">${r.stats.spent}</span></div>
+                            <div>Total Saved: <br><span style="color:#10B981; font-size:1.1rem;">${r.stats.saved}</span></div>
+                            <div>Top Category: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.topCat}</span></div>
+                            <div>Avg Mood: <br><span style="font-size:1.1rem;">${r.stats.mood > 0 ? moodEmoji : "N/A"}</span></div>
+                        </div>
+                        <div class="review-text">
+                            <strong>AI Analysis:</strong> ${r.feedback}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 4. Data Entry Forms
         function addExpense(e) {
             e.preventDefault();
             const expense = {
@@ -363,7 +495,7 @@
             };
             DB.expenses.push(expense);
             document.getElementById('expense-form').reset();
-            document.getElementById('exp-date').value = today;
+            document.getElementById('exp-date').value = todayStr;
             saveDB("Expense logged!");
         }
 
@@ -390,7 +522,7 @@
             saveDB(`Mood logged: ${emoji}`);
         }
 
-        // 4. Tables and Charts
+        // 5. Tables and Charts
         function renderTable() {
             const tbody = document.getElementById('expense-tbody');
             const searchQ = document.getElementById('exp-search').value.toLowerCase();
@@ -456,7 +588,6 @@
             const ctx = document.getElementById(ctxId).getContext('2d');
             if(charts[ctxId]) charts[ctxId].destroy();
             
-            // Sort data chronologically
             let sortedData = [...dataArr].sort((a,b) => new Date(a.date) - new Date(b.date));
             const last30 = sortedData.slice(-30);
             if(last30.length === 0) return;
@@ -472,7 +603,7 @@
             charts[ctxId] = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: last30.map(x => x.date.substring(5)), // MM-DD
+                    labels: last30.map(x => x.date.substring(5)), 
                     datasets: [{
                         label: label,
                         data: plotData,
@@ -501,7 +632,7 @@
             renderLineChart('chart-mood', 'Mood Score', DB.moodLogs, 'val', '#F59E0B');
         }
 
-        // 5. Automated AI Insights (Untouched Logic Structure)
+        // 6. Automated AI Insights (Rolling)
         function generateInsights(monthlyExps, dailyAvg, todayDate) {
             const container = document.getElementById('insights-container');
             container.innerHTML = '';
@@ -537,7 +668,7 @@
             });
         }
 
-        // 6. Data Management
+        // 7. Data Management
         function exportData() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(DB));
             const anchor = document.createElement('a');
@@ -557,6 +688,7 @@
                         const imported = JSON.parse(e.target.result);
                         if(imported.budget) {
                             DB = imported;
+                            if(!DB.reviews) DB.reviews = [];
                             saveDB("Data imported successfully!");
                         }
                     } catch(err) { alert("Invalid backup file."); }
@@ -568,7 +700,6 @@
         function resetMetric(key) {
             if(confirm(`Are you sure you want to clear your ${key} history?`)) {
                 DB[key] = [];
-                // if savings are reset, initialize with 0 to prevent crash, though logic handles empty array.
                 saveDB(`${key} history cleared.`);
             }
         }
