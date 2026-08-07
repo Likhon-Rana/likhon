@@ -36,7 +36,7 @@
         .form-group { margin-bottom: 12px; }
         .form-control { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-solid); color: var(--text-main); font-weight: 600; font-size: 0.9rem; outline: none; transition: 0.2s; }
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); }
-        .form-row { display: flex; gap: 10px; }
+        .form-row { display: flex; gap: 8px; }
         
         .btn-success { background: #10B981; color: white; border: none; }
         .btn-danger { background: var(--danger); color: white; border: none; }
@@ -104,8 +104,8 @@
                 <form onsubmit="logNutrition(event)">
                     <input type="date" id="nut-date" class="form-control form-group" required>
                     <div class="form-row form-group">
-                        <input type="number" id="nut-cal" class="form-control" placeholder="Calories (kcal)" required>
-                        <input type="number" id="nut-pro" class="form-control" placeholder="Protein (g)" required>
+                        <input type="number" id="nut-cal" class="form-control" placeholder="Calories (kcal)" required style="flex: 1;">
+                        <input type="number" id="nut-pro" class="form-control" placeholder="Protein (g)" required style="flex: 1;">
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Save Nutrition</button>
                 </form>
@@ -113,16 +113,16 @@
 
             <div class="glass-card col-4">
                 <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-bed"></i> Sleep & <i class="fas fa-weight-scale"></i> Weight</div>
-                <form onsubmit="logSleep(event)" class="form-row form-group" style="margin-bottom: 15px;">
-                    <input type="date" id="slp-date" class="form-control" required style="flex: 1;">
-                    <input type="number" step="0.1" id="slp-duration" class="form-control" placeholder="Hours slept" required style="flex: 1;">
-                    <button type="submit" class="btn btn-outline" style="padding: 6px 12px;">Save</button>
+                <form onsubmit="logSleep(event)" class="form-row" style="margin-bottom: 15px;">
+                    <input type="date" id="slp-date" class="form-control" required style="flex: 1; padding: 8px;">
+                    <input type="number" step="0.1" id="slp-duration" class="form-control" placeholder="Hours" required style="flex: 1; padding: 8px;">
+                    <button type="submit" class="btn btn-outline" style="flex: 0 0 auto; width: auto; padding: 8px 15px;">Save</button>
                 </form>
                 
                 <form onsubmit="logWeight(event)" class="form-row">
-                    <input type="date" id="wt-date" class="form-control" required style="width: 50%;">
-                    <input type="number" step="0.1" id="wt-val" class="form-control" placeholder="Weight (kg)" required>
-                    <button type="submit" class="btn btn-primary" style="padding: 6px 12px;"><i class="fas fa-save"></i> Save</button>
+                    <input type="date" id="wt-date" class="form-control" required style="flex: 1; padding: 8px;">
+                    <input type="number" step="0.1" id="wt-val" class="form-control" placeholder="Weight (kg)" required style="flex: 1; padding: 8px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 0 0 auto; width: auto; padding: 8px 15px;"><i class="fas fa-save"></i> Save</button>
                 </form>
             </div>
 
@@ -208,7 +208,6 @@
             document.getElementById(id).value = todayStr;
         });
 
-        // Restored original key to retrieve lost data
         let fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || {
             weight: [], gym: [], nutrition: [], sleep: [], reviews: []
         };
