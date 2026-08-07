@@ -6,6 +6,7 @@
     <title>EEE Academic Dashboard - University of Dhaka</title>
     <style>
         :root {
+            /* DU Green Theme */
             --primary: #006a4e;
             --primary-light: #008a66;
             --primary-dark: #004d38;
@@ -19,7 +20,7 @@
             --border: rgba(0, 106, 78, 0.2);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
             --radius: 20px;
-            --font-main: 'SolaimanLipi', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --font-main: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -53,6 +54,7 @@
             font-weight: 500;
         }
 
+        /* Glassmorphism Utilities */
         .glass {
             background: var(--surface);
             backdrop-filter: blur(16px);
@@ -76,6 +78,7 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.1);
         }
 
+        /* Layout */
         #sidebar {
             width: 260px;
             height: 100vh;
@@ -104,6 +107,7 @@
             overflow-y: auto;
         }
 
+        /* Sidebar Nav */
         .nav-item {
             display: flex;
             align-items: center;
@@ -147,6 +151,7 @@
             fill: var(--primary);
         }
 
+        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -190,6 +195,7 @@
             background: var(--border);
         }
 
+        /* Dashboard Grid */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -206,6 +212,7 @@
             }
         }
 
+        /* Widgets */
         .widget-title {
             font-size: 1.25rem;
             font-weight: 800;
@@ -216,6 +223,7 @@
             color: var(--primary);
         }
 
+        /* Routine Table */
         .routine-table {
             width: 100%;
             border-collapse: collapse;
@@ -259,6 +267,7 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 184, 28, 0); }
         }
 
+        /* Progress Bar */
         .progress-container {
             width: 100%;
             background: var(--border);
@@ -275,9 +284,10 @@
             transition: width 1s ease-in-out;
         }
 
+        /* Exam Tracker */
         .exam-card {
             border-left: 6px solid var(--danger);
-            background: linear-gradient(to right, rgba(220,53,69,0.12), transparent);
+            background: linear-gradient(to right, rgba(220,53,69,0.08), transparent);
         }
         .countdown-grid {
             display: grid;
@@ -295,7 +305,9 @@
         }
         .cd-num { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
         .cd-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
+        .exam-divider { border: 0; border-top: 1px dashed var(--danger); margin: 25px 0; opacity: 0.5; }
 
+        /* Courses Grid */
         .course-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -323,6 +335,25 @@
             text-transform: uppercase;
         }
 
+        /* Buttons */
+        .btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: block;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: rgba(0, 106, 78, 0.1); }
+
+        /* Timeline */
         .timeline {
             position: relative;
             padding-left: 20px;
@@ -356,6 +387,7 @@
         .timeline-date { font-size: 0.85rem; color: var(--text-muted); font-weight: 700;}
         .timeline-content { font-size: 1rem; font-weight: 600; }
 
+        /* Responsive */
         .menu-toggle { display: none; }
         
         @media (max-width: 1024px) {
@@ -460,21 +492,34 @@
                         </div>
                     </div>
 
-                    <!-- Exam Tracker (Red Card) -->
+                    <!-- Exam Tracker (Dual Countdowns) -->
                     <div class="glass-card exam-card col-span-2">
-                        <div class="widget-title" style="color: var(--danger);">
-                            <svg viewBox="0 0 24 24" width="24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-                            Important Exams: Statistics (Retake) & In-Course
+                        <!-- Stat Retake Countdown -->
+                        <div class="widget-title" style="color: var(--danger); font-size: 1.15rem;">
+                            <svg viewBox="0 0 24 24" width="22" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                            Statistics (Retake)
                         </div>
-                        <p style="font-weight: 700;">Status: Upcoming | Category: Examination</p>
-                        <p class="timeline-date" style="margin-top: 10px;">Statistics Retake: 1-10 September 2026 (Tentative)</p>
-                        <p class="timeline-date">In-Course Exams Begin: 13 September 2026</p>
-                        
-                        <div class="countdown-grid" id="exam-countdown">
-                            <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-label">Days</div></div>
-                            <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-label">Hours</div></div>
-                            <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-label">Mins</div></div>
-                            <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-label">Secs</div></div>
+                        <p style="font-weight: 700; font-size: 0.95rem;">Target Date: 31 August 2026</p>
+                        <div class="countdown-grid" id="stat-cd-container">
+                            <div class="cd-box"><div class="cd-num" id="stat-cd-days">--</div><div class="cd-label">Days</div></div>
+                            <div class="cd-box"><div class="cd-num" id="stat-cd-hours">--</div><div class="cd-label">Hours</div></div>
+                            <div class="cd-box"><div class="cd-num" id="stat-cd-mins">--</div><div class="cd-label">Mins</div></div>
+                            <div class="cd-box"><div class="cd-num" id="stat-cd-secs">--</div><div class="cd-label">Secs</div></div>
+                        </div>
+
+                        <hr class="exam-divider">
+
+                        <!-- In-Course Countdown -->
+                        <div class="widget-title" style="color: var(--primary); font-size: 1.15rem;">
+                            <svg viewBox="0 0 24 24" width="22" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                            In-Course Examination
+                        </div>
+                        <p style="font-weight: 700; font-size: 0.95rem;">Target Date: 13 September 2026</p>
+                        <div class="countdown-grid" id="inc-cd-container">
+                            <div class="cd-box"><div class="cd-num" id="inc-cd-days">--</div><div class="cd-label">Days</div></div>
+                            <div class="cd-box"><div class="cd-num" id="inc-cd-hours">--</div><div class="cd-label">Hours</div></div>
+                            <div class="cd-box"><div class="cd-num" id="inc-cd-mins">--</div><div class="cd-label">Mins</div></div>
+                            <div class="cd-box"><div class="cd-num" id="inc-cd-secs">--</div><div class="cd-label">Secs</div></div>
                         </div>
                     </div>
 
@@ -538,8 +583,8 @@
                                 <div class="timeline-content">Semester Starts</div>
                             </div>
                             <div class="timeline-item">
-                                <div class="timeline-date">1-10 September 2026</div>
-                                <div class="timeline-content">Statistics Retake Exam (Tentative)</div>
+                                <div class="timeline-date">31 August 2026</div>
+                                <div class="timeline-content">Statistics Retake Exam</div>
                             </div>
                             <div class="timeline-item">
                                 <div class="timeline-date">13 September 2026</div>
@@ -568,6 +613,22 @@
         <div class="glass-card" style="text-align: center;">
             <div style="font-size: 2.6rem; font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums;" id="live-clock">--:--:--</div>
             <div style="font-size: 1.15rem; font-weight: 600; color: var(--text-muted);" id="live-date">--</div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="glass-card">
+            <div class="widget-title" style="font-size: 1.1rem;">
+                <svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+                Quick Links
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+                <a href="https://classroom.google.com/" target="_blank" class="btn btn-outline">
+                    Google Classroom
+                </a>
+                <a href="https://uni-sync-beige.vercel.app/#/" target="_blank" class="btn btn-primary">
+                    Uni Sync Platform
+                </a>
+            </div>
         </div>
 
         <!-- Smart Event Priority -->
@@ -619,7 +680,7 @@
             { id: 4, label: "1:30 - 4:30", startMin: 13*60+30, endMin: 16*60+30 }
         ];
 
-        // Construct Routine (Matched precisely to image reference)
+        // Construct Routine
         const routine = {
             0: { 1: "EEE 3205", 2: "GED 3201", 3: "EEE 3207", 4: null }, // Sunday
             1: { 1: "EEE 3201", 2: "EEE 3212", 3: "EEE 3203", 4: "EEE 3204" }, // Monday
@@ -656,7 +717,6 @@
         const themeToggle = document.getElementById('theme-toggle');
         const htmlDoc = document.documentElement;
         
-        // Load theme from storage
         const savedTheme = localStorage.getItem('theme') || 'light';
         htmlDoc.setAttribute('data-theme', savedTheme);
 
@@ -671,7 +731,6 @@
         function updateClock() {
             const now = new Date();
             
-            // Format time: HH:MM:SS AM/PM
             let h = now.getHours();
             let m = now.getMinutes();
             let s = now.getSeconds();
@@ -681,7 +740,6 @@
             const timeStr = `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')} ${ampm}`;
             document.getElementById('live-clock').innerText = timeStr;
 
-            // Format date
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const dateStr = now.toLocaleDateString('en-US', options);
             document.getElementById('live-date').innerText = dateStr;
@@ -699,14 +757,12 @@
             for(let d=0; d<5; d++) {
                 const tr = document.createElement('tr');
                 
-                // Day Column
                 const tdDay = document.createElement('td');
                 tdDay.innerText = days[d];
                 tdDay.style.fontWeight = '800';
                 if(d === todayIdx) tdDay.classList.add('today-col');
                 tr.appendChild(tdDay);
 
-                // Slot Columns
                 for(let s=1; s<=4; s++) {
                     const td = document.createElement('td');
                     if(d === todayIdx) td.classList.add('today-col');
@@ -733,10 +789,9 @@
             const todayIdx = now.getDay();
             const currMins = now.getHours() * 60 + now.getMinutes();
             
-            // Reset animations
             document.querySelectorAll('.current-class').forEach(el => el.classList.remove('current-class'));
             
-            if(todayIdx >= 0 && todayIdx <= 4) { // Sun-Thu
+            if(todayIdx >= 0 && todayIdx <= 4) { 
                 slots.forEach((slot, idx) => {
                     if(currMins >= slot.startMin && currMins <= slot.endMin) {
                         const cell = document.getElementById(`cell-${todayIdx}-${slot.id}`);
@@ -810,14 +865,38 @@
                         <div style="font-size: 0.9rem; font-weight: 600; line-height: 1.8;">
                             <strong>Faculty:</strong> ${fName} (${c.faculty})<br>
                             <strong>Room:</strong> ${c.room}<br>
-                            <strong>Credits:</strong> ${c.credits}
+                            <strong>Credits:</strong> ${c.credits.toFixed(1)}
                         </div>
                     </div>
                 `;
             });
         }
 
-        // Academic Progress and Exam Countdown
+        // Exam Countdown Logic
+        function startCountdown(targetDateStr, prefix) {
+            const target = new Date(targetDateStr).getTime();
+            
+            setInterval(() => {
+                const current = new Date().getTime();
+                const diff = target - current;
+
+                if (diff > 0) {
+                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    document.getElementById(`${prefix}days`).innerText = d;
+                    document.getElementById(`${prefix}hours`).innerText = h.toString().padStart(2, '0');
+                    document.getElementById(`${prefix}mins`).innerText = m.toString().padStart(2, '0');
+                    document.getElementById(`${prefix}secs`).innerText = s.toString().padStart(2, '0');
+                } else {
+                    document.getElementById(`${prefix}container`).innerHTML = `<div style="grid-column: span 4; color: var(--danger); font-weight: 800; font-size: 1.2rem; text-align: center;">Exam is ongoing or has concluded!</div>`;
+                }
+            }, 1000);
+        }
+
+        // Academic Progress and Next Events
         function setupCalendarAndEvents() {
             const now = new Date();
             const semStart = new Date('2026-07-19T00:00:00');
@@ -836,31 +915,13 @@
             document.getElementById('days-completed').innerText = `Completed: ${Math.floor(passedDays)} Days`;
             document.getElementById('days-remaining').innerText = `Remaining: ${Math.max(0, Math.ceil(totalDays - passedDays))} Days`;
 
-            // Setup Retake Countdown Target: Sept 1, 2026 (Nearest bound)
-            const retakeTarget = new Date('2026-09-01T00:00:00').getTime();
-            
-            setInterval(() => {
-                const current = new Date().getTime();
-                const diff = retakeTarget - current;
+            // Start dual countdowns
+            startCountdown('2026-08-31T00:00:00', 'stat-cd-');
+            startCountdown('2026-09-13T00:00:00', 'inc-cd-');
 
-                if (diff > 0) {
-                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const secs = Math.floor((diff % (1000 * 60)) / 1000);
-
-                    document.getElementById('cd-days').innerText = days;
-                    document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
-                    document.getElementById('cd-mins').innerText = mins.toString().padStart(2, '0');
-                    document.getElementById('cd-secs').innerText = secs.toString().padStart(2, '0');
-                } else {
-                    document.getElementById('exam-countdown').innerHTML = `<div style="grid-column: span 4; color: var(--danger); font-weight: 800; font-size: 1.2rem;">Exam is ongoing or has concluded!</div>`;
-                }
-            }, 1000);
-
-            // Smart Event Logic
+            // Smart Event Logic for Sidebar
             const events = [
-                { name: "Statistics Retake (Tentative)", date: new Date('2026-09-01T00:00:00') },
+                { name: "Statistics Retake", date: new Date('2026-08-31T00:00:00') },
                 { name: "In-Course Exams Begin", date: new Date('2026-09-13T00:00:00') },
                 { name: "Preparation Leave (PL)", date: new Date('2026-11-20T00:00:00') },
                 { name: "Final Examination", date: new Date('2026-12-06T00:00:00') }
