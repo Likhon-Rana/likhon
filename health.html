@@ -51,7 +51,6 @@
         .insight-list { display: flex; flex-direction: column; gap: 10px; }
         .insight-item { padding: 12px 15px; background: linear-gradient(to right, rgba(15, 118, 110, 0.05), transparent); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; font-weight: 600; font-size: 0.9rem; line-height: 1.5; }
         
-        /* Monthly Review Styles */
         .review-card { background: var(--surface-solid); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
         .review-header { display: flex; justify-content: space-between; font-weight: 900; color: var(--primary); font-size: 1.1rem; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
         .review-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 0.85rem; font-weight: 700; }
@@ -60,7 +59,6 @@
         .action-btns { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
         .btn-sm { padding: 8px 12px; font-size: 0.8rem; }
         
-        /* Toast Notification */
         #toast { visibility: hidden; min-width: 250px; background-color: var(--primary); color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
@@ -90,10 +88,8 @@
 
         <div class="dash-grid">
             
-            <!-- DATA ENTRY FORMS -->
             <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0;"><i class="fas fa-pen-to-square"></i> Log Daily / Weekly Data</div></div>
             
-            <!-- Gym Entry -->
             <div class="glass-card col-4">
                 <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-dumbbell"></i> Gym Attendance</div>
                 <input type="date" id="gym-date" class="form-control form-group">
@@ -103,7 +99,6 @@
                 </div>
             </div>
 
-            <!-- Nutrition Entry -->
             <div class="glass-card col-4">
                 <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-utensils"></i> Nutrition</div>
                 <form onsubmit="logNutrition(event)">
@@ -116,41 +111,33 @@
                 </form>
             </div>
 
-            <!-- Sleep & Weight Entry -->
             <div class="glass-card col-4">
                 <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-bed"></i> Sleep & <i class="fas fa-weight-scale"></i> Weight</div>
-                <form onsubmit="logSleep(event)" class="form-group" style="margin-bottom: 15px;">
-                    <div class="form-row form-group">
-                        <input type="date" id="slp-date" class="form-control" required style="width: 40%;">
-                        <input type="time" id="slp-bed" class="form-control" required title="Bed Time">
-                        <input type="time" id="slp-wake" class="form-control" required title="Wake Up Time">
-                    </div>
-                    <button type="submit" class="btn btn-outline" style="width: 100%; padding: 6px;">Save Sleep</button>
+                <form onsubmit="logSleep(event)" class="form-row form-group" style="margin-bottom: 15px;">
+                    <input type="date" id="slp-date" class="form-control" required style="flex: 1;">
+                    <input type="number" step="0.1" id="slp-duration" class="form-control" placeholder="Hours slept" required style="flex: 1;">
+                    <button type="submit" class="btn btn-outline" style="padding: 6px 12px;">Save</button>
                 </form>
                 
                 <form onsubmit="logWeight(event)" class="form-row">
                     <input type="date" id="wt-date" class="form-control" required style="width: 50%;">
                     <input type="number" step="0.1" id="wt-val" class="form-control" placeholder="Weight (kg)" required>
-                    <button type="submit" class="btn btn-primary" style="padding: 6px 12px;"><i class="fas fa-save"></i></button>
+                    <button type="submit" class="btn btn-primary" style="padding: 6px 12px;"><i class="fas fa-save"></i> Save</button>
                 </form>
             </div>
 
-            <!-- AI INSIGHTS (Rolling) -->
             <div class="glass-card col-12">
                 <div class="sec-title"><i class="fas fa-bolt"></i> Recent Insights</div>
-                <div class="insight-list" id="insights-container">
-                    <!-- JS populated based strictly on data -->
-                </div>
+                <div class="insight-list" id="insights-container"></div>
             </div>
 
-            <!-- REPORTS -->
             <div class="glass-card col-6">
                 <div class="sec-title"><i class="fas fa-calendar-week"></i> 7-Day Rolling Progress</div>
                 <div class="stat-grid">
                     <div class="stat-box"><span class="stat-label">Gym Days</span><span class="stat-val" id="w-gym">0</span></div>
                     <div class="stat-box"><span class="stat-label">Avg Calories</span><span class="stat-val" id="w-cal">0 kcal</span></div>
                     <div class="stat-box"><span class="stat-label">Avg Protein</span><span class="stat-val" id="w-pro">0 g</span></div>
-                    <div class="stat-box"><span class="stat-label">Avg Sleep</span><span class="stat-val" id="w-slp">0h 0m</span></div>
+                    <div class="stat-box"><span class="stat-label">Avg Sleep</span><span class="stat-val" id="w-slp">0h</span></div>
                     <div class="stat-box"><span class="stat-label">Weight Change</span><span class="stat-val" id="w-wt">0 kg</span></div>
                 </div>
             </div>
@@ -162,11 +149,10 @@
                     <div class="stat-box"><span class="stat-label">Longest Streak</span><span class="stat-val" id="m-streak">0</span></div>
                     <div class="stat-box"><span class="stat-label">Avg Calories</span><span class="stat-val" id="m-cal">0 kcal</span></div>
                     <div class="stat-box"><span class="stat-label">Avg Protein</span><span class="stat-val" id="m-pro">0 g</span></div>
-                    <div class="stat-box"><span class="stat-label">Avg Sleep</span><span class="stat-val" id="m-slp">0h 0m</span></div>
+                    <div class="stat-box"><span class="stat-label">Avg Sleep</span><span class="stat-val" id="m-slp">0h</span></div>
                 </div>
             </div>
 
-            <!-- CHARTS SECTION -->
             <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0;"><i class="fas fa-chart-line"></i> Analytics & Trends</div></div>
             
             <div class="glass-card col-6">
@@ -189,24 +175,18 @@
                 <div class="chart-container"><canvas id="chart-slp"></canvas></div>
             </div>
 
-            <!-- MONTHLY PERFORMANCE REVIEW (NEW) -->
             <div class="glass-card col-12">
                 <div class="sec-title"><i class="fas fa-file-invoice"></i> Past Monthly Performance Reviews</div>
                 <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 15px;">Automated AI reviews generated at the end of every month based on your tracked data.</p>
-                
-                <div id="monthly-reviews-container">
-                    <!-- Reviews JS Populated -->
-                </div>
+                <div id="monthly-reviews-container"></div>
             </div>
 
-            <!-- DATA MANAGEMENT -->
             <div class="glass-card col-12">
                 <div class="sec-title"><i class="fas fa-database"></i> Data Management</div>
                 <div class="action-btns">
                     <button class="btn btn-primary btn-sm" onclick="exportData()"><i class="fas fa-download"></i> Export Data</button>
                     <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
                     <button class="btn btn-outline btn-sm" onclick="document.getElementById('import-file').click()"><i class="fas fa-upload"></i> Import</button>
-                    
                     <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="resetMetric('weight')">Reset Weight</button>
                     <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="resetMetric('gym')">Reset Gym</button>
                     <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="resetMetric('nutrition')">Reset Nutrition</button>
@@ -223,20 +203,19 @@
 
     <script src="js/app.js"></script>
     <script>
-        // Set Default Dates to Today
         const todayStr = new Date().toISOString().split('T')[0];
         ['gym-date', 'nut-date', 'slp-date', 'wt-date'].forEach(id => {
             document.getElementById(id).value = todayStr;
         });
 
-        // 1. Data Structure Initialization
-        let fDB = JSON.parse(localStorage.getItem('lifeos_fitness_v2')) || {
+        // Restored original key to retrieve lost data
+        let fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || {
             weight: [], gym: [], nutrition: [], sleep: [], reviews: []
         };
+        if(!fDB.reviews) fDB.reviews = [];
         
         let charts = {};
 
-        // Helper: Show Toast
         function showToast(msg) {
             const toast = document.getElementById("toast");
             toast.innerText = msg;
@@ -244,14 +223,12 @@
             setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
-        // Helper: Save and Refresh
         function saveAndRefresh(msg) {
-            localStorage.setItem('lifeos_fitness_v2', JSON.stringify(fDB));
+            localStorage.setItem('lifeos_fitness_db', JSON.stringify(fDB));
             if(msg) showToast(msg);
             updateDashboard();
         }
 
-        // 2. Data Entry Functions
         function logWeight(e) {
             e.preventDefault();
             const date = document.getElementById('wt-date').value;
@@ -281,32 +258,23 @@
         function logSleep(e) {
             e.preventDefault();
             const date = document.getElementById('slp-date').value;
-            const bed = document.getElementById('slp-bed').value;
-            const wake = document.getElementById('slp-wake').value;
-            
-            let dBed = new Date(`1970-01-01T${bed}:00`);
-            let dWake = new Date(`1970-01-01T${wake}:00`);
-            if (dWake < dBed) dWake.setDate(dWake.getDate() + 1); 
-            const duration = (dWake - dBed) / (1000 * 60 * 60);
-
+            const duration = parseFloat(document.getElementById('slp-duration').value);
             fDB.sleep = fDB.sleep.filter(x => x.date !== date);
-            fDB.sleep.push({date, bed, wake, duration});
+            fDB.sleep.push({date, duration});
             saveAndRefresh("Sleep logged!");
         }
 
-        // 3. Core Dashboard Logic
         function updateDashboard() {
             ['weight', 'gym', 'nutrition', 'sleep'].forEach(k => {
                 fDB[k].sort((a, b) => new Date(a.date) - new Date(b.date));
             });
 
-            generateMonthlyReviews(); // Process automated monthly reviews first
+            generateMonthlyReviews();
 
             const now = new Date();
             const mStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
             const wStart = new Date(now.setDate(now.getDate() - 7)).toISOString().split('T')[0];
 
-            // Filters
             const mGym = fDB.gym.filter(x => x.date >= mStart && x.attended);
             const wGym = fDB.gym.filter(x => x.date >= wStart && x.attended);
             const mNut = fDB.nutrition.filter(x => x.date >= mStart);
@@ -316,13 +284,12 @@
 
             const avg = (arr, key) => arr.length ? (arr.reduce((s, x) => s + x[key], 0) / arr.length) : 0;
             const formatHrs = hrs => {
-                if(!hrs) return '0h 0m';
+                if(!hrs) return '0h';
                 const h = Math.floor(hrs);
                 const m = Math.round((hrs - h) * 60);
-                return `${h}h ${m}m`;
+                return m > 0 ? `${h}h ${m}m` : `${h}h`;
             };
             
-            // Populate Week
             document.getElementById('w-gym').innerText = wGym.length;
             document.getElementById('w-cal').innerText = `${Math.round(avg(wNut, 'cal'))} kcal`;
             document.getElementById('w-pro').innerText = `${Math.round(avg(wNut, 'pro'))} g`;
@@ -334,7 +301,6 @@
                 document.getElementById('w-wt').innerText = `${diff > 0 ? '+':''}${diff.toFixed(1)} kg`;
             } else { document.getElementById('w-wt').innerText = `-`; }
 
-            // Populate Month
             document.getElementById('m-gym').innerText = mGym.length;
             document.getElementById('m-cal').innerText = `${Math.round(avg(mNut, 'cal'))} kcal`;
             document.getElementById('m-pro').innerText = `${Math.round(avg(mNut, 'pro'))} g`;
@@ -352,11 +318,8 @@
             updateCharts();
         }
 
-        // 4. Automated Monthly Review Generator
         function generateMonthlyReviews() {
-            const currentMonthStr = todayStr.substring(0, 7); // e.g. "2026-08"
-            
-            // Collect all unique months from history
+            const currentMonthStr = todayStr.substring(0, 7); 
             let allMonths = new Set();
             [fDB.gym, fDB.nutrition, fDB.sleep].forEach(arr => {
                 arr.forEach(item => { allMonths.add(item.date.substring(0, 7)); });
@@ -365,49 +328,40 @@
             let newReviewAdded = false;
 
             allMonths.forEach(monthStr => {
-                // Do not generate review for the current ongoing month
                 if(monthStr === currentMonthStr) return;
-
-                // Check if review already exists
                 if(fDB.reviews.find(r => r.month === monthStr)) return;
 
-                // Calculate stats for that month
                 const mGym = fDB.gym.filter(x => x.date.startsWith(monthStr) && x.attended).length;
                 const mNut = fDB.nutrition.filter(x => x.date.startsWith(monthStr));
                 const mSlp = fDB.sleep.filter(x => x.date.startsWith(monthStr));
 
-                if(mGym === 0 && mNut.length === 0 && mSlp.length === 0) return; // Empty data
+                if(mGym === 0 && mNut.length === 0 && mSlp.length === 0) return; 
 
                 const avgCal = mNut.length ? Math.round(mNut.reduce((s, x) => s + x.cal, 0) / mNut.length) : 0;
                 const avgPro = mNut.length ? Math.round(mNut.reduce((s, x) => s + x.pro, 0) / mNut.length) : 0;
                 const avgSlp = mSlp.length ? (mSlp.reduce((s, x) => s + x.duration, 0) / mSlp.length) : 0;
 
-                // AI Feedback Logic
                 let text = "";
                 
-                // Gym feedback
                 if(mGym >= 20) text += "Your gym continuity was outstanding this month! ";
                 else if(mGym >= 12) text += "Your gym attendance was quite good, but a little more consistency would be better. ";
                 else text += "Your gym attendance was quite low this month. Consistency is crucial to maintain fitness. ";
 
-                // Protein feedback
                 if(avgPro >= 100) text += "Your protein intake was perfectly on target, which is great for muscle growth. ";
                 else if(avgPro >= 70) text += "Your protein intake was fairly good, but try to keep it closer to 100 grams for better muscle recovery. ";
                 else if(avgPro > 0) text += "Your average protein intake was very low. Please pay more attention to your diet. ";
 
-                // Sleep feedback
                 if(avgSlp >= 7.5 && avgSlp <= 8.5) text += "Your sleep duration was absolutely perfect. ";
-                else if(avgSlp > 0 && avgSlp < 7.0) text += "However, your average sleep was quite low last month, which is harmful for muscle recovery and focus. Try to go to bed a bit earlier at night. ";
+                else if(avgSlp > 0 && avgSlp < 7.0) text += "However, your average sleep was quite low last month, which is harmful for muscle recovery and focus. Try to get more sleep. ";
 
                 if(text === "") text = "Keep tracking your data so detailed analysis can be done in the future.";
 
                 const dateObj = new Date(`${monthStr}-01`);
                 const monthName = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-                fDB.reviews.unshift({ // Add to beginning
+                fDB.reviews.unshift({ 
                     id: Date.now() + Math.random(),
-                    month: monthStr,
-                    monthName: monthName,
+                    month: monthStr, monthName: monthName,
                     stats: { gym: mGym, pro: avgPro, cal: avgCal, slp: avgSlp.toFixed(1) },
                     feedback: text
                 });
@@ -415,7 +369,7 @@
             });
 
             if(newReviewAdded) {
-                localStorage.setItem('lifeos_fitness_v2', JSON.stringify(fDB));
+                localStorage.setItem('lifeos_fitness_db', JSON.stringify(fDB));
             }
         }
 
@@ -449,7 +403,6 @@
             });
         }
 
-        // 5. Rolling Insights (Current Trends)
         function generateInsights() {
             const container = document.getElementById('insights-container');
             container.innerHTML = '';
@@ -484,7 +437,6 @@
             insights.forEach(txt => { container.innerHTML += `<div class="insight-item">💡 ${txt}</div>`; });
         }
 
-        // 6. Chart Generator Wrapper
         Chart.defaults.color = '#888';
         Chart.defaults.font.family = "system-ui";
         
@@ -518,7 +470,6 @@
             renderLineChart('chart-slp', 'Sleep (Hrs)', fDB.sleep, 'duration', '#8B5CF6');
         }
 
-        // 7. Data Management
         function exportData() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fDB));
             const anchor = document.createElement('a');
@@ -556,12 +507,11 @@
 
         function factoryReset() {
             if(confirm("DANGER: This will delete ALL fitness data (including reviews) forever. Continue?")) {
-                localStorage.removeItem('lifeos_fitness_v2');
+                localStorage.removeItem('lifeos_fitness_db');
                 location.reload();
             }
         }
 
-        // Init
         window.addEventListener('DOMContentLoaded', () => {
             updateDashboard();
         });
