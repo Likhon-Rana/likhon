@@ -89,13 +89,6 @@
         .view-details { font-size: 0.75rem; font-weight: 800; color: var(--primary); text-align: right; margin-top: 10px; display: block; text-decoration: none; }
         .view-details:hover { text-decoration: underline; }
 
-        /* Quick Actions */
-        .action-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        @media (max-width: 768px) { .action-grid { grid-template-columns: repeat(2, 1fr); } }
-        .action-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px; background: var(--surface-solid); color: var(--primary); border: 1px solid var(--primary); border-radius: 12px; font-weight: 800; font-size: 0.8rem; cursor: pointer; transition: 0.2s; text-decoration: none; text-align: center; }
-        .action-btn:hover { background: var(--primary); color: white; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(15, 118, 110, 0.2); }
-        .action-btn i { font-size: 1.3rem; }
-
         /* Tasks */
         .task-input-row { display: flex; gap: 8px; margin-bottom: 15px; }
         .task-input { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; font-size: 0.9rem; background: var(--surface-solid); outline: none; }
@@ -150,7 +143,7 @@
             </div>
         </header>
 
-        <!-- SECTION 10: Quick Links (Beautiful Top Bar) -->
+        <!-- SECTION 2: Quick Links (Beautiful Top Bar) -->
         <div class="glass-card" style="margin-top: 15px; padding: 15px 22px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <span style="font-weight: 800; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem;"><i class="fas fa-link"></i> Quick Links</span>
@@ -163,7 +156,7 @@
 
         <div class="dash-grid">
             
-            <!-- SECTION 2: Today's Focus -->
+            <!-- SECTION 3: Today's Focus -->
             <div class="glass-card col-12" style="background: linear-gradient(135deg, rgba(15, 118, 110, 0.05) 0%, rgba(0,0,0,0) 100%);">
                 <div class="focus-wrapper">
                     <div style="font-size: 0.85rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 5px;"><i class="fas fa-crosshairs"></i> Today's Main Focus</div>
@@ -176,7 +169,7 @@
                 </div>
             </div>
 
-            <!-- SECTION 5,6,7,8: Live Summaries -->
+            <!-- SECTION 4: Live Summaries -->
             <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0; padding:0;"><span><i class="fas fa-chart-pie"></i> Live Summaries</span></div></div>
 
             <a href="academic.html" class="glass-card col-3 clickable-card">
@@ -233,7 +226,7 @@
                 <span class="view-details" style="color: #F59E0B;">View Details →</span>
             </a>
 
-            <!-- SECTION 3: Smart Reminders (Aggressive Tone) -->
+            <!-- SECTION 5: Smart Reminders (Aggressive Tone) -->
             <div class="glass-card col-8">
                 <div class="sec-title"><span><i class="fas fa-bell"></i> System Diagnostics & Alerts</span></div>
                 <div class="reminder-list" id="reminders-container">
@@ -241,7 +234,7 @@
                 </div>
             </div>
 
-            <!-- SECTION 4: Deadlines -->
+            <!-- SECTION 6: Deadlines -->
             <div class="glass-card col-4">
                 <div class="sec-title"><span><i class="fas fa-hourglass-half"></i> Deadlines</span></div>
                 <div class="deadline-list" id="deadlines-container">
@@ -249,8 +242,8 @@
                 </div>
             </div>
 
-            <!-- SECTION 11: Today's Tasks -->
-            <div class="glass-card col-6">
+            <!-- SECTION 7: Today's Tasks -->
+            <div class="glass-card col-12">
                 <div class="sec-title" style="justify-content: space-between;">
                     <span><i class="fas fa-tasks"></i> Today's Tasks</span>
                     <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted);" id="task-progress-text">0/0</span>
@@ -273,37 +266,10 @@
                 </ul>
             </div>
 
-            <!-- SECTION 9: Quick Actions -->
-            <div class="glass-card col-6">
-                <div class="sec-title"><span><i class="fas fa-bolt"></i> Quick Actions</span></div>
-                <div class="action-grid">
-                    <a href="health.html" class="action-btn"><i class="fas fa-utensils"></i> Log Calories</a>
-                    <a href="health.html" class="action-btn"><i class="fas fa-dumbbell"></i> Update Gym</a>
-                    <a href="health.html" class="action-btn"><i class="fas fa-bed"></i> Log Sleep</a>
-                    <a href="health.html" class="action-btn"><i class="fas fa-weight-scale"></i> Update Weight</a>
-                    <a href="skills.html" class="action-btn"><i class="fas fa-robot"></i> Complete ML</a>
-                    <a href="skills.html" class="action-btn"><i class="fas fa-spell-check"></i> Grammar Chap</a>
-                    <a href="personal.html" class="action-btn" style="background: var(--accent); color: white; border-color: var(--accent);"><i class="fas fa-plus-circle"></i> Add Expense</a>
-                    <a href="personal.html" class="action-btn" style="background: var(--accent); color: white; border-color: var(--accent);"><i class="fas fa-face-smile"></i> Log Mood</a>
-                </div>
-            </div>
-
-            <!-- SECTION 12: Comprehensive Reports (Daily, Weekly, Monthly) -->
+            <!-- SECTION 8: Performance Reports (Weekly & Monthly) -->
             <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0;"><span><i class="fas fa-chart-bar"></i> Performance Reports</span></div></div>
             
-            <!-- Daily -->
-            <div class="glass-card col-4">
-                <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-calendar-day"></i> Today's Report</div>
-                <div class="summary-grid">
-                    <div class="sum-box"><span class="sum-label">Money Spent</span><span class="sum-val" id="rep-d-spent" style="color:var(--danger);">0</span></div>
-                    <div class="sum-box"><span class="sum-label">Items Learned</span><span class="sum-val" id="rep-d-lms">0</span></div>
-                    <div class="sum-box"><span class="sum-label">Habits Done</span><span class="sum-val" id="rep-d-habits">0</span></div>
-                    <div class="sum-box"><span class="sum-label">Gym Status</span><span class="sum-val" id="rep-d-gym">Pending</span></div>
-                </div>
-            </div>
-
-            <!-- Weekly -->
-            <div class="glass-card col-4">
+            <div class="glass-card col-6">
                 <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-calendar-week"></i> 7-Day Summary</div>
                 <div class="summary-grid">
                     <div class="sum-box"><span class="sum-label">Avg Calories</span><span class="sum-val" id="rep-w-cal">0</span></div>
@@ -313,8 +279,7 @@
                 </div>
             </div>
 
-            <!-- Monthly -->
-            <div class="glass-card col-4" style="background: rgba(15, 118, 110, 0.05); border-color: var(--primary);">
+            <div class="glass-card col-6" style="background: rgba(15, 118, 110, 0.05); border-color: var(--primary);">
                 <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-calendar-alt"></i> Monthly Aggregate</div>
                 <div class="summary-grid">
                     <div class="sum-box"><span class="sum-label">Total Gym Days</span><span class="sum-val" id="rep-m-gym" style="color:var(--primary);">0</span></div>
@@ -330,14 +295,20 @@
 
     <script src="js/app.js"></script>
     <script>
-        // --- Global Dates ---
+        // --- Safely calculate the local date string (YYYY-MM-DD) to prevent timezone bugs ---
+        function getLocalDateStr(d) {
+            const tzOffset = d.getTimezoneOffset() * 60000;
+            return new Date(d.getTime() - tzOffset).toISOString().split('T')[0];
+        }
+
         const now = new Date();
-        const todayStr = now.toISOString().split('T')[0];
+        const todayStr = getLocalDateStr(now);
         
-        // --- LocalStorage DBs ---
+        // --- Correct Database Keys Restored ---
         const fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || { weight:[], gym:[], nutrition:[], sleep:[] };
         const pDB = JSON.parse(localStorage.getItem('lifeos_personal_db')) || { budget: 8000, expenses: [], savings: [], habits: [] };
         const lDB = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || { checkedItems: {}, history: [] };
+        const aDB = JSON.parse(localStorage.getItem('lifeos_academic_db')) || { studyLogs: [] };
 
         // --- Notification System ---
         function enableNotifications() {
@@ -357,7 +328,6 @@
         
         function sendPushAlert(title, body) {
             if (Notification.permission === "granted") {
-                // Prevent spamming the same notification repeatedly in one session
                 if(!sessionStorage.getItem(`notified_${title}`)) {
                     new Notification(title, { body: body, icon: 'https://cdn-icons-png.flaticon.com/512/564/564276.png' });
                     sessionStorage.setItem(`notified_${title}`, 'true');
@@ -429,7 +399,10 @@
             // Finance
             const currentMonth = now.getMonth();
             const currentYear = now.getFullYear();
-            const monthlyExps = pDB.expenses.filter(e => { const ed = new Date(e.date); return ed.getMonth() === currentMonth && ed.getFullYear() === currentYear; });
+            const monthlyExps = pDB.expenses.filter(e => { 
+                const ed = new Date(e.date); 
+                return ed.getMonth() === currentMonth && ed.getFullYear() === currentYear; 
+            });
             const totalSpent = monthlyExps.reduce((sum, e) => sum + e.amount, 0);
             document.getElementById('sum-budget').innerHTML = `${(pDB.budget - totalSpent).toLocaleString()} <small>BDT</small>`;
             
@@ -530,10 +503,11 @@
                 sendPushAlert("Budget Critical", "You have almost exhausted your monthly budget.");
             }
 
-            // Learning
+            // Learning & Study
             const todayLmsLogs = lDB.history.filter(h => h.rawDate === todayStr);
-            if(todayLmsLogs.length === 0) {
-                reminders.push({ type: 'warning', text: "⚠️ WAKE UP: You haven't touched your courses today. You are falling behind schedule!", weight: 6 });
+            const todayStudyLogs = aDB.studyLogs.filter(h => h.date === todayStr);
+            if(todayLmsLogs.length === 0 && todayStudyLogs.length === 0) {
+                reminders.push({ type: 'warning', text: "⚠️ WAKE UP: You haven't touched your courses or books today. You are falling behind schedule!", weight: 6 });
             }
 
             if(nextDeadlineReminder) reminders.push({ type: 'danger', text: nextDeadlineReminder, weight: 15 }); 
@@ -550,22 +524,11 @@
             }
         }
 
-        // --- Reports (Daily, Weekly, Monthly) ---
+        // --- Reports (Weekly, Monthly) ---
         function loadReports() {
-            // Daily
-            const tExp = pDB.expenses.filter(x => x.date === todayStr).reduce((s,x)=>s+x.amount, 0);
-            const tLms = lDB.history.filter(x => x.rawDate === todayStr).length;
-            const tHabits = pDB.habits ? pDB.habits.filter(h => h.doneToday).length : 0;
-            const tGym = fDB.gym.find(x => x.date === todayStr);
-
-            document.getElementById('rep-d-spent').innerText = tExp;
-            document.getElementById('rep-d-lms').innerText = tLms;
-            document.getElementById('rep-d-habits').innerText = tHabits;
-            document.getElementById('rep-d-gym').innerHTML = tGym ? (tGym.attended ? '<span style="color:#10B981;">Done</span>' : '<span style="color:var(--danger);">Missed</span>') : 'Pending';
-
             // Weekly (Rolling 7 days)
-            const wStart = new Date(now); wStart.setDate(wStart.getDate() - 7);
-            const wStartStr = wStart.toISOString().split('T')[0];
+            const wStart = new Date(); wStart.setDate(now.getDate() - 7);
+            const wStartStr = getLocalDateStr(wStart);
             
             const wNut = fDB.nutrition.filter(x => x.date >= wStartStr);
             const avgCal = wNut.length ? Math.round(wNut.reduce((s,x)=>s+x.cal,0)/wNut.length) : 0;
@@ -580,7 +543,7 @@
             document.getElementById('rep-w-spent').innerText = wExp;
 
             // Monthly
-            const mStartStr = todayStr.substring(0, 7) + '-01'; // 2026-08-01
+            const mStartStr = todayStr.substring(0, 7) + '-01'; 
             
             const mGym = fDB.gym.filter(x => x.date >= mStartStr && x.attended).length;
             const mLms = lDB.history.filter(x => x.rawDate >= mStartStr).length;
