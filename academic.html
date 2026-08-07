@@ -8,14 +8,14 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
         .routine-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: var(--surface-solid); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02);}
-        .routine-table th, .routine-table td { padding: 15px; text-align: center; border: 1px solid var(--border); }
+        .routine-table th, .routine-table td { padding: 12px; text-align: center; border: 1px solid var(--border); vertical-align: middle; }
         .routine-table th { background: var(--primary); color: white; font-weight: 700; }
         .routine-table .today-col { background: rgba(0, 106, 78, 0.1); font-weight: 800; }
         
         .exam-card { border-left: 6px solid var(--danger); background: linear-gradient(to right, rgba(220,53,69,0.05), transparent); }
         .cd-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; margin-top: 15px; }
         .cd-box { background: var(--surface-solid); padding: 12px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-        .cd-num { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
+        .cd-num { font-size: 1.6rem; font-weight: 900; color: var(--primary); }
         .cd-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
         .exam-divider { border: 0; border-top: 1px dashed var(--danger); margin: 20px 0; opacity: 0.3; }
 
@@ -30,8 +30,18 @@
         .timeline-content { font-size: 1rem; font-weight: 700; color: var(--text-main); }
         
         .course-cell { display: flex; flex-direction: column; gap: 4px; }
-        .course-name { font-size: 0.95rem; font-weight: 800; color: var(--primary);}
-        .course-room { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+        .course-name { font-size: 0.9rem; font-weight: 800; color: var(--primary); line-height: 1.2;}
+        .course-code { font-size: 0.8rem; font-weight: 700; color: var(--text-main); }
+        .course-room { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); }
+
+        /* Course List Styles */
+        .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 15px; }
+        .course-card { background: var(--surface-solid); border: 1px solid var(--border); border-radius: 12px; padding: 15px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .course-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 5px; padding-right: 60px; color: var(--primary); }
+        .course-card p { font-size: 0.9rem; margin-bottom: 4px; font-weight: 600; color: var(--text-main); }
+        .course-card .faculty { color: var(--text-muted); font-size: 0.85rem; margin-top: 8px; }
+        .type-badge { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; font-weight: 800; padding: 4px 8px; border-radius: 6px; background: rgba(0, 106, 78, 0.1); color: var(--primary); text-transform: uppercase; border: 1px solid var(--primary); }
+        .type-badge.lab { background: rgba(255, 184, 28, 0.1); color: #d39e00; border-color: #ffb81c; }
     </style>
 </head>
 <body>
@@ -51,8 +61,8 @@
     <main id="main-content">
         <header class="glass">
             <div>
-                <h1 style="color: var(--primary);">Academic Hub</h1>
-                <p style="color: var(--text-muted); font-weight: 700;">Routine, Courses & Exams</p>
+                <h1 style="color: var(--primary);">University of Dhaka - EEE</h1>
+                <p style="color: var(--text-muted); font-weight: 700;">3rd Year, 2nd Semester (2025–26)</p>
             </div>
             <button id="theme-toggle" class="btn btn-outline" style="width: auto;">Toggle Theme</button>
         </header>
@@ -111,35 +121,59 @@
                     <tbody id="routine-body"></tbody>
                 </table>
             </div>
+
+            <!-- Course Details List -->
+            <div class="glass-card col-span-2">
+                <div class="widget-title">Course List (Details)</div>
+                <div class="course-grid" id="course-list-container">
+                    <!-- Javascript will populate this -->
+                </div>
+            </div>
         </div>
     </main>
 
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
     <script>
-        // Updated Routine Data (Added GED 3201 and EEE 3212 to Tuesday)
-        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
-        const routine = {
-            0: [{c: "EEE 3205", r: "208"}, {c: "GED 3201", r: "208"}, {c: "EEE 3207", r: "208"}, null],
-            1: [{c: "EEE 3201", r: "208"}, {c: "EEE 3212", r: "208"}, {c: "EEE 3203", r: "208"}, {c: "EEE 3204", r: "Lab"}],
-            2: [{c: "EEE 3201", r: "208"}, {c: "GED 3201", r: "208"}, {c: "EEE 3212", r: "208"}, {c: "EEE 3202", r: "Lab"}],
-            3: [{c: "EEE 3205", r: "208"}, {c: "EEE 3209", r: "208"}, {c: "EEE 3203", r: "208"}, null],
-            4: [{c: "EEE 3207", r: "208"}, {c: "EEE 3209", r: "208"}, null, null]
+        // Full Course Database
+        const courseDB = {
+            "EEE 3201": { name: "Power System I", type: "Theory", faculty: "Md. Minarul Islam (MMI)", room: "208", credits: 3.0 },
+            "EEE 3202": { name: "Power System Protection Laboratory", type: "Lab", faculty: "Subrata Kumar Aditya, Md. Minarul Islam (SKA, MMI)", room: "New Bldg, 14th Floor", credits: 1.5 },
+            "EEE 3203": { name: "Digital Signal Processing", type: "Theory", faculty: "Abul Kalam Azad (AKA)", room: "208", credits: 3.0 },
+            "EEE 3204": { name: "Digital Signal Processing Laboratory", type: "Lab", faculty: "Mosabber Uddin Ahmed, Abul Kalam Azad (MUA, AKA)", room: "New Bldg, 14th Floor", credits: 1.5 },
+            "EEE 3205": { name: "Material Science", type: "Theory", faculty: "Imtiaz Ahmed (IA)", room: "208", credits: 3.0 },
+            "EEE 3207": { name: "Optoelectronics and Photonics", type: "Theory", faculty: "Shakhawat Hossain (SH)", room: "208", credits: 3.0 },
+            "EEE 3209": { name: "Communication Theory", type: "Theory", faculty: "A. S. M. Moslehuddin (ASMM)", room: "208", credits: 3.0 },
+            "EEE 3212": { name: "Electrical Services Design and Drafting", type: "Lab", faculty: "Md. Shahin Parvej (MSP)", room: "208", credits: 1.5 },
+            "GED 3201": { name: "Financial Accounting and Cost Management", type: "Theory", faculty: "Md. Noyon Islam (MNI)", room: "208", credits: 3.0 }
         };
 
+        // Routine Matrix
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+        const routine = {
+            0: ["EEE 3205", "GED 3201", "EEE 3207", null],
+            1: ["EEE 3201", "EEE 3212", "EEE 3203", "EEE 3204"],
+            2: ["EEE 3201", "GED 3201", "EEE 3212", "EEE 3202"],
+            3: ["EEE 3205", "EEE 3209", "EEE 3203", null],
+            4: ["EEE 3207", "EEE 3209", null, null]
+        };
+
+        // Render Routine Table with Full Details
         const tbody = document.getElementById('routine-body');
-        const todayIdx = new Date().getDay(); // 0 is Sunday
+        const todayIdx = new Date().getDay();
 
         for(let d=0; d<5; d++) {
             const isToday = (d === todayIdx);
             let tr = `<tr><td style="font-weight:bold; ${isToday ? 'background: rgba(0, 106, 78, 0.1); color: var(--primary);' : ''}">${days[d]}</td>`;
             for(let s=0; s<4; s++) {
-                const slot = routine[d][s];
-                if(slot) {
+                const courseCode = routine[d][s];
+                if(courseCode) {
+                    const data = courseDB[courseCode];
                     tr += `<td style="${isToday ? 'background: rgba(0, 106, 78, 0.05);' : ''}">
                         <div class="course-cell">
-                            <span class="course-name">${slot.c}</span>
-                            <span class="course-room">Room: ${slot.r}</span>
+                            <span class="course-name">${data.name}</span>
+                            <span class="course-code">${courseCode}</span>
+                            <span class="course-room">Room: ${data.room}</span>
                         </div>
                     </td>`;
                 } else {
@@ -149,6 +183,22 @@
             tr += `</tr>`;
             tbody.innerHTML += tr;
         }
+
+        // Render Course Details List
+        const courseContainer = document.getElementById('course-list-container');
+        Object.keys(courseDB).forEach(code => {
+            const c = courseDB[code];
+            const isLab = c.type === "Lab";
+            courseContainer.innerHTML += `
+                <div class="course-card">
+                    <div class="type-badge ${isLab ? 'lab' : ''}">${c.type}</div>
+                    <h3>${c.name}</h3>
+                    <p>${code}</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Room: ${c.room} | Credits: ${c.credits.toFixed(1)}</p>
+                    <div class="faculty"><strong>Faculty:</strong> ${c.faculty}</div>
+                </div>
+            `;
+        });
 
         // Countdown Logic (Detailed)
         function setupDetailedCD(targetDateStr, elementId) {
