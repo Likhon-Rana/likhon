@@ -1,0 +1,99 @@
+<!-- skills.html -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life OS - Skills</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .progress-bar { width: 100%; height: 10px; background: var(--border); border-radius: 5px; margin-top: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
+        .task-list { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .task-item { display: flex; gap: 10px; align-items: center; background: var(--surface-solid); padding: 10px; border-radius: 8px; border: 1px solid var(--border); }
+    </style>
+</head>
+<body>
+    <aside id="sidebar" class="glass">
+        <div style="padding: 10px; margin-bottom: 20px;"><h2 style="color: var(--primary); font-weight: 800;">Life OS</h2></div>
+        <nav>
+            <a href="index.html" class="nav-item">Overview</a>
+            <a href="academic.html" class="nav-item">Academic Hub</a>
+            <a href="skills.html" class="nav-item active">Skills & Projects</a>
+            <a href="health.html" class="nav-item">Fitness & Wellness</a>
+            <a href="personal.html" class="nav-item">Personal & Habits</a>
+        </nav>
+    </aside>
+
+    <main id="main-content">
+        <header class="glass">
+            <div><h1 style="color: var(--primary);">Skills & Projects</h1><p style="color: var(--text-muted);">Learning & URC/IEEE Tracking</p></div>
+        </header>
+
+        <div class="grid-container">
+            <!-- Learning Progress -->
+            <div class="glass-card">
+                <div class="widget-title">Course Progress</div>
+                
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; font-weight: 600;">
+                        <span>Machine Learning (Coursera)</span><span id="ml-pct">0%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" id="ml-fill" style="width: 0%;"></div></div>
+                    <button class="btn btn-outline" style="margin-top: 10px; padding: 5px;" onclick="addProgress('ml')">+1 Module</button>
+                </div>
+
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-weight: 600;">
+                        <span>Grammar Course (10MS)</span><span id="gr-pct">0%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" id="gr-fill" style="width: 0%;"></div></div>
+                    <button class="btn btn-outline" style="margin-top: 10px; padding: 5px;" onclick="addProgress('gr')">+1 Module</button>
+                </div>
+            </div>
+
+            <!-- Task Manager -->
+            <div class="glass-card">
+                <div class="widget-title">URC & IEEE Tasks</div>
+                <input type="text" id="new-task" placeholder="Add new project task..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 10px;">
+                <button class="btn btn-primary" onclick="addTask()">Add Task</button>
+                <div class="task-list" id="task-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Progress Logic
+        let progress = JSON.parse(localStorage.getItem('course_progress')) || { ml: 0, gr: 0 };
+        function updateUI() {
+            document.getElementById('ml-pct').innerText = `${progress.ml}%`;
+            document.getElementById('ml-fill').style.width = `${progress.ml}%`;
+            document.getElementById('gr-pct').innerText = `${progress.gr}%`;
+            document.getElementById('gr-fill').style.width = `${progress.gr}%`;
+        }
+        function addProgress(course) {
+            if(progress[course] < 100) progress[course] += 10;
+            localStorage.setItem('course_progress', JSON.stringify(progress));
+            updateUI();
+        }
+        updateUI();
+
+        // Tasks Logic
+        let tasks = JSON.parse(localStorage.getItem('proj_tasks')) || [];
+        function renderTasks() {
+            const list = document.getElementById('task-list');
+            list.innerHTML = '';
+            tasks.forEach((t, i) => {
+                list.innerHTML += `<div class="task-item"><input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask(${i})"><span style="${t.done ? 'text-decoration:line-through; color:gray;' : ''}">${t.text}</span></div>`;
+            });
+        }
+        function addTask() {
+            const input = document.getElementById('new-task');
+            if(input.value) { tasks.push({text: input.value, done: false}); localStorage.setItem('proj_tasks', JSON.stringify(tasks)); input.value = ''; renderTasks(); }
+        }
+        function toggleTask(i) { tasks[i].done = !tasks[i].done; localStorage.setItem('proj_tasks', JSON.stringify(tasks)); renderTasks(); }
+        renderTasks();
+    </script>
+</body>
+</html>
