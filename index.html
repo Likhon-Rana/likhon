@@ -26,52 +26,60 @@
         @media (max-width: 768px) { .col-3, .col-4, .col-6, .col-8, .col-12 { grid-column: span 12; } }
 
         .os-card { background: var(--surface-solid); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; transition: 0.2s ease; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.015); }
-        .os-card:hover { border-color: rgba(15, 118, 110, 0.3); box-shadow: 0 6px 24px rgba(0,0,0,0.03); }
-        .card-header { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
-        .card-header i { margin-right: 6px; color: var(--primary); }
+        .os-card:hover { border-color: rgba(15, 118, 110, 0.3); box-shadow: 0 6px 24px rgba(0,0,0,0.04); }
+        .card-header { font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+        .card-header i { margin-right: 6px; color: var(--primary); font-size: 0.9rem; }
 
         /* Typography & Metrics */
-        .metric-title { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 2px;}
-        .metric-value { font-size: 1.4rem; font-weight: 800; color: var(--text-main); display: flex; align-items: baseline; gap: 4px; }
-        .metric-value small { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+        .metric-title { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 2px;}
+        .metric-value { font-size: 1.5rem; font-weight: 900; color: var(--text-main); display: flex; align-items: baseline; gap: 4px; }
+        .metric-value small { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); }
         
-        .prog-slim { width: 100%; height: 4px; background: var(--border); border-radius: 2px; margin-top: 6px; overflow: hidden; }
-        .prog-slim-fill { height: 100%; background: var(--primary); transition: 0.4s ease; }
+        .prog-slim { width: 100%; height: 6px; background: var(--border); border-radius: 3px; margin-top: 8px; overflow: hidden; }
+        .prog-slim-fill { height: 100%; background: var(--primary); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* Header & Life Score */
-        .hero-header { display: flex; justify-content: space-between; align-items: flex-end; padding: 10px 0 20px 0; }
-        .greeting { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text-main); margin-bottom: 4px; }
-        .time-date { font-size: 1rem; font-weight: 600; color: var(--text-muted); display: flex; gap: 12px; align-items: center; }
-        .life-score-wrapper { display: flex; align-items: center; gap: 15px; background: var(--surface-solid); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); }
-        .ls-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; background: conic-gradient(var(--primary) calc(var(--score) * 1%), var(--border) 0); color: var(--primary); position: relative; }
+        /* Hero Header */
+        .hero-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 20px 0; border-bottom: 1px dashed var(--border); margin-bottom: 20px;}
+        .greeting { font-size: 1.6rem; font-weight: 900; color: var(--text-main); margin-bottom: 4px; }
+        .live-clock { font-size: 3rem; font-weight: 900; color: var(--primary); font-variant-numeric: tabular-nums; letter-spacing: -2px; line-height: 1; }
+        .time-date { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); display: flex; gap: 10px; align-items: center; margin-top: 5px; }
+        
+        .life-score-wrapper { display: flex; align-items: center; gap: 15px; background: var(--surface-solid); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .ls-circle { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.1rem; background: conic-gradient(var(--primary) calc(var(--score) * 1%), var(--border) 0); color: var(--primary); position: relative; }
         .ls-circle::before { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: var(--surface-solid); }
         .ls-circle span { position: relative; z-index: 1; }
 
+        /* Motivation Quote */
+        .quote-box { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); font-style: italic; border-left: 3px solid var(--primary); padding-left: 15px; max-width: 500px; margin-top: 15px; line-height: 1.5; }
+
         /* Daily Mission Checklist */
         .mission-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-        .mission-item { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; font-weight: 600; padding: 8px 12px; border-radius: 8px; transition: 0.2s; border: 1px solid transparent; cursor: pointer; }
-        .mission-item:hover { background: var(--surface-hover); border-color: var(--border); }
-        .mission-item.done { text-decoration: line-through; color: var(--text-muted); opacity: 0.7; }
+        .mission-item { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; font-weight: 700; padding: 10px 12px; border-radius: 8px; transition: 0.2s; border: 1px solid var(--border); cursor: pointer; background: var(--surface-solid); }
+        .mission-item:hover { border-color: var(--primary); }
+        .mission-item.done { text-decoration: line-through; color: var(--text-muted); opacity: 0.6; background: transparent; border-color: transparent; }
         .mission-check { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
-        .add-mission-input { width: 100%; border: none; background: transparent; font-size: 0.9rem; font-weight: 600; color: var(--text-main); outline: none; padding: 8px; margin-top: 5px; border-bottom: 1px dashed var(--border); transition: 0.2s; }
-        .add-mission-input:focus { border-bottom-color: var(--primary); }
+        .add-mission-input { width: 100%; border: none; background: rgba(15,118,110,0.05); border-radius: 8px; font-size: 0.9rem; font-weight: 600; color: var(--text-main); outline: none; padding: 10px 12px; margin-top: 10px; transition: 0.2s; }
+        .add-mission-input:focus { box-shadow: 0 0 0 2px var(--primary-light); }
 
         /* Priority & Alerts */
-        .priority-item { padding: 12px 15px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-        .pri-critical { background: rgba(239, 68, 68, 0.08); color: #b91c1c; border-left: 3px solid var(--danger); }
-        .pri-warning { background: rgba(245, 158, 11, 0.08); color: #b45309; border-left: 3px solid var(--accent); }
-        .pri-info { background: rgba(15, 118, 110, 0.08); color: var(--primary); border-left: 3px solid var(--primary); }
+        .priority-item { padding: 15px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; line-height: 1.4; border: 1px solid transparent; }
+        .pri-critical { background: rgba(239, 68, 68, 0.05); color: #b91c1c; border-color: rgba(239, 68, 68, 0.2); border-left: 4px solid var(--danger); }
+        .pri-warning { background: rgba(245, 158, 11, 0.05); color: #b45309; border-color: rgba(245, 158, 11, 0.2); border-left: 4px solid var(--accent); }
+        .pri-success { background: rgba(16, 185, 129, 0.05); color: #047857; border-color: rgba(16, 185, 129, 0.2); border-left: 4px solid #10B981; }
+        
+        /* Exam Countdown Pulse */
+        .live-exam-cd { font-family: monospace; font-size: 1.4rem; font-weight: 900; color: var(--danger); letter-spacing: -0.5px; text-shadow: 0 0 10px rgba(239,68,68,0.2); }
 
         /* Overall Mastery */
-        .north-star { background: var(--bg); border: 1px solid var(--primary-light); padding: 25px; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;}
-        .ns-pill-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; }
-        .ns-pill { padding: 8px 16px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 20px; font-size: 0.9rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .north-star { background: linear-gradient(135deg, rgba(15, 118, 110, 0.05) 0%, rgba(0,0,0,0) 100%); border: 1px solid var(--primary-light); padding: 25px; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+        .ns-pill-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 10px; }
+        .ns-pill { padding: 10px 18px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 30px; font-size: 0.95rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
 
         /* Quick Links */
-        .q-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding-bottom: 15px; }
+        .q-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
         @media (max-width: 768px) { .q-links { grid-template-columns: repeat(2, 1fr); } }
-        .q-tag { padding: 12px 16px; border-radius: 12px; font-size: 0.95rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .q-tag:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .q-tag { padding: 14px 16px; border-radius: 12px; font-size: 0.95rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .q-tag:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
         
         .q-classroom { background: #E8F5E9; color: #047857; border: 1px solid #A7F3D0; }
         .q-unisync { background: #F3E8FF; color: #4338CA; border: 1px solid #C7D2FE; }
@@ -81,21 +89,21 @@
         /* Utilities */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .badge { padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
         .badge-green { background: rgba(16, 185, 129, 0.1); color: #10B981; }
         .badge-red { background: rgba(239, 68, 68, 0.1); color: #EF4444; }
         
-        .btn-icon { background: var(--surface-solid); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-muted); transition: 0.2s; }
+        .btn-icon { background: var(--surface-solid); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-muted); transition: 0.2s; }
         .btn-icon:hover { color: var(--primary); border-color: var(--primary); }
 
-        .form-control { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-solid); color: var(--text-main); font-weight: 600; font-size: 0.9rem; outline: none; }
+        .form-control { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-solid); color: var(--text-main); font-weight: 600; font-size: 0.95rem; outline: none; }
         .form-row { display: flex; gap: 10px; }
 
         /* In-App Notification Overlay */
-        #in-app-notification { position: fixed; top: 20px; right: -400px; width: 320px; background: var(--surface-solid); border-left: 5px solid var(--danger); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 15px 20px; z-index: 9999; transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; gap: 5px; }
+        #in-app-notification { position: fixed; top: 20px; right: -450px; width: 350px; background: var(--surface-solid); border-left: 6px solid var(--danger); border-radius: 12px; box-shadow: 0 15px 50px rgba(0,0,0,0.3); padding: 18px 22px; z-index: 9999; transition: right 0.6s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; gap: 8px; }
         #in-app-notification.show { right: 20px; }
-        .in-app-title { font-size: 1rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .in-app-body { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); line-height: 1.4; }
+        .in-app-title { font-size: 1.1rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        .in-app-body { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -115,25 +123,27 @@
         <!-- Hero Section -->
         <div class="hero-header">
             <div>
+                <div class="live-clock" id="clock">--:--:--</div>
                 <div class="greeting" id="greeting">Good Morning.</div>
                 <div class="time-date">
-                    <span id="clock" style="font-variant-numeric: tabular-nums;">--:--</span>
-                    <span>•</span>
                     <span id="date-text">--</span>
                     <span>•</span>
                     <span id="sem-week">Sem Week --</span>
                 </div>
+                <div class="quote-box" id="daily-quote">"Discipline equals freedom. Keep pushing forward."</div>
             </div>
-            <div style="display: flex; gap: 15px; align-items: center;">
+            <div style="display: flex; gap: 15px; align-items: center; flex-direction: column;">
+                <div style="display: flex; gap: 10px; justify-content: flex-end; width: 100%;">
+                    <button class="btn-icon" onclick="testNotification()" title="Test Alerts" id="btn-notify"><i class="fas fa-bell"></i></button>
+                    <button class="btn-icon" id="theme-toggle" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+                </div>
                 <div class="life-score-wrapper">
                     <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                        <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Life Score</span>
-                        <span style="font-size: 0.9rem; font-weight: 800; color: var(--text-main);">Performance</span>
+                        <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Life Score</span>
+                        <span style="font-size: 1rem; font-weight: 900; color: var(--text-main);">Performance</span>
                     </div>
                     <div class="ls-circle" id="life-score-circle" style="--score: 0;"><span id="life-score-val">0</span></div>
                 </div>
-                <button class="btn-icon" onclick="testNotification()" title="Test Alerts" id="btn-notify"><i class="fas fa-bell"></i></button>
-                <button class="btn-icon" id="theme-toggle" title="Toggle Theme"><i class="fas fa-moon"></i></button>
             </div>
         </div>
 
@@ -156,9 +166,9 @@
 
             <!-- Smart Priorities -->
             <div class="os-card col-6">
-                <div class="card-header"><i class="fas fa-bolt"></i> Smart Priorities</div>
+                <div class="card-header"><i class="fas fa-bolt"></i> Smart AI Directives</div>
                 <div id="priorities-container" style="display: flex; flex-direction: column; gap: 8px;">
-                    <!-- Auto Generated -->
+                    <!-- Auto Generated Fear/Praise -->
                 </div>
             </div>
 
@@ -177,11 +187,11 @@
                 <div style="display: flex; justify-content: space-between;">
                     <div>
                         <div class="metric-title">ML Progress</div>
-                        <div class="metric-value" id="snap-ml-pct" style="font-size: 1.1rem; color: #3B82F6;">0%</div>
+                        <div class="metric-value" id="snap-ml-pct" style="font-size: 1.2rem; color: #3B82F6;">0%</div>
                     </div>
                     <div>
                         <div class="metric-title">Grammar</div>
-                        <div class="metric-value" id="snap-gr-pct" style="font-size: 1.1rem; color: var(--primary);">0%</div>
+                        <div class="metric-value" id="snap-gr-pct" style="font-size: 1.2rem; color: var(--primary);">0%</div>
                     </div>
                 </div>
             </a>
@@ -210,8 +220,11 @@
             <!-- Imminent Deadlines & System Alerts -->
             <div class="os-card col-6" style="display: flex; flex-direction: column; gap: 15px;">
                 <div>
-                    <div class="card-header"><i class="fas fa-hourglass-half"></i> Imminent Deadlines</div>
-                    <div id="deadlines-container" class="grid-2"></div>
+                    <div class="card-header"><i class="fas fa-hourglass-half"></i> Statistics (Retake) Exam Countdown</div>
+                    <div style="background: rgba(239, 68, 68, 0.05); border: 1px dashed var(--danger); padding: 20px; border-radius: 12px; text-align: center;">
+                        <div class="live-exam-cd" id="stat-live-cd">Loading...</div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: var(--danger); text-transform: uppercase; margin-top: 8px;">Time is running out</div>
+                    </div>
                 </div>
                 <div style="flex: 1; overflow-y: auto;">
                     <div class="card-header"><i class="fas fa-satellite-dish"></i> System Alerts</div>
@@ -219,7 +232,7 @@
                 </div>
             </div>
 
-            <!-- Overall Mastery (Replaced North Star) -->
+            <!-- Overall Mastery -->
             <div class="os-card col-6 north-star">
                 <div class="card-header" style="justify-content: center;"><i class="fas fa-star" style="color: #F59E0B;"></i> Overall Progress & Mastery</div>
                 <div class="ns-pill-container">
@@ -249,20 +262,20 @@
             <div class="os-card col-6">
                 <div class="card-header"><i class="fas fa-calendar-week"></i> 7-Day Performance</div>
                 <div class="grid-4">
-                    <div><div class="metric-title">Study</div><div class="metric-value" style="font-size:1.1rem;" id="sum-w-study">0h</div></div>
-                    <div><div class="metric-title">Protein</div><div class="metric-value" style="font-size:1.1rem;" id="sum-w-pro">0g</div></div>
-                    <div><div class="metric-title">Sleep</div><div class="metric-value" style="font-size:1.1rem;" id="sum-w-slp">0h</div></div>
-                    <div><div class="metric-title">Spent</div><div class="metric-value" style="font-size:1.1rem; color:var(--danger);" id="sum-w-spent">0</div></div>
+                    <div><div class="metric-title">Study</div><div class="metric-value" style="font-size:1.2rem;" id="sum-w-study">0h</div></div>
+                    <div><div class="metric-title">Protein</div><div class="metric-value" style="font-size:1.2rem;" id="sum-w-pro">0g</div></div>
+                    <div><div class="metric-title">Sleep</div><div class="metric-value" style="font-size:1.2rem;" id="sum-w-slp">0h</div></div>
+                    <div><div class="metric-title">Spent</div><div class="metric-value" style="font-size:1.2rem; color:var(--danger);" id="sum-w-spent">0</div></div>
                 </div>
             </div>
 
             <div class="os-card col-6">
                 <div class="card-header"><i class="fas fa-calendar-alt"></i> Month to Date</div>
                 <div class="grid-4">
-                    <div><div class="metric-title">Gym Days</div><div class="metric-value" style="font-size:1.1rem;" id="sum-m-gym">0</div></div>
-                    <div><div class="metric-title">Lessons Done</div><div class="metric-value" style="font-size:1.1rem;" id="sum-m-lms">0</div></div>
-                    <div><div class="metric-title">Avg Study</div><div class="metric-value" style="font-size:1.1rem;" id="sum-m-study">0h</div></div>
-                    <div><div class="metric-title">Score</div><div class="metric-value" style="font-size:1.1rem; color:var(--primary);" id="sum-m-score">0%</div></div>
+                    <div><div class="metric-title">Gym Days</div><div class="metric-value" style="font-size:1.2rem;" id="sum-m-gym">0</div></div>
+                    <div><div class="metric-title">Lessons Done</div><div class="metric-value" style="font-size:1.2rem;" id="sum-m-lms">0</div></div>
+                    <div><div class="metric-title">Avg Study</div><div class="metric-value" style="font-size:1.2rem;" id="sum-m-study">0h</div></div>
+                    <div><div class="metric-title">Score</div><div class="metric-value" style="font-size:1.2rem; color:var(--primary);" id="sum-m-score">0%</div></div>
                 </div>
             </div>
 
@@ -271,7 +284,7 @@
 
     <!-- In-App Guaranteed Notification System -->
     <div id="in-app-notification">
-        <div class="in-app-title"><i class="fas fa-bell" style="color: var(--danger);"></i> <span id="in-app-heading">Alert</span></div>
+        <div class="in-app-title"><i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> <span id="in-app-heading">Alert</span></div>
         <div class="in-app-body" id="in-app-text">Message goes here.</div>
     </div>
 
@@ -284,48 +297,79 @@
         }
         const now = new Date();
         const todayStr = getLocalDateStr(now);
+        const currentMonthStr = todayStr.substring(0, 7); // e.g. "2026-08"
 
-        // --- Database Connections ---
+        // --- Database Connections (With Safety Merges) ---
         const fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || { weight:[], gym:[], nutrition:[], sleep:[] };
-        const pDB = JSON.parse(localStorage.getItem('lifeos_personal_db')) || { budget: 8000, expenses: [], savings: [], habits: [] };
         const lDB = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || { checkedItems: {}, history: [] };
         const aDB = JSON.parse(localStorage.getItem('lifeos_academic_db')) || { studyLogs: [] };
+        
+        // Fix for missing budget data: Merge 'lifeos_personal_db' and 'lifeos_finance_v3' securely
+        let pDB = JSON.parse(localStorage.getItem('lifeos_personal_db')) || { budget: 8000, expenses: [], savings: [], habits: [] };
+        let backupFinance = JSON.parse(localStorage.getItem('lifeos_finance_v3'));
+        
+        if (backupFinance && backupFinance.expenses && backupFinance.expenses.length > 0) {
+            // Merge expenses preventing duplicates by ID
+            const existingIds = new Set(pDB.expenses.map(e => e.id));
+            backupFinance.expenses.forEach(e => {
+                if(!existingIds.has(e.id)) pDB.expenses.push(e);
+            });
+            localStorage.setItem('lifeos_personal_db', JSON.stringify(pDB)); // Save merged data
+        }
+
+        // --- Quotes Engine ---
+        const quotes = [
+            "Discipline equals freedom. Keep pushing forward.",
+            "Your future self is watching you right now through memories.",
+            "Do not sacrifice what you want most for what you want now.",
+            "The pain of discipline is far less than the pain of regret.",
+            "You don't have to be extreme, just consistent.",
+            "Don't stop when you're tired. Stop when you're done."
+        ];
+        document.getElementById('daily-quote').innerText = `"${quotes[now.getDate() % quotes.length]}"`;
 
         // --- In-App Guaranteed Notification System ---
-        function showInAppNotification(title, text) {
+        function showInAppNotification(title, text, type) {
             const popup = document.getElementById('in-app-notification');
+            const icon = popup.querySelector('i');
+            
+            if(type === 'danger') {
+                popup.style.borderLeftColor = 'var(--danger)';
+                icon.className = 'fas fa-skull-crossbones';
+                icon.style.color = 'var(--danger)';
+            } else if(type === 'success') {
+                popup.style.borderLeftColor = '#10B981';
+                icon.className = 'fas fa-trophy';
+                icon.style.color = '#10B981';
+            } else {
+                popup.style.borderLeftColor = 'var(--accent)';
+                icon.className = 'fas fa-exclamation-triangle';
+                icon.style.color = 'var(--accent)';
+            }
+
             document.getElementById('in-app-heading').innerText = title;
             document.getElementById('in-app-text').innerText = text;
             
             popup.classList.add('show');
-            
-            // Auto hide after 6 seconds
-            setTimeout(() => {
-                popup.classList.remove('show');
-            }, 6000);
+            setTimeout(() => { popup.classList.remove('show'); }, 7000);
         }
 
-        function triggerSmartPush(id, title, body) {
+        function triggerSmartPush(id, title, body, type) {
             const lastSent = sessionStorage.getItem(`notify_${id}`);
             const timeNow = new Date().getTime();
             
-            // Prevent spam: only send same notification once per 4 hours (14,400,000 ms)
+            // Send once per 4 hours
             if(!lastSent || (timeNow - parseInt(lastSent)) > 14400000) {
-                
-                // 1. Guaranteed In-App UI Notification
-                showInAppNotification(title, body);
-
-                // 2. Attempt Native OS Notification
+                showInAppNotification(title, body, type);
                 if ("Notification" in window && Notification.permission === "granted") {
-                    new Notification(title, { body: body, icon: 'https://cdn-icons-png.flaticon.com/512/564/564276.png' });
+                    new Notification(title, { body: body });
                 }
-
                 sessionStorage.setItem(`notify_${id}`, timeNow.toString());
             }
         }
 
         function testNotification() {
-            triggerSmartPush("test", "Test Notification", "The notification engine is working perfectly.");
+            triggerSmartPush("test", "Test Notification", "The notification engine is working perfectly. Get back to work.", "danger");
         }
 
         // --- Header & Hero ---
@@ -336,7 +380,7 @@
             else if(h < 18) greeting = "Good Afternoon.";
             document.getElementById('greeting').innerText = greeting;
 
-            document.getElementById('date-text').innerText = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            document.getElementById('date-text').innerText = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
             
             const semStart = new Date('2026-07-19T00:00:00');
             const diffWeeks = Math.floor(Math.max(0, now - semStart) / (1000 * 60 * 60 * 24 * 7)) + 1;
@@ -345,47 +389,45 @@
 
         function updateClock() {
             const d = new Date();
-            document.getElementById('clock').innerText = d.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+            document.getElementById('clock').innerText = d.toLocaleTimeString('en-US', { hour12: false });
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // --- Calculate Life Score (Decision Metric) ---
+        // --- Live Exam Countdown ---
+        function updateExamCountdown() {
+            const target = new Date("2026-08-31T00:00:00").getTime();
+            const diff = target - new Date().getTime();
+            if(diff > 0) {
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('stat-live-cd').innerText = `${d}d : ${h.toString().padStart(2,'0')}h : ${m.toString().padStart(2,'0')}m : ${s.toString().padStart(2,'0')}s`;
+            } else {
+                document.getElementById('stat-live-cd').innerText = "EXAM TIME!";
+            }
+        }
+        setInterval(updateExamCountdown, 1000); updateExamCountdown();
+
+        // --- Calculate Life Score ---
         function calculateLifeScore() {
             let score = 0;
-            // Academic (25): Study logged today?
             const aToday = aDB.studyLogs.find(x => x.date === todayStr);
-            if(aToday && aToday.hours >= 2) score += 25;
-            else if(aToday && aToday.hours > 0) score += 15;
+            if(aToday && aToday.hours >= 2) score += 25; else if(aToday && aToday.hours > 0) score += 15;
 
-            // Learning (25): LMS item checked today?
             const lToday = lDB.history.filter(x => x.rawDate === todayStr).length;
-            if(lToday >= 2) score += 25;
-            else if(lToday === 1) score += 15;
+            if(lToday >= 2) score += 25; else if(lToday === 1) score += 15;
 
-            // Fitness (25): Gym or Good Protein
             const fGym = fDB.gym.find(x => x.date === todayStr);
             const fNut = fDB.nutrition.find(x => x.date === todayStr);
-            let fScore = 0;
-            if(fGym && fGym.attended) fScore += 15;
-            if(fNut && fNut.pro >= 80) fScore += 10;
-            score += fScore;
+            if(fGym && fGym.attended) score += 15;
+            if(fNut && fNut.pro >= 80) score += 10;
 
-            // Finance (25): Strictly calculated Remaining Budget
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            
-            // Only count expenses matching this exact year and month
-            const monthlyExps = pDB.expenses.filter(e => {
-                const dateParts = e.date.split('-'); // e.g. "2026-08-07"
-                const expYear = parseInt(dateParts[0]);
-                const expMonth = parseInt(dateParts[1]) - 1; // 0-indexed
-                return expYear === currentYear && expMonth === currentMonth;
-            });
-            const spent = monthlyExps.reduce((s, e) => s + e.amount, 0);
+            const monthlyExps = pDB.expenses.filter(e => e.date && e.date.startsWith(currentMonthStr));
+            const spent = monthlyExps.reduce((s, e) => s + parseFloat(e.amount), 0);
             
             const budgetPace = (pDB.budget / 30) * now.getDate();
-            if(spent <= budgetPace) score += 25;
-            else if(spent <= pDB.budget) score += 10;
+            if(spent <= budgetPace) score += 25; else if(spent <= pDB.budget) score += 10;
 
             document.getElementById('life-score-val').innerText = score;
             document.getElementById('life-score-circle').style.setProperty('--score', score);
@@ -393,9 +435,7 @@
 
         // --- 2. Today's Mission Checklist ---
         let missions = JSON.parse(localStorage.getItem('lifeos_missions')) || [
-            { id: 1, text: "Study 2 Hours", done: false },
-            { id: 2, text: "Eat 100g Protein", done: false },
-            { id: 3, text: "Attend Gym", done: false }
+            { id: 1, text: "Study 2 Hours", done: false }, { id: 2, text: "Eat 100g Protein", done: false }, { id: 3, text: "Attend Gym", done: false }
         ];
 
         function renderMissions() {
@@ -411,61 +451,44 @@
                 `;
             });
         }
-        function toggleMission(id) {
-            const m = missions.find(x => x.id === id); m.done = !m.done;
-            localStorage.setItem('lifeos_missions', JSON.stringify(missions)); renderMissions();
-        }
-        function deleteMission(id) {
-            missions = missions.filter(x => x.id !== id);
-            localStorage.setItem('lifeos_missions', JSON.stringify(missions)); renderMissions();
-        }
-        function handleMissionEnter(e) {
-            if(e.key === 'Enter' && e.target.value) {
-                missions.push({ id: Date.now(), text: e.target.value, done: false });
-                localStorage.setItem('lifeos_missions', JSON.stringify(missions));
-                e.target.value = ''; renderMissions();
-            }
-        }
+        function toggleMission(id) { const m = missions.find(x => x.id === id); m.done = !m.done; localStorage.setItem('lifeos_missions', JSON.stringify(missions)); renderMissions(); }
+        function deleteMission(id) { missions = missions.filter(x => x.id !== id); localStorage.setItem('lifeos_missions', JSON.stringify(missions)); renderMissions(); }
+        function handleMissionEnter(e) { if(e.key === 'Enter' && e.target.value) { missions.push({ id: Date.now(), text: e.target.value, done: false }); localStorage.setItem('lifeos_missions', JSON.stringify(missions)); e.target.value = ''; renderMissions(); } }
 
-        // --- Smart Priorities & Alerts Engine ---
+        // --- Smart Priorities & Alerts Engine (Fear & Praise) ---
         function runEngine() {
             let alerts = [];
-
-            // Deadlines
-            const dls = [
-                { n: "Statistics Retake", d: new Date('2026-08-31T00:00:00') },
-                { n: "In-Course Exams", d: new Date('2026-09-13T00:00:00') }
-            ];
-            
-            const dlCont = document.getElementById('deadlines-container');
-            dlCont.innerHTML = '';
-            dls.forEach(dl => {
-                const days = Math.ceil((dl.d - now) / 86400000);
-                if(days <= 30) {
-                    let cls = "pri-info"; if(days<=15) cls = "pri-warning"; if(days<=7) cls = "pri-critical";
-                    dlCont.innerHTML += `<div class="priority-item ${cls}" style="justify-content:space-between;"><span>${dl.n}</span> <span style="font-size:1.2rem;">${days}d</span></div>`;
-                    if(days <= 7) alerts.push({ p: 100, t: `Critical: ${dl.n} is in ${days} days!`, c: 'pri-critical' });
-                }
-            });
 
             // Analyze Data
             const aToday = aDB.studyLogs.find(x => x.date === todayStr);
             const fNut = fDB.nutrition.find(x => x.date === todayStr);
             const fGym = fDB.gym.find(x => x.date === todayStr);
             
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            const monthlyExps = pDB.expenses.filter(e => {
-                const dateParts = e.date.split('-');
-                return parseInt(dateParts[0]) === currentYear && (parseInt(dateParts[1]) - 1) === currentMonth;
-            });
-            const spent = monthlyExps.reduce((s, e) => s + e.amount, 0);
+            const monthlyExps = pDB.expenses.filter(e => e.date && e.date.startsWith(currentMonthStr));
+            const spent = monthlyExps.reduce((s, e) => s + parseFloat(e.amount), 0);
 
-            // Generate Alerts & Priorities based on severity
-            if(!fNut || fNut.pro < 80) alerts.push({ p: 90, t: "Protein extremely low. Eat now.", c: 'pri-warning', push: true });
-            if(!aToday || aToday.hours === 0) alerts.push({ p: 80, t: "Zero study hours logged today.", c: 'pri-warning', push: true });
-            if(!fGym) alerts.push({ p: 70, t: "Gym attendance not logged.", c: 'pri-info' });
-            if(spent > pDB.budget * 0.9) alerts.push({ p: 95, t: "Budget critical: Over 90% spent.", c: 'pri-critical', push: true });
+            // 1. Fitness Logic
+            if(fGym && fGym.attended) {
+                alerts.push({ p: 100, t: "🏆 CHAMPION MINDSET: Gym completed! Building that discipline.", c: 'pri-success', type: 'success' });
+            } else if(!fGym) {
+                alerts.push({ p: 90, t: "💀 DANGER: Gym attendance not logged. Don't be weak today.", c: 'pri-critical', push: true, type: 'danger' });
+            } else if(fGym && !fGym.attended) {
+                alerts.push({ p: 95, t: "🚨 FAILURE: You skipped the gym today. Your competitors are working out right now.", c: 'pri-critical', push: true, type: 'danger' });
+            }
+
+            if(fNut && fNut.pro >= 100) alerts.push({ p: 85, t: "✅ PERFECT: Protein goal crushed. Muscles fed.", c: 'pri-success', type: 'success' });
+            else if(!fNut || fNut.pro < 50) alerts.push({ p: 80, t: "💀 WARNING: You are starving your muscles. Barely any protein logged!", c: 'pri-critical', type: 'danger' });
+
+            // 2. Study Logic
+            if(aToday && aToday.hours >= 2) alerts.push({ p: 105, t: "🏆 BEAST MODE: 2+ hours of study logged. You are earning that PhD.", c: 'pri-success', type: 'success' });
+            else if(!aToday || aToday.hours === 0) alerts.push({ p: 85, t: "🚨 WAKE UP: You are destroying your future. Zero study hours logged today!", c: 'pri-critical', push: true, type: 'danger' });
+
+            // 3. Finance Logic
+            if(spent > pDB.budget) {
+                alerts.push({ p: 110, t: `💀 FINANCIAL RUIN: You've blown past your budget (${spent}/${pDB.budget})! STOP SPENDING IMMEDIATELY.`, c: 'pri-critical', push: true, type: 'danger' });
+            } else if(spent > pDB.budget * 0.8) {
+                alerts.push({ p: 88, t: "💸 WARNING: You have spent over 80% of your monthly budget. Lock your wallet.", c: 'pri-warning', type: 'warning' });
+            }
 
             alerts.sort((a,b) => b.p - a.p);
 
@@ -474,17 +497,17 @@
             priCont.innerHTML = '';
             alerts.slice(0, 3).forEach(a => {
                 priCont.innerHTML += `<div class="priority-item ${a.c}">${a.t}</div>`;
-                if(a.push) triggerSmartPush("prio_"+a.p, "Smart Priority", a.t);
+                if(a.push) triggerSmartPush("prio_"+a.p, "System Alert", a.t, a.type);
             });
-            if(alerts.length === 0) priCont.innerHTML = `<div class="priority-item pri-info"><i class="fas fa-check"></i> All systems optimal.</div>`;
+            if(alerts.length === 0) priCont.innerHTML = `<div class="priority-item pri-info"><i class="fas fa-check"></i> All systems optimal. Keep executing.</div>`;
 
             // Populate Alerts (Rest)
             const alertCont = document.getElementById('alerts-container');
             alertCont.innerHTML = '';
             alerts.slice(3).forEach(a => {
-                alertCont.innerHTML += `<div style="font-size:0.85rem; font-weight:600; padding:6px 0; border-bottom:1px solid var(--border); color:var(--text-muted);">${a.t}</div>`;
+                alertCont.innerHTML += `<div style="font-size:0.85rem; font-weight:700; padding:8px 0; border-bottom:1px dashed var(--border); color:var(--text-muted);">${a.t}</div>`;
             });
-            if(alerts.length <= 3) alertCont.innerHTML = `<div style="font-size:0.85rem; color:var(--text-muted);">No secondary alerts.</div>`;
+            if(alerts.length <= 3) alertCont.innerHTML = `<div style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">No secondary alerts.</div>`;
         }
 
         // --- Today Snapshots ---
@@ -504,8 +527,8 @@
                 }
             });
             
-            const mlPct = Math.min(Math.round((mlDone/100)*100), 100); // ML approx 100 items
-            const grPct = Math.min(Math.round((grDone/50)*100), 100);  // Grammar approx 50 items
+            const mlPct = Math.min(Math.round((mlDone/100)*100), 100); 
+            const grPct = Math.min(Math.round((grDone/50)*100), 100);  
             
             document.getElementById('snap-ml-pct').innerText = `${mlPct}%`;
             document.getElementById('snap-gr-pct').innerText = `${grPct}%`;
@@ -518,19 +541,14 @@
             const fGym = fDB.gym.find(x => x.date === todayStr);
             document.getElementById('snap-gym').innerHTML = fGym ? (fGym.attended ? '<span class="badge badge-green">Done</span>' : '<span class="badge badge-red">Missed</span>') : '<span class="badge" style="background:var(--border);">Pending</span>';
 
-            // Strict Finance Logic applied to Overview
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            const monthlyExps = pDB.expenses.filter(e => {
-                const dateParts = e.date.split('-');
-                return parseInt(dateParts[0]) === currentYear && (parseInt(dateParts[1]) - 1) === currentMonth;
-            });
-            const spent = monthlyExps.reduce((s, e) => s + e.amount, 0);
+            // Finance (Using strict string matching for foolproof local dates)
+            const monthlyExps = pDB.expenses.filter(e => e.date && e.date.startsWith(currentMonthStr));
+            const spent = monthlyExps.reduce((s, e) => s + parseFloat(e.amount), 0);
             
-            document.getElementById('snap-budget').innerHTML = `${(pDB.budget - spent).toLocaleString()}`;
+            document.getElementById('snap-budget').innerHTML = `${Math.max(0, pDB.budget - spent).toLocaleString()}`;
             document.getElementById('snap-bdg-bar').style.width = `${Math.min((spent/pDB.budget)*100, 100)}%`;
 
-            const sav = pDB.savings ? pDB.savings.reduce((s, e) => s + e.amount, 0) : 0;
+            const sav = pDB.savings ? pDB.savings.reduce((s, e) => s + parseFloat(e.amount), 0) : 0;
             document.getElementById('ns-sav').innerText = `${sav.toLocaleString()}`;
         }
 
@@ -540,25 +558,24 @@
             const wStartObj = new Date(now); wStartObj.setDate(now.getDate() - 7);
             const wStartStr = getLocalDateStr(wStartObj);
             
-            const wStudy = aDB.studyLogs.filter(x => x.date >= wStartStr).reduce((s,x)=>s+x.hours,0);
+            const wStudy = aDB.studyLogs.filter(x => x.date >= wStartStr).reduce((s,x)=>s+parseFloat(x.hours),0);
             document.getElementById('sum-w-study').innerText = `${wStudy.toFixed(1)}h`;
 
             const wNut = fDB.nutrition.filter(x => x.date >= wStartStr);
-            document.getElementById('sum-w-pro').innerText = `${wNut.length ? Math.round(wNut.reduce((s,x)=>s+x.pro,0)/wNut.length) : 0}g`;
+            document.getElementById('sum-w-pro').innerText = `${wNut.length ? Math.round(wNut.reduce((s,x)=>s+parseFloat(x.pro),0)/wNut.length) : 0}g`;
 
             const wSlp = fDB.sleep.filter(x => x.date >= wStartStr);
-            document.getElementById('sum-w-slp').innerText = `${wSlp.length ? (wSlp.reduce((s,x)=>s+x.duration,0)/wSlp.length).toFixed(1) : 0}h`;
+            document.getElementById('sum-w-slp').innerText = `${wSlp.length ? (wSlp.reduce((s,x)=>s+parseFloat(x.duration),0)/wSlp.length).toFixed(1) : 0}h`;
 
-            const wExp = pDB.expenses.filter(x => x.date >= wStartStr).reduce((s,x)=>s+x.amount,0);
+            const wExp = pDB.expenses.filter(x => x.date >= wStartStr).reduce((s,x)=>s+parseFloat(x.amount),0);
             document.getElementById('sum-w-spent').innerText = wExp;
 
             // Monthly
-            const mStartStr = todayStr.substring(0, 7) + '-01';
-            document.getElementById('sum-m-gym').innerText = fDB.gym.filter(x => x.date >= mStartStr && x.attended).length;
-            document.getElementById('sum-m-lms').innerText = lDB.history.filter(x => x.rawDate >= mStartStr).length;
+            document.getElementById('sum-m-gym').innerText = fDB.gym.filter(x => x.date && x.date.startsWith(currentMonthStr) && x.attended).length;
+            document.getElementById('sum-m-lms').innerText = lDB.history.filter(x => x.rawDate && x.rawDate.startsWith(currentMonthStr)).length;
             
-            const mStudy = aDB.studyLogs.filter(x => x.date >= mStartStr);
-            document.getElementById('sum-m-study').innerText = `${mStudy.length ? (mStudy.reduce((s,x)=>s+x.hours,0)/mStudy.length).toFixed(1) : 0}h`;
+            const mStudy = aDB.studyLogs.filter(x => x.date && x.date.startsWith(currentMonthStr));
+            document.getElementById('sum-m-study').innerText = `${mStudy.length ? (mStudy.reduce((s,x)=>s+parseFloat(x.hours),0)/mStudy.length).toFixed(1) : 0}h`;
             
             document.getElementById('sum-m-score').innerText = document.getElementById('life-score-val').innerText + "%";
         }
