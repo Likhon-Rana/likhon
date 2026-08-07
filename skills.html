@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life OS - Learning Tracker</title>
+    <title>Life OS - LMS Skills & Learning Tracker</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -21,51 +21,62 @@
 
         .dash-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; margin-top: 15px; }
         .col-4 { grid-column: span 4; }
-        .col-5 { grid-column: span 5; }
         .col-6 { grid-column: span 6; }
-        .col-7 { grid-column: span 7; }
         .col-8 { grid-column: span 8; }
         .col-12 { grid-column: span 12; }
 
         @media (max-width: 1100px) {
-            .col-4, .col-5, .col-6, .col-7, .col-8 { grid-column: span 12; }
+            .col-4, .col-6, .col-8 { grid-column: span 12; }
         }
 
         .glass-card { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; box-shadow: 0 8px 32px rgba(0,0,0,0.04); transition: 0.3s; }
         .glass-card:hover { box-shadow: 0 12px 40px rgba(15, 118, 110, 0.08); transform: translateY(-2px); }
         
-        .sec-title { font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        
-        /* Inputs */
-        .form-control { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-solid); color: var(--text-main); font-weight: 600; font-size: 0.9rem; outline: none; transition: 0.2s; }
-        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); }
-        .inline-input { width: 80px; padding: 4px 8px; font-size: 1rem; text-align: center; border-radius: 6px; border: 1px solid var(--primary-light); background: rgba(15, 118, 110, 0.05); font-weight: 800; color: var(--primary); }
+        .sec-title { font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .sec-title i { margin-right: 8px; }
 
-        /* Progress Bars */
-        .prog-bg { width: 100%; height: 14px; background: var(--border); border-radius: 7px; overflow: hidden; margin: 12px 0; }
-        .prog-fill { height: 100%; background: var(--primary); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* Progress Bar */
+        .prog-bg { width: 100%; height: 12px; background: var(--border); border-radius: 6px; overflow: hidden; margin: 10px 0; }
+        .prog-fill { height: 100%; background: var(--primary); transition: width 0.5s ease; }
 
-        /* Tables */
-        .table-wrapper { overflow-x: auto; max-height: 350px; }
+        /* Accordion / Collapsible Styling */
+        .accordion-item { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; background: var(--surface-solid); }
+        .accordion-header { padding: 14px 18px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: var(--surface-solid); transition: 0.2s; }
+        .accordion-header:hover { background: var(--surface-hover); }
+        .accordion-body { padding: 15px; border-top: 1px solid var(--border); display: none; background: rgba(255,255,255,0.4); }
+        .accordion-item.active .accordion-body { display: block; }
+
+        /* Checkbox List */
+        .check-group-title { font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin: 10px 0 5px 0; letter-spacing: 0.5px; }
+        .check-item { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .check-item:hover { background: rgba(15, 118, 110, 0.05); }
+        .check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+        .check-item.completed { text-decoration: line-through; color: var(--text-muted); opacity: 0.8; }
+
+        /* Badges */
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; }
+        .badge-primary { background: rgba(15, 118, 110, 0.1); color: var(--primary); }
+        .badge-accent { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
+
+        /* Tables & History */
+        .table-wrapper { overflow-x: auto; max-height: 320px; }
         .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        .data-table th, .data-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid var(--border); }
-        .data-table th { position: sticky; top: 0; background: var(--surface-solid); font-weight: 800; color: var(--text-muted); z-index: 10; }
-        .data-table tr:hover { background: var(--surface-hover); }
-        .course-badge { padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; background: rgba(15, 118, 110, 0.1); color: var(--primary); }
-        .grammar-badge { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
-        
-        /* Stats & Predictions */
-        .insight-box { padding: 15px; background: linear-gradient(to right, rgba(15, 118, 110, 0.05), transparent); border-left: 4px solid var(--primary); border-radius: 0 10px 10px 0; font-weight: 600; font-size: 0.95rem; line-height: 1.5; margin-bottom: 10px; }
-        .insight-box.warning { border-left-color: var(--danger); background: linear-gradient(to right, rgba(239, 68, 68, 0.05), transparent); }
+        .data-table th, .data-table td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); }
+        .data-table th { position: sticky; top: 0; background: var(--surface-solid); font-weight: 800; color: var(--text-muted); z-index: 5; }
+
+        /* Stat Cards & Insights */
+        .stat-box { background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
+        .stat-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .stat-val { font-size: 1.4rem; font-weight: 900; color: var(--text-main); }
+
+        .warning-box { padding: 15px; background: rgba(239, 68, 68, 0.08); border-left: 4px solid var(--danger); border-radius: 0 10px 10px 0; font-weight: 700; font-size: 0.9rem; color: #b91c1c; margin-top: 10px; }
+        .success-box { padding: 15px; background: rgba(15, 118, 110, 0.08); border-left: 4px solid var(--primary); border-radius: 0 10px 10px 0; font-weight: 700; font-size: 0.9rem; color: var(--primary); margin-top: 10px; }
 
         /* Action Buttons */
         .action-btns { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-        .btn-add { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; font-size: 1rem; }
-        .btn-add:hover { background: #0d615a; transform: translateY(-2px); }
         .btn-sm { padding: 8px 12px; font-size: 0.85rem; }
 
-        /* Charts */
-        .chart-container { position: relative; height: 220px; width: 100%; margin-top: 15px; }
+        .chart-container { position: relative; height: 220px; width: 100%; margin-top: 10px; }
 
         /* Toast */
         #toast { visibility: hidden; min-width: 250px; background-color: var(--primary); color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
@@ -89,39 +100,138 @@
     <main id="main-content">
         <header class="glass">
             <div>
-                <h1 style="color: var(--primary); font-weight: 900;">Learning Tracker</h1>
-                <p style="color: var(--text-muted); font-weight: 700;">Data-Driven Course Progress & Predictions</p>
+                <h1 style="color: var(--primary); font-weight: 900;">Skills & Learning Management</h1>
+                <p style="color: var(--text-muted); font-weight: 700;">Syllabus-Based LMS & Predictive Analytics</p>
             </div>
             <button id="theme-toggle" class="btn btn-outline" style="width: auto;"><i class="fas fa-moon"></i></button>
         </header>
 
         <div class="dash-grid">
             
-            <!-- SECTION 1: Learning Tracker -->
-            <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0;"><i class="fas fa-laptop-code"></i> Course Progress</div></div>
-            
-            <div id="courses-container" class="col-12" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
-                <!-- JS will inject ML and Grammar course cards here -->
-            </div>
+            <!-- SECTION 1: Semester Learning Goals Overview -->
+            <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0;"><span><i class="fas fa-bullseye"></i> Active Semester Goals</span></div></div>
 
-            <!-- SECTION 4: Semester Progress & AI Predictions -->
-            <div class="glass-card col-5">
-                <div class="sec-title"><i class="fas fa-bolt"></i> Semester Predictions</div>
-                <div id="predictions-container">
-                    <!-- JS populated -->
+            <div class="glass-card col-6">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div>
+                        <span class="badge badge-primary">Coursera Specialization</span>
+                        <h3 style="font-weight: 900; margin-top: 5px; color: var(--primary);">Machine Learning</h3>
+                    </div>
+                    <span id="ml-status-badge" class="badge badge-accent">In Progress</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 0.9rem;">
+                    <span>Progress: <span id="ml-overall-pct">0%</span></span>
+                    <span style="color: var(--text-muted);">Remaining: <span id="ml-rem-count">0</span> items</span>
+                </div>
+                <div class="prog-bg"><div id="ml-prog-bar" class="prog-fill" style="width: 0%;"></div></div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem; font-weight: 700; margin: 12px 0;">
+                    <div>📅 Deadline: <strong>06 Dec 2026</strong></div>
+                    <div>🎯 Est. Finish: <strong id="ml-est-date" style="color: var(--primary);">Calculating...</strong></div>
+                </div>
+
+                <!-- SECTION 8: Quick Links -->
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
+                    <a href="https://www.coursera.org/learn/machine-learning/home/module/1" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> Open Course</a>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fas fa-book"></i> Notes</a>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fab fa-github"></i> GitHub Repo</a>
                 </div>
             </div>
 
-            <!-- SECTION 2: Progress History -->
-            <div class="glass-card col-7">
+            <div class="glass-card col-6">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div>
+                        <span class="badge badge-accent">10 Minute School</span>
+                        <h3 style="font-weight: 900; margin-top: 5px; color: #3B82F6;">English Grammar Course</h3>
+                    </div>
+                    <span id="gr-status-badge" class="badge badge-accent">In Progress</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 0.9rem;">
+                    <span>Progress: <span id="gr-overall-pct">0%</span></span>
+                    <span style="color: var(--text-muted);">Remaining: <span id="gr-rem-count">0</span> items</span>
+                </div>
+                <div class="prog-bg"><div id="gr-prog-bar" class="prog-fill" style="width: 0%; background: #3B82F6;"></div></div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem; font-weight: 700; margin: 12px 0;">
+                    <div>📅 Deadline: <strong>06 Dec 2026</strong></div>
+                    <div>🎯 Est. Finish: <strong id="gr-est-date" style="color: #3B82F6;">Calculating...</strong></div>
+                </div>
+
+                <!-- SECTION 8: Quick Links -->
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
+                    <a href="https://app.10minuteschool.com/skills/courses/learn/english-grammar-course/overview" target="_blank" class="btn btn-primary btn-sm" style="background: #3B82F6;"><i class="fas fa-external-link-alt"></i> Open Course</a>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fas fa-book"></i> Notes</a>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fas fa-certificate"></i> Certificate</a>
+                </div>
+            </div>
+
+            <!-- SECTION 6: Semester Prediction & Pace Analysis -->
+            <div class="glass-card col-12">
+                <div class="sec-title"><span><i class="fas fa-robot"></i> Semester Predictions & Target Pace</span></div>
+                <div id="prediction-alerts">
+                    <!-- JS Injected Predictions -->
+                </div>
+            </div>
+
+            <!-- SECTION 2: Machine Learning Tracker -->
+            <div class="glass-card col-6">
+                <div class="sec-title">
+                    <span><i class="fas fa-brain"></i> Machine Learning Syllabus</span>
+                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);" id="ml-weeks-status">0 / 0 Weeks</span>
+                </div>
+                <div id="ml-accordion-container">
+                    <!-- Dynamic ML Accordions -->
+                </div>
+            </div>
+
+            <!-- SECTION 3: English Grammar Tracker -->
+            <div class="glass-card col-6">
+                <div class="sec-title">
+                    <span><i class="fas fa-spell-check"></i> Grammar Course Syllabus</span>
+                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);" id="gr-chaps-status">0 / 0 Chapters</span>
+                </div>
+                <div id="gr-accordion-container">
+                    <!-- Dynamic Grammar Accordions -->
+                </div>
+            </div>
+
+            <!-- SECTION 5: Progress Analytics -->
+            <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0;"><span><i class="fas fa-chart-line"></i> Learning Analytics</span></div></div>
+
+            <div class="glass-card col-4">
+                <div class="sec-title" style="font-size: 1rem;">Course Comparison (%)</div>
+                <div class="chart-container"><canvas id="chart-overall"></canvas></div>
+            </div>
+
+            <div class="glass-card col-4">
+                <div class="sec-title" style="font-size: 1rem;">Weekly Study Activity</div>
+                <div class="chart-container"><canvas id="chart-activity"></canvas></div>
+            </div>
+
+            <div class="glass-card col-4">
+                <div class="sec-title" style="font-size: 1rem;">Grammar Chapter Completion</div>
+                <div class="chart-container"><canvas id="chart-grammar"></canvas></div>
+            </div>
+
+            <!-- SECTION 4: Learning History -->
+            <div class="glass-card col-8">
                 <div class="sec-title" style="justify-content: space-between;">
-                    <span><i class="fas fa-history"></i> Learning History</span>
-                    <input type="text" id="hist-search" class="form-control" placeholder="Search course..." style="width: 150px; padding: 6px 10px; font-size: 0.8rem;" onkeyup="renderHistory()">
+                    <span><i class="fas fa-history"></i> Completion History Log</span>
+                    <div style="display: flex; gap: 10px;">
+                        <select id="hist-filter" class="form-control" style="width: auto; padding: 4px 8px; font-size: 0.8rem;" onchange="renderHistory()">
+                            <option value="ALL">All Courses</option>
+                            <option value="ML">Machine Learning</option>
+                            <option value="GRAMMAR">English Grammar</option>
+                        </select>
+                        <input type="text" id="hist-search" class="form-control" placeholder="Search..." style="width: 130px; padding: 4px 8px; font-size: 0.8rem;" onkeyup="renderHistory()">
+                    </div>
                 </div>
                 <div class="table-wrapper">
                     <table class="data-table">
                         <thead>
-                            <tr><th>Date</th><th>Course</th><th>Completed</th><th>Action</th></tr>
+                            <tr><th>Date</th><th>Course</th><th>Module / Chapter</th><th>Item Completed</th></tr>
                         </thead>
                         <tbody id="history-tbody">
                             <!-- JS Populated -->
@@ -130,54 +240,28 @@
                 </div>
             </div>
 
-            <!-- SECTION 3: Progress Charts -->
-            <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0;"><i class="fas fa-chart-line"></i> Analytics & Trends</div></div>
-            
+            <!-- SECTION 7: Monthly Learning Report -->
             <div class="glass-card col-4">
-                <div class="sec-title" style="font-size: 1rem;">Overall Completion (%)</div>
-                <div class="chart-container"><canvas id="chart-pie"></canvas></div>
-            </div>
-            
-            <div class="glass-card col-4">
-                <div class="sec-title" style="font-size: 1rem;">Weekly Pace (Modules/Lessons)</div>
-                <div class="chart-container"><canvas id="chart-bar"></canvas></div>
-            </div>
-            
-            <div class="glass-card col-4">
-                <div class="sec-title" style="font-size: 1rem;">Monthly Learning Trend</div>
-                <div class="chart-container"><canvas id="chart-line"></canvas></div>
-            </div>
-
-            <!-- SECTION 5: Monthly Report -->
-            <div class="glass-card col-12">
-                <div class="sec-title"><i class="fas fa-file-invoice"></i> Current Month Summary</div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;">
-                    <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
-                        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Study Days</div>
-                        <div style="font-size: 1.5rem; font-weight: 900; color: var(--primary);" id="rep-days">0</div>
-                    </div>
-                    <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
-                        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Items Completed</div>
-                        <div style="font-size: 1.5rem; font-weight: 900; color: var(--primary);" id="rep-items">0</div>
-                    </div>
-                    <div style="background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
-                        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Total Remaining</div>
-                        <div style="font-size: 1.5rem; font-weight: 900; color: var(--danger);" id="rep-rem">0</div>
-                    </div>
+                <div class="sec-title"><span><i class="fas fa-file-invoice"></i> Monthly Summary</span></div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="stat-box"><span class="stat-label">Total Learning Days</span><span class="stat-val" id="rep-days">0</span></div>
+                    <div class="stat-box"><span class="stat-label">ML Videos & Labs Completed</span><span class="stat-val" id="rep-ml-items">0</span></div>
+                    <div class="stat-box"><span class="stat-label">Grammar Quizzes & Videos</span><span class="stat-val" id="rep-gr-items">0</span></div>
+                    <div class="stat-box"><span class="stat-label">Overall Items Left</span><span class="stat-val" id="rep-left" style="color: var(--danger);">0</span></div>
                 </div>
             </div>
 
-            <!-- SECTION 6: Data Management -->
+            <!-- SECTION 9: Data Management -->
             <div class="glass-card col-12">
-                <div class="sec-title"><i class="fas fa-database"></i> Data Management</div>
-                <p style="font-size: 0.9rem; color: var(--text-muted); font-weight: 600; margin-bottom: 10px;">All data is securely stored locally.</p>
+                <div class="sec-title"><span><i class="fas fa-database"></i> LMS Data Management</span></div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 10px;">Export or backup your complete LMS progress data. All progress is saved automatically in Local Storage.</p>
                 <div class="action-btns">
-                    <button class="btn btn-primary btn-sm" onclick="exportData()"><i class="fas fa-download"></i> Export Data (JSON)</button>
-                    <button class="btn btn-outline btn-sm" onclick="document.getElementById('import-file').click()"><i class="fas fa-upload"></i> Import Data</button>
+                    <button class="btn btn-primary btn-sm" onclick="exportData()"><i class="fas fa-download"></i> Export Learning Data (JSON)</button>
+                    <button class="btn btn-outline btn-sm" onclick="document.getElementById('import-file').click()"><i class="fas fa-upload"></i> Import Learning Data</button>
                     <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
                     
-                    <button class="btn btn-outline btn-sm" style="color: var(--danger); border-color: var(--danger);" onclick="resetCourse('ml')"><i class="fas fa-eraser"></i> Reset ML</button>
-                    <button class="btn btn-outline btn-sm" style="color: var(--danger); border-color: var(--danger);" onclick="resetCourse('grammar')"><i class="fas fa-eraser"></i> Reset Grammar</button>
+                    <button class="btn btn-outline btn-sm" style="color: var(--danger); border-color: var(--danger);" onclick="resetCourse('ML')"><i class="fas fa-undo"></i> Reset ML Progress</button>
+                    <button class="btn btn-outline btn-sm" style="color: var(--danger); border-color: var(--danger);" onclick="resetCourse('GRAMMAR')"><i class="fas fa-undo"></i> Reset Grammar Progress</button>
                     
                     <button class="btn btn-danger btn-sm" onclick="factoryReset()"><i class="fas fa-trash-alt"></i> Reset All Learning Data</button>
                 </div>
@@ -185,27 +269,79 @@
 
         </div>
     </main>
-    
-    <div id="toast">Data saved successfully!</div>
+
+    <div id="toast">Progress Saved!</div>
 
     <script src="js/app.js"></script>
     <script>
-        // Set Default Date to Today
-        const today = new Date().toISOString().split('T')[0];
+        // --- 1. SYLLABUS DATA STRUCTURES ---
 
-        // 1. Data Structure Setup
-        const defaultDB = {
-            courses: {
-                "ml": { id: "ml", name: "Machine Learning (Coursera)", type: "Module", total: 100, completed: 0, deadline: "2026-12-06", color: "#0F766E" },
-                "grammar": { id: "grammar", name: "English Grammar (10MS)", type: "Lesson", total: 50, completed: 0, deadline: "2026-12-06", color: "#3B82F6" }
+        // Machine Learning Coursera Structure
+        const ML_SYLLABUS = [
+            {
+                week: 1, title: "Week 1: Introduction to Machine Learning & Regression",
+                videos: ["Welcome to Machine Learning", "Applications of ML", "Supervised Learning Part 1", "Supervised Learning Part 2", "Unsupervised Learning", "Linear Regression Model", "Cost Function Intuition", "Cost Function Mathematical Formula"],
+                labs: ["Python and NumPy Overview", "Cost Function Visualization"],
+                readings: ["Course Syllabus", "Supervised vs Unsupervised Summary"],
+                quizzes: ["Practice Quiz: Supervised vs Unsupervised", "Practice Quiz: Linear Regression Model"],
+                assignments: ["Programming Assignment: Linear Regression"]
             },
-            history: [] // { id, date, courseId, itemNum }
-        };
+            {
+                week: 2, title: "Week 2: Multiple Linear Regression & Gradient Descent",
+                videos: ["Multiple Features", "Vectorization Part 1", "Vectorization Part 2", "Gradient Descent for Multiple Linear Regression", "Feature Scaling", "Checking Gradient Descent Convergence", "Learning Rate"],
+                labs: ["Multiple Linear Regression Lab", "Feature Scaling & Gradient Descent Lab"],
+                readings: ["Vectorization in Python Guide"],
+                quizzes: ["Practice Quiz: Multiple Features & Vectorization", "Practice Quiz: Gradient Descent"],
+                assignments: ["Programming Assignment: Multiple Variable Gradient Descent"]
+            },
+            {
+                week: 3, title: "Week 3: Logistic Regression & Classification",
+                videos: ["Classification Problem Overview", "Logistic Regression Hypothesis", "Decision Boundary", "Cost Function for Logistic Regression", "Simplified Cost Function", "Gradient Descent for Logistic Regression", "The Problem of Overfitting", "Addressing Overfitting with Regularization"],
+                labs: ["Logistic Regression & Decision Boundary Lab", "Regularized Logistic Regression Lab"],
+                readings: ["Regularization Math Formulations"],
+                quizzes: ["Practice Quiz: Logistic Regression", "Practice Quiz: Overfitting & Regularization"],
+                assignments: ["Programming Assignment: Logistic Regression & Regularization"]
+            },
+            {
+                week: 4, title: "Week 4: Advanced Learning Algorithms & Neural Networks",
+                videos: ["Neurons and Brain Analogies", "Neural Network Model", "Forward Propagation", "TensorFlow Implementation", "Specifying a Neural Network in Code"],
+                labs: ["Neural Networks Forward Prop Lab", "Coffee Roasting Neural Network Lab"],
+                readings: ["TensorFlow Quickstart Guide"],
+                quizzes: ["Practice Quiz: Neural Network Concepts"],
+                assignments: ["Programming Assignment: Neural Network Multiclass Classification"]
+            }
+        ];
 
-        let lDB = JSON.parse(localStorage.getItem('lifeos_learning_db')) || defaultDB;
-        
-        // Safety check to ensure object structure matches standard
-        if(!lDB.courses.ml) lDB.courses = defaultDB.courses;
+        // 10 Minute School English Grammar Syllabus
+        const GRAMMAR_SYLLABUS = [
+            { name: "Pre Assessment", videos: ["Pre Assessment Overview"], quizzes: ["Pre Assessment Test"] },
+            { name: "Tense", videos: ["Present Tense Overview", "Past Tense Overview", "Future Tense Overview", "Advanced Tense Structures"], quizzes: ["Tense Practice Quiz"], assessment: "Tense Chapter Assessment" },
+            { name: "Questions", videos: ["WH Questions", "Yes/No Questions", "Embedded Questions"], quizzes: ["Questions Practice Quiz"] },
+            { name: "Verbs", videos: ["Finite & Non-Finite Verbs", "Transitive & Intransitive Verbs", "Auxiliary & Modal Verbs"], quizzes: ["Verbs Practice Quiz"] },
+            { name: "Modal Verbs", videos: ["Can, Could, May, Might", "Must, Should, Ought To"], quizzes: ["Modal Verbs Quiz"] },
+            { name: "Subject Verb Agreement", videos: ["Basic Rules 1 to 10", "Advanced Rules 11 to 20"], quizzes: ["Subject Verb Agreement Quiz"] },
+            { name: "Types of Noun", videos: ["Countable vs Uncountable", "Proper, Common, Collective, Abstract"], quizzes: ["Noun Practice Quiz"] },
+            { name: "Numbers", videos: ["Singular & Plural Rules", "Exceptions in Plural Nouns"], quizzes: ["Numbers Quiz"] },
+            { name: "Pronouns", videos: ["Personal, Relative, Demonstrative Pronouns", "Pronoun Agreement Rules"], quizzes: ["Pronouns Practice Quiz"] },
+            { name: "Relative Clause", videos: ["Defining vs Non-Defining Clauses", "Relative Pronouns Usage"], quizzes: ["Relative Clause Quiz"] },
+            { name: "Adjectives", videos: ["Order of Adjectives", "Degrees of Comparison"], quizzes: ["Adjectives Quiz"] },
+            { name: "Articles & Determiners", videos: ["Definite vs Indefinite Articles", "Omission of Articles", "Quantifiers"], quizzes: ["Articles Quiz"] },
+            { name: "Adverbs", videos: ["Types of Adverbs", "Position of Adverbs in Sentences"], quizzes: ["Adverbs Quiz"] },
+            { name: "Prepositions", videos: ["Preposition of Time & Place", "Appropriate Prepositions"], quizzes: ["Prepositions Quiz"] },
+            { name: "Conjunctions", videos: ["Coordinating, Subordinating, Correlative"], quizzes: ["Conjunctions Quiz"] },
+            { name: "Conditional Sentences", videos: ["Zero, 1st, 2nd, 3rd Conditionals", "Mixed Conditionals"], quizzes: ["Conditionals Quiz"] },
+            { name: "Voice", videos: ["Active to Passive Rules", "Exceptions in Voice Change"], quizzes: ["Voice Change Quiz"] },
+            { name: "Narration", videos: ["Direct to Indirect Rules", "Tense Change in Narration"], quizzes: ["Narration Quiz"] },
+            { name: "Prefix & Suffix", videos: ["Common Prefixes and Suffixes Rules"], quizzes: ["Prefix Suffix Quiz"] },
+            { name: "Punctuation", videos: ["Capitalization and Punctuation Rules"], quizzes: ["Punctuation Quiz"] },
+            { name: "Post Assessment", videos: ["Final Course Review"], quizzes: ["Post Assessment Final Exam"] }
+        ];
+
+        // --- 2. LOCAL STORAGE STATE ---
+        let lmsData = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || {
+            checkedItems: {},
+            history: [] // { date, course, section, item, action }
+        };
 
         let charts = {};
 
@@ -216,269 +352,376 @@
             setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
-        function saveDB(msg) {
-            localStorage.setItem('lifeos_learning_db', JSON.stringify(lDB));
+        function saveLMSState(msg) {
+            localStorage.setItem('lifeos_lms_v1', JSON.stringify(lmsData));
             if(msg) showToast(msg);
             updateDashboard();
         }
 
-        // 2. Render Courses
-        function renderCourses() {
-            const container = document.getElementById('courses-container');
+        // --- 3. RENDERING ACCORDIONS & CHECKBOXES ---
+
+        function renderMLSyllabus() {
+            const container = document.getElementById('ml-accordion-container');
             container.innerHTML = '';
+            let totalMLItems = 0;
+            let checkedMLItems = 0;
 
-            Object.values(lDB.courses).forEach(c => {
-                const remaining = c.total - c.completed;
-                const pct = c.total > 0 ? Math.min((c.completed / c.total) * 100, 100) : 0;
-                
-                container.innerHTML += `
-                    <div class="glass-card">
-                        <div class="sec-title" style="color: ${c.color}; border-color: ${c.color}30;">
-                            <i class="fas ${c.id==='ml' ? 'fa-robot' : 'fa-language'}"></i> ${c.name}
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <span style="font-weight: 700; color: var(--text-muted);">Total ${c.type}s:</span>
-                            <input type="number" class="inline-input" value="${c.total}" onchange="updateTotal('${c.id}', this.value)" title="Edit Total">
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; font-weight: 900; font-size: 1.1rem; margin-top: 15px;">
-                            <span>Completed: <span style="color: ${c.color};">${c.completed}</span></span>
-                            <span style="color: var(--danger);">Left: ${remaining}</span>
-                        </div>
-                        
-                        <div class="prog-bg"><div class="prog-fill" style="width: ${pct}%; background: ${c.color};"></div></div>
-                        <div style="text-align: right; font-size: 0.8rem; font-weight: 700; margin-bottom: 15px;">Progress: ${pct.toFixed(1)}%</div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 0.85rem; font-weight: 600;">
-                            <span>Deadline:</span>
-                            <input type="date" style="padding: 4px; border-radius: 6px; border: 1px solid var(--border);" value="${c.deadline}" onchange="updateDeadline('${c.id}', this.value)">
-                        </div>
+            ML_SYLLABUS.forEach((weekData, wIdx) => {
+                let weekItemCount = 0;
+                let weekCheckedCount = 0;
 
-                        <button class="btn-add" style="background: ${c.color};" onclick="addProgress('${c.id}')">
-                            <i class="fas fa-plus"></i> Complete 1 ${c.type}
-                        </button>
-                    </div>
+                let html = `
+                    <div class="accordion-item" id="ml-acc-${wIdx}">
+                        <div class="accordion-header" onclick="toggleAccordion('ml-acc-${wIdx}')">
+                            <span>${weekData.title}</span>
+                            <span class="badge badge-primary" id="ml-badge-${wIdx}">0 / 0</span>
+                        </div>
+                        <div class="accordion-body">
                 `;
+
+                // Categories
+                const renderCategory = (catTitle, items, catPrefix) => {
+                    if(!items || items.length === 0) return '';
+                    let subHtml = `<div class="check-group-title">${catTitle}</div>`;
+                    items.forEach((itemTitle, iIdx) => {
+                        const itemId = `ml_w${weekData.week}_${catPrefix}_${iIdx}`;
+                        const isChecked = !!lmsData.checkedItems[itemId];
+                        totalMLItems++; weekItemCount++;
+                        if(isChecked) { checkedMLItems++; weekCheckedCount++; }
+
+                        subHtml += `
+                            <label class="check-item ${isChecked ? 'completed' : ''}">
+                                <input type="checkbox" id="${itemId}" ${isChecked ? 'checked' : ''} onchange="handleCheckChange('${itemId}', 'ML', '${weekData.title}', '${itemTitle}', this.checked)">
+                                <span>${itemTitle}</span>
+                            </label>
+                        `;
+                    });
+                    return subHtml;
+                };
+
+                html += renderCategory('📹 Videos', weekData.videos, 'v');
+                html += renderCategory('💻 Optional Labs', weekData.labs, 'l');
+                html += renderCategory('📖 Readings', weekData.readings, 'r');
+                html += renderCategory('📝 Practice Quizzes', weekData.quizzes, 'q');
+                html += renderCategory('🚀 Programming Assignments', weekData.assignments, 'a');
+
+                html += `</div></div>`;
+                container.innerHTML += html;
+
+                // Update Week Badge
+                setTimeout(() => {
+                    const badge = document.getElementById(`ml-badge-${wIdx}`);
+                    if(badge) badge.innerText = `${weekCheckedCount} / ${weekItemCount}`;
+                }, 0);
             });
+
+            // Update ML Summary
+            const mlPct = totalMLItems > 0 ? Math.round((checkedMLItems / totalMLItems) * 100) : 0;
+            document.getElementById('ml-overall-pct').innerText = `${mlPct}%`;
+            document.getElementById('ml-prog-bar').style.width = `${mlPct}%`;
+            document.getElementById('ml-rem-count').innerText = totalMLItems - checkedMLItems;
+            document.getElementById('ml-weeks-status').innerText = `${checkedMLItems} / ${totalMLItems} Items Done`;
+
+            return { total: totalMLItems, completed: checkedMLItems };
         }
 
-        // Actions
-        function updateTotal(id, val) {
-            lDB.courses[id].total = parseInt(val) || 0;
-            saveDB("Total updated!");
-        }
-        function updateDeadline(id, val) {
-            lDB.courses[id].deadline = val;
-            saveDB("Deadline updated!");
-        }
-        function addProgress(id) {
-            const c = lDB.courses[id];
-            if(c.completed >= c.total) { alert("Course already completed!"); return; }
-            
-            c.completed++;
-            lDB.history.push({
-                id: Date.now(),
-                date: today,
-                courseId: id,
-                itemNum: c.completed
+        function renderGrammarSyllabus() {
+            const container = document.getElementById('gr-accordion-container');
+            container.innerHTML = '';
+            let totalGrItems = 0;
+            let checkedGrItems = 0;
+
+            GRAMMAR_SYLLABUS.forEach((chap, cIdx) => {
+                let chapItemCount = 0;
+                let chapCheckedCount = 0;
+
+                let html = `
+                    <div class="accordion-item" id="gr-acc-${cIdx}">
+                        <div class="accordion-header" onclick="toggleAccordion('gr-acc-${cIdx}')">
+                            <span>Chapter ${cIdx + 1}: ${chap.name}</span>
+                            <span class="badge badge-accent" id="gr-badge-${cIdx}">0 / 0</span>
+                        </div>
+                        <div class="accordion-body">
+                `;
+
+                const renderCat = (catTitle, items, prefix) => {
+                    if(!items || items.length === 0) return '';
+                    let subHtml = `<div class="check-group-title">${catTitle}</div>`;
+                    items.forEach((title, iIdx) => {
+                        const itemId = `gr_c${cIdx}_${prefix}_${iIdx}`;
+                        const isChecked = !!lmsData.checkedItems[itemId];
+                        totalGrItems++; chapItemCount++;
+                        if(isChecked) { checkedGrItems++; chapCheckedCount++; }
+
+                        subHtml += `
+                            <label class="check-item ${isChecked ? 'completed' : ''}">
+                                <input type="checkbox" id="${itemId}" ${isChecked ? 'checked' : ''} onchange="handleCheckChange('${itemId}', 'GRAMMAR', 'Chapter: ${chap.name}', '${title}', this.checked)">
+                                <span>${title}</span>
+                            </label>
+                        `;
+                    });
+                    return subHtml;
+                };
+
+                html += renderCat('🎬 Videos', chap.videos, 'v');
+                html += renderCat('✏️ Practice Quiz', chap.quizzes, 'q');
+                if(chap.assessment) {
+                    html += renderCat('🏆 Chapter Assessment', [chap.assessment], 'a');
+                }
+
+                html += `</div></div>`;
+                container.innerHTML += html;
+
+                setTimeout(() => {
+                    const badge = document.getElementById(`gr-badge-${cIdx}`);
+                    if(badge) badge.innerText = `${chapCheckedCount} / ${chapItemCount}`;
+                }, 0);
             });
-            saveDB(`${c.type} ${c.completed} completed!`);
+
+            // Update Grammar Summary
+            const grPct = totalGrItems > 0 ? Math.round((checkedGrItems / totalGrItems) * 100) : 0;
+            document.getElementById('gr-overall-pct').innerText = `${grPct}%`;
+            document.getElementById('gr-prog-bar').style.width = `${grPct}%`;
+            document.getElementById('gr-rem-count').innerText = totalGrItems - checkedGrItems;
+            document.getElementById('gr-chaps-status').innerText = `${checkedGrItems} / ${totalGrItems} Items Done`;
+
+            return { total: totalGrItems, completed: checkedGrItems };
         }
-        function deleteHistory(hid) {
-            if(!confirm("Delete this entry? (This will also reduce completion count)")) return;
+
+        function toggleAccordion(id) {
+            const item = document.getElementById(id);
+            if(item) item.classList.toggle('active');
+        }
+
+        // --- 4. CHECKBOX CHANGE & HISTORY ---
+
+        function handleCheckChange(itemId, course, sectionTitle, itemTitle, isChecked) {
+            lmsData.checkedItems[itemId] = isChecked;
+
+            const todayStr = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
             
-            const entry = lDB.history.find(x => x.id === hid);
-            if(entry) {
-                lDB.courses[entry.courseId].completed = Math.max(0, lDB.courses[entry.courseId].completed - 1);
-                lDB.history = lDB.history.filter(x => x.id !== hid);
-                saveDB("Entry deleted.");
+            if(isChecked) {
+                lmsData.history.unshift({
+                    id: Date.now(),
+                    date: todayStr,
+                    rawDate: new Date().toISOString().split('T')[0],
+                    course: course,
+                    section: sectionTitle,
+                    item: itemTitle
+                });
+            } else {
+                // If unchecked, remove latest instance from history
+                const idx = lmsData.history.findIndex(h => h.course === course && h.item === itemTitle);
+                if(idx !== -1) lmsData.history.splice(idx, 1);
             }
+
+            saveLMSState(isChecked ? "Item marked as Completed!" : "Item Unchecked");
         }
 
-        // 3. History & Reports
         function renderHistory() {
             const tbody = document.getElementById('history-tbody');
+            const filter = document.getElementById('hist-filter').value;
             const searchQ = document.getElementById('hist-search').value.toLowerCase();
-            
-            let sorted = [...lDB.history].sort((a,b) => b.id - a.id);
-            if(searchQ) sorted = sorted.filter(e => lDB.courses[e.courseId].name.toLowerCase().includes(searchQ));
+
+            let logs = [...lmsData.history];
+            if(filter !== 'ALL') logs = logs.filter(l => l.course === filter);
+            if(searchQ) logs = logs.filter(l => l.item.toLowerCase().includes(searchQ) || l.section.toLowerCase().includes(searchQ));
 
             tbody.innerHTML = '';
-            if(sorted.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No history found.</td></tr>`; return; }
+            if(logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No completion records found.</td></tr>`;
+                return;
+            }
 
-            sorted.slice(0, 30).forEach(e => {
-                const c = lDB.courses[e.courseId];
-                const badgeClass = e.courseId === 'ml' ? 'course-badge' : 'course-badge grammar-badge';
+            logs.slice(0, 30).forEach(l => {
                 tbody.innerHTML += `
                     <tr>
-                        <td style="font-weight:700;">${e.date}</td>
-                        <td><span class="${badgeClass}">${c.name}</span></td>
-                        <td style="font-weight:800; color:${c.color};">${c.type} ${e.itemNum}</td>
-                        <td><button class="btn btn-outline btn-sm" style="padding: 2px 6px; border-color:var(--danger); color:var(--danger);" onclick="deleteHistory(${e.id})"><i class="fas fa-times"></i></button></td>
+                        <td style="font-weight:700;">${l.date}</td>
+                        <td><span class="badge ${l.course === 'ML' ? 'badge-primary' : 'badge-accent'}">${l.course}</span></td>
+                        <td style="font-weight:700;">${l.section}</td>
+                        <td style="color:var(--text-main); font-weight:600;">${l.item} Completed</td>
                     </tr>
                 `;
             });
         }
 
-        function calculatePredictions() {
-            const container = document.getElementById('predictions-container');
-            container.innerHTML = '';
-            
-            const nowTime = new Date().getTime();
-            
-            Object.values(lDB.courses).forEach(c => {
-                const rem = c.total - c.completed;
-                if(rem <= 0) {
-                    container.innerHTML += `<div class="insight-box" style="border-left-color: #10B981; background: rgba(16, 185, 129, 0.05);">✅ <strong>${c.name}</strong> is completely finished!</div>`;
-                    return;
-                }
+        // --- 5. PREDICTIONS & REPORTS ---
 
-                // Calculate Pace (last 14 days)
-                const twoWeeksAgo = new Date();
-                twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-                const recentHistory = lDB.history.filter(h => h.courseId === c.id && new Date(h.date) >= twoWeeksAgo);
-                
-                // Days since first recent log or default to 14
-                let daysSpan = 14; 
-                if(recentHistory.length > 0) {
-                    const firstDate = new Date(recentHistory[recentHistory.length-1].date);
-                    const diffDays = Math.ceil((new Date() - firstDate) / (1000*60*60*24));
-                    daysSpan = diffDays > 0 ? diffDays : 1;
-                }
+        function updatePredictions(mlStats, grStats) {
+            const alertsContainer = document.getElementById('prediction-alerts');
+            alertsContainer.innerHTML = '';
 
-                const dailyPace = recentHistory.length / daysSpan;
-                const weeklyPace = dailyPace * 7;
+            const now = new Date();
+            const semesterEnd = new Date('2026-12-06T00:00:00');
+            const daysLeft = Math.max(1, Math.ceil((semesterEnd - now) / (1000 * 60 * 60 * 24)));
+            const weeksLeft = Math.max(1, (daysLeft / 7).toFixed(1));
 
-                if (weeklyPace <= 0) {
-                    container.innerHTML += `<div class="insight-box warning">⚠️ <strong>${c.name}:</strong> You haven't made any progress recently. Start studying to generate predictions!</div>`;
-                    return;
-                }
+            // ML Prediction
+            const mlRem = mlStats.total - mlStats.completed;
+            const mlLogs = lmsData.history.filter(h => h.course === 'ML');
+            const mlRatePerWeek = mlLogs.length > 0 ? (mlLogs.length / Math.max(1, lmsData.history.length / 3)).toFixed(1) : 0;
 
-                const daysNeeded = Math.ceil(rem / dailyPace);
-                const estCompletionDate = new Date();
-                estCompletionDate.setDate(estCompletionDate.getDate() + daysNeeded);
-                const deadlineDate = new Date(c.deadline);
+            let mlEstDays = mlRatePerWeek > 0 ? Math.ceil((mlRem / mlRatePerWeek) * 7) : 999;
+            let mlEstDate = new Date(); mlEstDate.setDate(now.getDate() + mlEstDays);
 
-                let insightHtml = `📊 <strong>${c.name}:</strong> Based on your current pace (${weeklyPace.toFixed(1)} ${c.type}s/week), you will finish on <strong>${estCompletionDate.toDateString()}</strong>. `;
+            if(mlRem === 0) {
+                document.getElementById('ml-est-date').innerText = "Completed! 🎉";
+                document.getElementById('ml-status-badge').innerText = "Finished";
+            } else if(mlRatePerWeek > 0) {
+                document.getElementById('ml-est-date').innerText = mlEstDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            } else {
+                document.getElementById('ml-est-date').innerText = "Needs Study Data";
+            }
 
-                if (estCompletionDate > deadlineDate) {
-                    const requiredPace = (rem / ((deadlineDate - new Date()) / (1000*60*60*24))) * 7;
-                    insightHtml = `<div class="insight-box warning">🚨 <strong>${c.name}:</strong> At your current pace, you will finish AFTER the deadline. You need to complete at least <strong>${Math.ceil(requiredPace)} ${c.type}s per week</strong> to finish on time.</div>`;
-                } else {
-                    insightHtml = `<div class="insight-box">` + insightHtml + `You are on track!</div>`;
-                }
-                container.innerHTML += insightHtml;
-            });
+            // Grammar Prediction
+            const grRem = grStats.total - grStats.completed;
+            const grLogs = lmsData.history.filter(h => h.course === 'GRAMMAR');
+            const grRatePerWeek = grLogs.length > 0 ? (grLogs.length / Math.max(1, lmsData.history.length / 3)).toFixed(1) : 0;
+
+            let grEstDays = grRatePerWeek > 0 ? Math.ceil((grRem / grRatePerWeek) * 7) : 999;
+            let grEstDate = new Date(); grEstDate.setDate(now.getDate() + grEstDays);
+
+            if(grRem === 0) {
+                document.getElementById('gr-est-date').innerText = "Completed! 🎉";
+                document.getElementById('gr-status-badge').innerText = "Finished";
+            } else if(grRatePerWeek > 0) {
+                document.getElementById('gr-est-date').innerText = grEstDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            } else {
+                document.getElementById('gr-est-date').innerText = "Needs Study Data";
+            }
+
+            // Warnings
+            const reqMLPerWeek = Math.ceil(mlRem / weeksLeft);
+            const reqGrPerWeek = Math.ceil(grRem / weeksLeft);
+
+            if(mlRem > 0 && (mlEstDays > daysLeft || mlRatePerWeek === 0)) {
+                alertsContainer.innerHTML += `
+                    <div class="warning-box">
+                        ⚠️ <strong>Machine Learning Pace Warning:</strong> At your current pace, you will finish after the semester deadline (${semesterEnd.toLocaleDateString()}).
+                        <br>👉 To finish on time, complete at least <strong>${reqMLPerWeek} items per week</strong> (${(reqMLPerWeek/4).toFixed(1)} Weeks of content).
+                    </div>
+                `;
+            } else if(mlRem === 0) {
+                alertsContainer.innerHTML += `<div class="success-box">✅ Machine Learning Specialization is 100% completed!</div>`;
+            }
+
+            if(grRem > 0 && (grEstDays > daysLeft || grRatePerWeek === 0)) {
+                alertsContainer.innerHTML += `
+                    <div class="warning-box" style="border-left-color: #3B82F6; color: #1e40af; background: rgba(59, 130, 246, 0.08);">
+                        ⚠️ <strong>English Grammar Pace Warning:</strong> You need to increase your pace to finish before final exams.
+                        <br>👉 To finish on time, complete at least <strong>${reqGrPerWeek} items per week</strong> (~${Math.ceil(reqGrPerWeek/3)} Grammar Chapters per week).
+                    </div>
+                `;
+            } else if(grRem === 0) {
+                alertsContainer.innerHTML += `<div class="success-box" style="border-left-color: #3B82F6; color: #1e40af;">✅ English Grammar Course is 100% completed!</div>`;
+            }
         }
 
-        function generateMonthlyReport() {
-            const cMonth = new Date().toISOString().substring(0, 7);
-            const mHist = lDB.history.filter(h => h.date.startsWith(cMonth));
-            
-            const studyDays = new Set(mHist.map(h => h.date)).size;
+        function updateMonthlyReport(mlStats, grStats) {
+            const thisMonth = new Date().toISOString().substring(0, 7);
+            const mLogs = lmsData.history.filter(h => h.rawDate && h.rawDate.startsWith(thisMonth));
+
+            const studyDays = new Set(mLogs.map(h => h.rawDate)).size;
+            const mlItemsMonth = mLogs.filter(h => h.course === 'ML').length;
+            const grItemsMonth = mLogs.filter(h => h.course === 'GRAMMAR').length;
+
             document.getElementById('rep-days').innerText = studyDays;
-            document.getElementById('rep-items').innerText = mHist.length;
+            document.getElementById('rep-ml-items').innerText = mlItemsMonth;
+            document.getElementById('rep-gr-items').innerText = grItemsMonth;
             
-            const totalRem = Object.values(lDB.courses).reduce((s, c) => s + (c.total - c.completed), 0);
-            document.getElementById('rep-rem').innerText = totalRem;
+            const totalRemaining = (mlStats.total - mlStats.completed) + (grStats.total - grStats.completed);
+            document.getElementById('rep-left').innerText = totalRemaining;
         }
 
-        // 4. Charts
+        // --- 6. CHARTS ---
+
         Chart.defaults.color = '#888';
         Chart.defaults.font.family = "system-ui";
 
-        function renderCharts() {
-            // Pie Chart (Overall Progress)
-            const cPie = document.getElementById('chart-pie').getContext('2d');
-            if(charts.pie) charts.pie.destroy();
-            
-            const pieData = Object.values(lDB.courses).map(c => c.completed);
-            const pieLabels = Object.values(lDB.courses).map(c => c.name.split(' ')[0]); // Short name
-            const pieColors = Object.values(lDB.courses).map(c => c.color);
+        function updateCharts(mlStats, grStats) {
+            // Chart 1: Course Comparison Pie
+            const cOverall = document.getElementById('chart-overall').getContext('2d');
+            if(charts.overall) charts.overall.destroy();
 
-            charts.pie = new Chart(cPie, {
+            charts.overall = new Chart(cOverall, {
                 type: 'doughnut',
-                data: { labels: pieLabels, datasets: [{ data: pieData, backgroundColor: pieColors, borderWidth: 1, borderColor: '#fff' }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, cutout: '65%' }
+                data: {
+                    labels: ['ML Specialization', 'English Grammar'],
+                    datasets: [{
+                        data: [
+                            mlStats.total > 0 ? Math.round((mlStats.completed/mlStats.total)*100) : 0,
+                            grStats.total > 0 ? Math.round((grStats.completed/grStats.total)*100) : 0
+                        ],
+                        backgroundColor: ['#0F766E', '#3B82F6'],
+                        borderWidth: 2
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, cutout: '70%' }
             });
 
-            // Bar Chart (Weekly)
-            const cBar = document.getElementById('chart-bar').getContext('2d');
-            if(charts.bar) charts.bar.destroy();
+            // Chart 2: Weekly Activity Bar
+            const cAct = document.getElementById('chart-activity').getContext('2d');
+            if(charts.activity) charts.activity.destroy();
 
-            // Last 7 days data grouping
-            const weekDates = [];
-            const barDataML = [];
-            const barDataGr = [];
-            
+            const last7Days = [];
+            const mlActData = [];
+            const grActData = [];
+
             for(let i=6; i>=0; i--) {
-                const d = new Date();
-                d.setDate(d.getDate() - i);
+                const d = new Date(); d.setDate(d.getDate() - i);
                 const dStr = d.toISOString().split('T')[0];
-                weekDates.push(dStr.substring(5)); // MM-DD
-                
-                barDataML.push(lDB.history.filter(h => h.date === dStr && h.courseId === 'ml').length);
-                barDataGr.push(lDB.history.filter(h => h.date === dStr && h.courseId === 'grammar').length);
+                last7Days.push(d.toLocaleDateString('en-US', { weekday: 'short' }));
+
+                mlActData.push(lmsData.history.filter(h => h.rawDate === dStr && h.course === 'ML').length);
+                grActData.push(lmsData.history.filter(h => h.rawDate === dStr && h.course === 'GRAMMAR').length);
             }
 
-            charts.bar = new Chart(cBar, {
+            charts.activity = new Chart(cAct, {
                 type: 'bar',
                 data: {
-                    labels: weekDates,
+                    labels: last7Days,
                     datasets: [
-                        { label: 'ML', data: barDataML, backgroundColor: '#0F766E', borderRadius: 4 },
-                        { label: 'Grammar', data: barDataGr, backgroundColor: '#3B82F6', borderRadius: 4 }
+                        { label: 'ML Items', data: mlActData, backgroundColor: '#0F766E', borderRadius: 4 },
+                        { label: 'Grammar Items', data: grActData, backgroundColor: '#3B82F6', borderRadius: 4 }
                     ]
                 },
-                options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, grid: {display: false} }, y: { stacked: true, grid: {color:'rgba(0,0,0,0.05)'}, ticks: {stepSize: 1} } } }
+                options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, grid:{display:false} }, y: { stacked: true, grid:{color:'rgba(0,0,0,0.05)'}, ticks:{stepSize:1} } } }
             });
 
-            // Line Chart (Cumulative Monthly Trend)
-            const cLine = document.getElementById('chart-line').getContext('2d');
-            if(charts.line) charts.line.destroy();
+            // Chart 3: Grammar Progress Doughnut
+            const cGr = document.getElementById('chart-grammar').getContext('2d');
+            if(charts.grammar) charts.grammar.destroy();
 
-            // Simplify to last 30 days total completions
-            const lineData = [];
-            const lineLabels = [];
-            let total = 0;
-            const mHistSort = [...lDB.history].sort((a,b) => new Date(a.date) - new Date(b.date));
-            
-            // To make chart meaningful, group by date
-            const grouped = {};
-            mHistSort.forEach(h => { grouped[h.date] = (grouped[h.date] || 0) + 1; });
-            
-            Object.keys(grouped).slice(-30).forEach(d => {
-                total += grouped[d];
-                lineLabels.push(d.substring(5));
-                lineData.push(total);
-            });
-
-            charts.line = new Chart(cLine, {
-                type: 'line',
+            charts.grammar = new Chart(cGr, {
+                type: 'pie',
                 data: {
-                    labels: lineLabels,
-                    datasets: [{ label: 'Total Items Completed', data: lineData, borderColor: '#F59E0B', backgroundColor: 'rgba(245, 158, 11, 0.1)', borderWidth: 2, fill: true, tension: 0.3 }]
+                    labels: ['Completed Items', 'Remaining Items'],
+                    datasets: [{
+                        data: [grStats.completed, grStats.total - grStats.completed],
+                        backgroundColor: ['#3B82F6', 'rgba(59, 130, 246, 0.1)'],
+                        borderWidth: 1
+                    }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(0,0,0,0.05)' } } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
             });
         }
 
-        // Main Update Call
+        // --- 7. MAIN UPDATE & DATA MANAGEMENT ---
+
         function updateDashboard() {
-            renderCourses();
+            const mlStats = renderMLSyllabus();
+            const grStats = renderGrammarSyllabus();
             renderHistory();
-            calculatePredictions();
-            generateMonthlyReport();
-            renderCharts();
+            updatePredictions(mlStats, grStats);
+            updateMonthlyReport(mlStats, grStats);
+            updateCharts(mlStats, grStats);
         }
 
-        // 5. Data Management
         function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(lDB));
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(lmsData));
             const anchor = document.createElement('a');
             anchor.setAttribute("href", dataStr);
-            anchor.setAttribute("download", "life_os_learning_backup.json");
+            anchor.setAttribute("download", "life_os_lms_backup.json");
             document.body.appendChild(anchor);
             anchor.click();
             anchor.remove();
@@ -491,27 +734,32 @@
                 reader.onload = function(e) {
                     try {
                         const imported = JSON.parse(e.target.result);
-                        if(imported.courses && imported.history) {
-                            lDB = imported;
-                            saveDB("Learning Data imported successfully!");
+                        if(imported.checkedItems && imported.history) {
+                            lmsData = imported;
+                            saveLMSState("LMS Data imported successfully!");
                         }
-                    } catch(err) { alert("Invalid backup file."); }
+                    } catch(err) { alert("Invalid LMS backup file."); }
                 };
                 reader.readAsText(file);
             }
         }
 
-        function resetCourse(id) {
-            if(confirm(`Are you sure you want to reset all progress for ${lDB.courses[id].name}?`)) {
-                lDB.courses[id].completed = 0;
-                lDB.history = lDB.history.filter(h => h.courseId !== id);
-                saveDB(`Progress for ${lDB.courses[id].name} reset.`);
+        function resetCourse(type) {
+            const prefix = type === 'ML' ? 'ml_' : 'gr_';
+            const courseName = type === 'ML' ? 'Machine Learning' : 'English Grammar';
+            
+            if(confirm(`Are you sure you want to reset all progress for ${courseName}?`)) {
+                Object.keys(lmsData.checkedItems).forEach(k => {
+                    if(k.startsWith(prefix)) delete lmsData.checkedItems[k];
+                });
+                lmsData.history = lmsData.history.filter(h => h.course !== type);
+                saveLMSState(`Progress for ${courseName} has been reset.`);
             }
         }
 
         function factoryReset() {
-            if(confirm("DANGER: This will delete ALL learning history and reset progress to 0 forever. Continue?")) {
-                localStorage.removeItem('lifeos_learning_db');
+            if(confirm("DANGER: This will delete ALL LMS history and reset ALL checkboxes forever. Continue?")) {
+                localStorage.removeItem('lifeos_lms_v1');
                 location.reload();
             }
         }
@@ -520,7 +768,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             updateDashboard();
         });
-
     </script>
 </body>
 </html>
