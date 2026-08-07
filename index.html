@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life OS - Overview</title>
+    <title>Life OS - Command Center</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -21,60 +21,100 @@
         .dash-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; margin-top: 15px; }
         .col-3 { grid-column: span 3; }
         .col-4 { grid-column: span 4; }
+        .col-5 { grid-column: span 5; }
         .col-6 { grid-column: span 6; }
+        .col-7 { grid-column: span 7; }
         .col-8 { grid-column: span 8; }
         .col-12 { grid-column: span 12; }
 
-        @media (max-width: 1200px) { .col-3, .col-4 { grid-column: span 6; } .col-6, .col-8 { grid-column: span 12; } }
-        @media (max-width: 768px) { .col-3, .col-4, .col-6, .col-8, .col-12 { grid-column: span 12; } }
+        @media (max-width: 1200px) { .col-3, .col-4 { grid-column: span 6; } .col-5, .col-7, .col-6, .col-8 { grid-column: span 12; } }
+        @media (max-width: 768px) { .col-3, .col-4, .col-5, .col-7, .col-6, .col-8, .col-12 { grid-column: span 12; } }
 
-        .glass-card { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; box-shadow: 0 8px 32px rgba(0,0,0,0.04); transition: 0.3s; }
+        .glass-card { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; box-shadow: 0 8px 32px rgba(0,0,0,0.04); transition: 0.3s; display: flex; flex-direction: column;}
         .glass-card:hover { box-shadow: 0 12px 40px rgba(15, 118, 110, 0.08); transform: translateY(-2px); }
+        .clickable-card { cursor: pointer; text-decoration: none; color: inherit; }
         
         .sec-title { font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
         .sec-title i { margin-right: 8px; }
 
         /* Header Details */
         .greeting-text { font-size: 1.8rem; font-weight: 900; color: var(--primary); }
-        .live-clock { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
-        .live-date { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+        .live-clock { font-size: 1.3rem; font-weight: 900; color: var(--text-main); font-variant-numeric: tabular-nums;}
+        .live-date { font-size: 0.95rem; font-weight: 700; color: var(--text-muted); }
+        .week-info { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-top: 5px; display: flex; gap: 10px; }
 
         /* Focus Card */
-        .focus-input { width: 100%; padding: 12px; border: none; border-bottom: 2px dashed var(--border); background: transparent; font-size: 1.2rem; font-weight: 700; color: var(--text-main); outline: none; transition: 0.3s; text-align: center; }
+        .focus-wrapper { position: relative; width: 100%; max-width: 600px; margin: 0 auto; text-align: center; }
+        .focus-input { width: 100%; padding: 10px 10px 30px 10px; border: none; border-bottom: 2px dashed var(--border); background: transparent; font-size: 1.3rem; font-weight: 800; color: var(--text-main); outline: none; transition: 0.3s; text-align: center; }
         .focus-input:focus { border-bottom-color: var(--primary); }
+        .focus-actions { position: absolute; right: 0; bottom: 5px; display: flex; gap: 8px; font-size: 0.75rem; }
+        .focus-char-count { position: absolute; left: 0; bottom: 5px; font-size: 0.75rem; color: var(--text-muted); font-weight: 700; }
+        .btn-text { background: none; border: none; color: var(--primary); font-weight: 800; cursor: pointer; }
+        .btn-text:hover { text-decoration: underline; }
 
         /* Smart Reminders */
-        .reminder-list { display: flex; flex-direction: column; gap: 10px; }
-        .reminder-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; background: rgba(15, 118, 110, 0.05); border-left: 4px solid var(--primary); border-radius: 0 10px 10px 0; font-weight: 600; font-size: 0.95rem; }
+        .reminder-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; max-height: 250px; }
+        .reminder-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; background: rgba(15, 118, 110, 0.05); border-left: 4px solid var(--primary); border-radius: 0 10px 10px 0; font-weight: 700; font-size: 0.9rem; }
         .reminder-item.warning { border-left-color: var(--accent); background: rgba(245, 158, 11, 0.05); }
         .reminder-item.danger { border-left-color: var(--danger); background: rgba(239, 68, 68, 0.05); }
 
         /* Deadlines */
-        .deadline-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; }
-        .dl-name { font-weight: 800; font-size: 0.95rem; }
-        .dl-days { font-size: 1.2rem; font-weight: 900; color: var(--danger); }
+        .deadline-list { display: flex; flex-direction: column; gap: 10px; }
+        .deadline-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 10px; transition: 0.3s; }
+        .dl-name { font-weight: 800; font-size: 0.9rem; }
+        .dl-days { font-size: 1.2rem; font-weight: 900; }
+        
+        /* Deadline Colors based on urgency */
+        .dl-safe { border-left: 4px solid #10B981; }
+        .dl-warn { border-left: 4px solid #F59E0B; background: rgba(245,158,11,0.05); }
+        .dl-danger { border-left: 4px solid #EF4444; background: rgba(239,68,68,0.05); }
+        .dl-danger .dl-days { color: #EF4444; animation: pulse 2s infinite; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
         /* Summaries */
-        .summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .sum-box { padding: 12px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 10px; }
-        .sum-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; display: block;}
-        .sum-val { font-size: 1.1rem; font-weight: 800; color: var(--text-main); display: flex; align-items: baseline; gap: 5px;}
-        .sum-val small { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        .summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; flex: 1; }
+        .sum-box { padding: 10px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; justify-content: center; }
+        .sum-label { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+        .sum-val { font-size: 1rem; font-weight: 900; color: var(--text-main); display: flex; align-items: baseline; gap: 4px;}
+        .sum-val small { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; }
+        .view-details { font-size: 0.75rem; font-weight: 800; color: var(--primary); text-align: right; margin-top: 10px; display: block; text-decoration: none; }
+        .view-details:hover { text-decoration: underline; }
 
         /* Quick Links */
-        .link-group { margin-bottom: 15px; }
-        .link-group-title { font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+        .link-group-title { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin: 10px 0 5px 0; }
         .links-wrapper { display: flex; flex-wrap: wrap; gap: 8px; }
-        .q-link { padding: 8px 12px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-decoration: none; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
-        .q-link:hover { border-color: var(--primary); color: var(--primary); background: var(--surface-hover); transform: translateY(-2px); }
-        .delete-link { color: var(--danger); cursor: pointer; margin-left: 5px; font-size: 0.9rem; }
+        .q-link-box { display: inline-flex; align-items: center; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: 0.2s; cursor: grab;}
+        .q-link-box:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(15,118,110,0.1); }
+        .q-link { padding: 8px 10px; font-size: 0.8rem; font-weight: 700; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 6px; }
+        .q-link:hover { color: var(--primary); }
+        .q-link-actions { padding: 0 8px; display: flex; gap: 5px; border-left: 1px solid var(--border); background: rgba(0,0,0,0.02); align-items: center; height: 100%;}
+        .q-icon { font-size: 0.75rem; cursor: pointer; color: var(--text-muted); }
+        .q-icon:hover { color: var(--danger); }
 
         /* Quick Actions */
-        .action-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .action-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.2s; text-decoration: none; text-align: center; }
-        .action-btn:hover { background: var(--primary-light); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(15, 118, 110, 0.3); }
-        .action-btn i { font-size: 1.5rem; }
+        .action-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        @media (max-width: 768px) { .action-grid { grid-template-columns: repeat(2, 1fr); } }
+        .action-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px; background: var(--surface-solid); color: var(--primary); border: 1px solid var(--primary); border-radius: 12px; font-weight: 800; font-size: 0.8rem; cursor: pointer; transition: 0.2s; text-decoration: none; text-align: center; }
+        .action-btn:hover { background: var(--primary); color: white; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(15, 118, 110, 0.2); }
+        .action-btn i { font-size: 1.3rem; }
 
+        /* Tasks */
+        .task-input-row { display: flex; gap: 8px; margin-bottom: 15px; }
+        .task-input { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; font-size: 0.9rem; background: var(--surface-solid); outline: none; }
+        .task-tag { padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.85rem; font-weight: 700; background: var(--surface-solid); }
+        .task-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; }
+        .task-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 8px; transition: 0.2s; }
+        .task-item.completed { opacity: 0.6; background: rgba(0,0,0,0.02); }
+        .task-item.completed .task-text { text-decoration: line-through; color: var(--text-muted); }
+        .task-text { font-weight: 700; font-size: 0.9rem; flex: 1; margin: 0 10px; cursor: pointer; }
+        .tag-badge { padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+        .tag-Academic { background: rgba(15,118,110,0.1); color: var(--primary); }
+        .tag-Learning { background: rgba(59,130,246,0.1); color: #3B82F6; }
+        .tag-Fitness { background: rgba(239,68,68,0.1); color: #EF4444; }
+        .tag-Personal { background: rgba(245,158,11,0.1); color: #F59E0B; }
+
+        /* Progress Bars */
         .prog-bg { width: 100%; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 5px; }
         .prog-fill { height: 100%; background: var(--primary); }
     </style>
@@ -101,6 +141,11 @@
                     <span class="live-clock" id="clock">--:--:--</span>
                     <span class="live-date" id="date">--</span>
                 </div>
+                <div class="week-info">
+                    <span id="current-day">--</span> •
+                    <span id="current-week">Week --</span> •
+                    <span id="sem-week">Semester Week --</span>
+                </div>
             </div>
             <button id="theme-toggle" class="btn btn-outline" style="width: auto; padding: 10px 15px;"><i class="fas fa-moon"></i></button>
         </header>
@@ -109,99 +154,157 @@
             
             <!-- SECTION 2: Today's Focus -->
             <div class="glass-card col-12" style="background: linear-gradient(135deg, rgba(15, 118, 110, 0.05) 0%, rgba(0,0,0,0) 100%);">
-                <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-                    <div style="font-size: 0.9rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 10px;"><i class="fas fa-crosshairs"></i> Today's Main Focus</div>
-                    <input type="text" id="daily-focus" class="focus-input" placeholder="What is your main goal for today?">
-                    <button class="btn btn-primary" style="width: auto; margin: 15px auto 0; padding: 8px 20px; font-size: 0.85rem;" onclick="saveFocus()">Save Focus</button>
+                <div class="focus-wrapper">
+                    <div style="font-size: 0.85rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 5px;"><i class="fas fa-crosshairs"></i> Today's Main Focus</div>
+                    <input type="text" id="daily-focus" class="focus-input" placeholder="What is your primary goal for today?" maxlength="60" oninput="updateFocusCount()">
+                    <span class="focus-char-count" id="focus-count">0/60</span>
+                    <div class="focus-actions">
+                        <button class="btn-text" onclick="saveFocus()" id="btn-save-focus">Save</button>
+                        <button class="btn-text" onclick="clearFocus()" style="color: var(--text-muted);">Clear</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- SECTION 7: Smart Daily Reminder -->
-            <div class="glass-card col-8">
-                <div class="sec-title"><span><i class="fas fa-bell"></i> Smart Reminders</span></div>
-                <div class="reminder-list" id="reminders-container">
-                    <!-- JS Populated -->
-                </div>
-            </div>
+            <!-- SECTION 4: Summaries (Live Sync) -->
+            <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0; padding:0;"><span><i class="fas fa-chart-pie"></i> Live Summaries</span></div></div>
 
-            <!-- SECTION 3: Upcoming Deadlines -->
-            <div class="glass-card col-4">
-                <div class="sec-title"><span><i class="fas fa-hourglass-half"></i> Deadlines</span></div>
-                <div id="deadlines-container">
-                    <!-- JS Populated -->
-                </div>
-            </div>
-
-            <!-- SECTION 4: Quick Summary -->
-            <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0;"><span><i class="fas fa-chart-pie"></i> Quick Summaries</span></div></div>
-
-            <div class="glass-card col-3">
-                <div style="font-weight: 800; margin-bottom: 12px; color: var(--primary);"><i class="fas fa-graduation-cap"></i> Academic</div>
-                <div class="summary-grid" style="grid-template-columns: 1fr;">
-                    <div class="sum-box">
-                        <span class="sum-label">Semester Progress</span>
+            <a href="academic.html" class="glass-card col-3 clickable-card">
+                <div style="font-weight: 900; margin-bottom: 12px; color: var(--primary);"><i class="fas fa-graduation-cap"></i> Academic</div>
+                <div class="summary-grid">
+                    <div class="sum-box" style="grid-column: span 2;"><span class="sum-label">Semester Progress</span>
                         <span class="sum-val" id="sum-sem-pct">0%</span>
                         <div class="prog-bg"><div class="prog-fill" id="sum-sem-bar" style="width: 0%;"></div></div>
                     </div>
+                    <div class="sum-box"><span class="sum-label">Next Class</span><span class="sum-val" id="sum-next-class" style="font-size: 0.85rem; line-height: 1.2;">None</span></div>
+                    <div class="sum-box"><span class="sum-label">Exams</span><span class="sum-val" id="sum-next-exam" style="font-size: 0.85rem; line-height: 1.2;">-</span></div>
                 </div>
-            </div>
+                <span class="view-details">View Details →</span>
+            </a>
 
-            <div class="glass-card col-3">
-                <div style="font-weight: 800; margin-bottom: 12px; color: #3B82F6;"><i class="fas fa-laptop-code"></i> Learning</div>
-                <div class="summary-grid" style="grid-template-columns: 1fr;">
-                    <div class="sum-box">
-                        <span class="sum-label">Machine Learning</span>
-                        <span class="sum-val" id="sum-ml-pct">0% <small>Completed</small></span>
-                    </div>
-                    <div class="sum-box">
-                        <span class="sum-label">Grammar Course</span>
-                        <span class="sum-val" id="sum-gr-pct">0% <small>Completed</small></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-card col-3">
-                <div style="font-weight: 800; margin-bottom: 12px; color: #EF4444;"><i class="fas fa-heart-pulse"></i> Today's Fitness</div>
+            <a href="skills.html" class="glass-card col-3 clickable-card">
+                <div style="font-weight: 900; margin-bottom: 12px; color: #3B82F6;"><i class="fas fa-laptop-code"></i> Learning</div>
                 <div class="summary-grid">
-                    <div class="sum-box"><span class="sum-label">Gym</span><span class="sum-val" id="sum-gym">Missed</span></div>
+                    <div class="sum-box" style="grid-column: span 2;">
+                        <span class="sum-label">Machine Learning</span>
+                        <span class="sum-val" id="sum-ml-pct">0% <small>Done</small></span>
+                        <div class="prog-bg"><div class="prog-fill" id="sum-ml-bar" style="width: 0%; background: #3B82F6;"></div></div>
+                    </div>
+                    <div class="sum-box" style="grid-column: span 2;">
+                        <span class="sum-label">Grammar Course</span>
+                        <span class="sum-val" id="sum-gr-pct">0% <small>Done</small></span>
+                        <div class="prog-bg"><div class="prog-fill" id="sum-gr-bar" style="width: 0%; background: #3B82F6;"></div></div>
+                    </div>
+                </div>
+                <span class="view-details" style="color: #3B82F6;">View Details →</span>
+            </a>
+
+            <a href="health.html" class="glass-card col-3 clickable-card">
+                <div style="font-weight: 900; margin-bottom: 12px; color: #EF4444;"><i class="fas fa-heart-pulse"></i> Fitness</div>
+                <div class="summary-grid">
+                    <div class="sum-box" style="grid-column: span 2;"><span class="sum-label">Today's Gym</span><span class="sum-val" id="sum-gym">Pending</span></div>
                     <div class="sum-box"><span class="sum-label">Calories</span><span class="sum-val" id="sum-cal">0 <small>kcal</small></span></div>
                     <div class="sum-box"><span class="sum-label">Protein</span><span class="sum-val" id="sum-pro">0 <small>g</small></span></div>
                     <div class="sum-box"><span class="sum-label">Water</span><span class="sum-val" id="sum-wat">0 <small>L</small></span></div>
+                    <div class="sum-box"><span class="sum-label">Sleep</span><span class="sum-val" id="sum-slp">0 <small>hrs</small></span></div>
                 </div>
-            </div>
+                <span class="view-details" style="color: #EF4444;">View Details →</span>
+            </a>
 
-            <div class="glass-card col-3">
-                <div style="font-weight: 800; margin-bottom: 12px; color: #F59E0B;"><i class="fas fa-wallet"></i> Personal</div>
-                <div class="summary-grid" style="grid-template-columns: 1fr;">
-                    <div class="sum-box">
+            <a href="personal.html" class="glass-card col-3 clickable-card">
+                <div style="font-weight: 900; margin-bottom: 12px; color: #F59E0B;"><i class="fas fa-wallet"></i> Personal</div>
+                <div class="summary-grid">
+                    <div class="sum-box" style="grid-column: span 2;">
                         <span class="sum-label">Remaining Budget</span>
                         <span class="sum-val" id="sum-budget" style="color: #F59E0B;">0 <small>BDT</small></span>
+                        <div class="prog-bg"><div class="prog-fill" id="sum-bdg-bar" style="width: 0%; background: #F59E0B;"></div></div>
                     </div>
+                    <div class="sum-box" style="grid-column: span 2;"><span class="sum-label">Today's Expense</span><span class="sum-val" id="sum-exp-today" style="color: #EF4444;">0 <small>BDT</small></span></div>
+                </div>
+                <span class="view-details" style="color: #F59E0B;">View Details →</span>
+            </a>
+
+            <!-- SECTION 3: Smart Reminders -->
+            <div class="glass-card col-8">
+                <div class="sec-title"><span><i class="fas fa-bell"></i> Smart Daily Reminders</span></div>
+                <div class="reminder-list" id="reminders-container">
+                    <!-- JS Populated based on actual data -->
                 </div>
             </div>
 
-            <!-- SECTION 6: Quick Actions -->
-            <div class="glass-card col-5">
-                <div class="sec-title"><span><i class="fas fa-bolt"></i> Quick Actions</span></div>
-                <div class="action-grid">
-                    <a href="health.html" class="action-btn"><i class="fas fa-utensils"></i> Log Nutrition</a>
-                    <a href="health.html" class="action-btn"><i class="fas fa-dumbbell"></i> Update Gym</a>
-                    <a href="personal.html" class="action-btn" style="background: var(--accent);"><i class="fas fa-plus-circle"></i> Add Expense</a>
-                    <a href="skills.html" class="action-btn" style="background: #3B82F6;"><i class="fas fa-laptop"></i> Complete ML</a>
-                    <a href="health.html" class="action-btn" style="background: var(--danger);"><i class="fas fa-bed"></i> Log Sleep</a>
-                    <a href="health.html" class="action-btn"><i class="fas fa-weight-scale"></i> Log Weight</a>
-                </div>
-            </div>
-
-            <!-- SECTION 5: Quick Links -->
-            <div class="glass-card col-7">
-                <div class="sec-title">
-                    <span><i class="fas fa-link"></i> Quick Links</span>
-                    <button class="btn btn-outline btn-sm" style="padding: 4px 10px;" onclick="addLinkPrompt()"><i class="fas fa-plus"></i> Add Link</button>
-                </div>
-                <div id="links-container">
+            <!-- SECTION 4: Deadlines -->
+            <div class="glass-card col-4">
+                <div class="sec-title"><span><i class="fas fa-hourglass-half"></i> Deadlines</span></div>
+                <div class="deadline-list" id="deadlines-container">
                     <!-- JS Populated -->
                 </div>
+            </div>
+
+            <!-- SECTION 9: Quick Actions -->
+            <div class="glass-card col-12">
+                <div class="sec-title"><span><i class="fas fa-bolt"></i> Quick Actions</span></div>
+                <div class="action-grid">
+                    <a href="health.html" class="action-btn"><i class="fas fa-utensils"></i> Log Calories</a>
+                    <a href="health.html" class="action-btn"><i class="fas fa-dumbbell"></i> Update Gym</a>
+                    <a href="health.html" class="action-btn"><i class="fas fa-bed"></i> Log Sleep</a>
+                    <a href="health.html" class="action-btn"><i class="fas fa-weight-scale"></i> Update Weight</a>
+                    <a href="skills.html" class="action-btn"><i class="fas fa-robot"></i> Complete ML</a>
+                    <a href="skills.html" class="action-btn"><i class="fas fa-spell-check"></i> Grammar Chap</a>
+                    <a href="personal.html" class="action-btn"><i class="fas fa-plus-circle"></i> Add Expense</a>
+                    <a href="personal.html" class="action-btn"><i class="fas fa-face-smile"></i> Log Mood</a>
+                </div>
+            </div>
+
+            <!-- SECTION 11: Today's Tasks -->
+            <div class="glass-card col-5">
+                <div class="sec-title" style="justify-content: space-between;">
+                    <span><i class="fas fa-tasks"></i> Today's Tasks</span>
+                    <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted);" id="task-progress-text">0/0</span>
+                </div>
+                <div class="prog-bg" style="margin-top: -10px; margin-bottom: 15px;"><div class="prog-fill" id="task-prog-bar" style="width: 0%;"></div></div>
+                
+                <form class="task-input-row" onsubmit="addTask(event)">
+                    <input type="text" id="task-input" class="task-input" placeholder="Add a new task..." required>
+                    <select id="task-tag" class="task-tag">
+                        <option value="Academic">Academic</option>
+                        <option value="Learning">Learning</option>
+                        <option value="Fitness">Fitness</option>
+                        <option value="Personal">Personal</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 15px; border-radius: 8px;"><i class="fas fa-plus"></i></button>
+                </form>
+
+                <ul class="task-list" id="task-list">
+                    <!-- JS Populated -->
+                </ul>
+            </div>
+
+            <!-- SECTION 10 & 12: Quick Links & Weekly Summary -->
+            <div class="col-7" style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <!-- Weekly Summary -->
+                <div class="glass-card">
+                    <div class="sec-title"><span><i class="fas fa-calendar-week"></i> 7-Day Quick Summary</span></div>
+                    <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="sum-box"><span class="sum-label">Gym Days</span><span class="sum-val" id="ws-gym">0</span></div>
+                        <div class="sum-box"><span class="sum-label">Avg Calories</span><span class="sum-val" id="ws-cal">0</span></div>
+                        <div class="sum-box"><span class="sum-label">Avg Protein</span><span class="sum-val" id="ws-pro">0</span></div>
+                        <div class="sum-box"><span class="sum-label">Avg Sleep</span><span class="sum-val" id="ws-slp">0</span></div>
+                        <div class="sum-box"><span class="sum-label">Money Spent</span><span class="sum-val" id="ws-spent" style="color: var(--danger);">0</span></div>
+                        <div class="sum-box"><span class="sum-label">ML/Gr Items</span><span class="sum-val" id="ws-lms">0</span></div>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="glass-card" style="flex: 1;">
+                    <div class="sec-title">
+                        <span><i class="fas fa-link"></i> Quick Links</span>
+                        <button class="btn btn-outline btn-sm" style="padding: 4px 10px;" onclick="addLinkPrompt()"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div id="links-container" style="max-height: 200px; overflow-y: auto;">
+                        <!-- JS Populated -->
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -209,44 +312,83 @@
 
     <script src="js/app.js"></script>
     <script>
-        // --- 1. Header (Clock & Greeting) ---
+        // --- 1. Global Date Data ---
+        const now = new Date();
+        const todayStr = now.toISOString().split('T')[0];
+        
+        // --- 2. LocalStorage Fetching (Live Sync) ---
+        const fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || { weight:[], gym:[], nutrition:[], water:[], sleep:[] };
+        const pDB = JSON.parse(localStorage.getItem('lifeos_finance_v3')) || { budget: 8000, expenses: [] };
+        const lDB = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || { checkedItems: {}, history: [] };
+
+        // --- 3. Header & Time Logic ---
         function updateHeader() {
-            const now = new Date();
-            const h = now.getHours();
-            
+            const h = new Date().getHours();
             let greeting = "Good Evening!";
             if(h < 12) greeting = "Good Morning!";
             else if(h < 18) greeting = "Good Afternoon!";
             document.getElementById('greeting').innerText = greeting;
 
-            document.getElementById('clock').innerText = now.toLocaleTimeString('en-US');
-            document.getElementById('date').innerText = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        }
-        setInterval(updateHeader, 1000);
-        updateHeader();
+            const n = new Date();
+            document.getElementById('clock').innerText = n.toLocaleTimeString('en-US');
+            
+            // Day and Date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date').innerText = n.toLocaleDateString('en-US', options);
+            document.getElementById('current-day').innerText = n.toLocaleDateString('en-US', { weekday: 'long' });
 
-        // --- 2. Today's Focus ---
+            // Week Calculation
+            const startOfYear = new Date(n.getFullYear(), 0, 1);
+            const pastDaysOfYear = (n - startOfYear) / 86400000;
+            document.getElementById('current-week').innerText = `Week ${Math.ceil((pastDaysOfYear + startOfYear.getDay() + 1) / 7)}`;
+
+            // Semester Week (Start: July 19, 2026)
+            const semStart = new Date('2026-07-19T00:00:00');
+            const diffTime = Math.abs(n - semStart);
+            const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)) + 1;
+            document.getElementById('sem-week').innerText = `Sem Week ${diffWeeks}`;
+        }
+        setInterval(updateHeader, 1000); updateHeader();
+
+        // --- 4. Today's Focus ---
         const focusInput = document.getElementById('daily-focus');
+        const focusCount = document.getElementById('focus-count');
+        
+        // Check if focus is from today, else clear
+        let savedDate = localStorage.getItem('lifeos_focus_date');
+        if(savedDate !== todayStr) {
+            localStorage.setItem('lifeos_focus_date', todayStr);
+            localStorage.setItem('lifeos_daily_focus', '');
+        }
+        
         focusInput.value = localStorage.getItem('lifeos_daily_focus') || '';
+        updateFocusCount();
+
+        function updateFocusCount() {
+            focusCount.innerText = `${focusInput.value.length}/60`;
+            localStorage.setItem('lifeos_daily_focus', focusInput.value); // Auto save
+        }
+        
         function saveFocus() {
             localStorage.setItem('lifeos_daily_focus', focusInput.value);
-            const btn = document.querySelector('button[onclick="saveFocus()"]');
-            btn.innerText = "Saved!";
-            setTimeout(() => btn.innerText = "Save Focus", 2000);
+            const btn = document.getElementById('btn-save-focus');
+            btn.innerText = "Saved!"; setTimeout(() => btn.innerText = "Save", 2000);
+        }
+        
+        function clearFocus() {
+            focusInput.value = ''; updateFocusCount();
         }
 
-        // --- Data Fetching from LocalStorage ---
-        const todayStr = new Date().toISOString().split('T')[0];
-        
-        const fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || { weight:[], gym:[], nutrition:[], water:[], sleep:[] };
-        const pDB = JSON.parse(localStorage.getItem('lifeos_finance_v3')) || { budget: 8000, expenses: [] };
-        const lDB = JSON.parse(localStorage.getItem('lifeos_learning_db')) || { courses: { ml: {total:1, completed:0}, grammar: {total:1, completed:0} } };
-
-        // --- 4. Quick Summaries ---
+        // --- 5. Data Processing & Summaries ---
         function loadSummaries() {
             // Fitness
             const tGym = fDB.gym.find(x => x.date === todayStr);
-            document.getElementById('sum-gym').innerText = tGym ? (tGym.attended ? '✅ Done' : '❌ Missed') : 'Pending';
+            const gymEl = document.getElementById('sum-gym');
+            if(tGym) {
+                gymEl.innerHTML = tGym.attended ? '<span style="color:#10B981;">✅ Done</span>' : '<span style="color:var(--danger);">❌ Missed</span>';
+            } else {
+                gymEl.innerText = 'Pending';
+            }
             
             const tNut = fDB.nutrition.find(x => x.date === todayStr);
             document.getElementById('sum-cal').innerHTML = `${tNut ? tNut.cal : 0} <small>kcal</small>`;
@@ -254,34 +396,64 @@
             
             const tWat = fDB.water.find(x => x.date === todayStr);
             document.getElementById('sum-wat').innerHTML = `${tWat ? tWat.val : 0} <small>L</small>`;
+            
+            const tSlp = fDB.sleep.find(x => x.date === todayStr);
+            document.getElementById('sum-slp').innerHTML = `${tSlp ? tSlp.duration.toFixed(1) : 0} <small>h</small>`;
 
-            // Personal Budget
-            const currentMonth = new Date().getMonth();
-            const currentYear = new Date().getFullYear();
+            // Finance
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
             const monthlyExps = pDB.expenses.filter(e => {
                 const ed = new Date(e.date);
                 return ed.getMonth() === currentMonth && ed.getFullYear() === currentYear;
             });
             const totalSpent = monthlyExps.reduce((sum, e) => sum + e.amount, 0);
-            document.getElementById('sum-budget').innerHTML = `${(pDB.budget - totalSpent).toLocaleString()} <small>BDT</small>`;
+            const remBdgt = pDB.budget - totalSpent;
+            document.getElementById('sum-budget').innerHTML = `${remBdgt.toLocaleString()} <small>BDT</small>`;
+            
+            let bdgPct = (totalSpent / pDB.budget) * 100; if(bdgPct > 100) bdgPct = 100;
+            document.getElementById('sum-bdg-bar').style.width = `${bdgPct}%`;
 
-            // Learning
-            const cML = lDB.courses.ml || {total:1, completed:0};
-            const cGr = lDB.courses.grammar || {total:1, completed:0};
-            document.getElementById('sum-ml-pct').innerHTML = `${cML.total>0 ? Math.round((cML.completed/cML.total)*100) : 0}% <small>Completed</small>`;
-            document.getElementById('sum-gr-pct').innerHTML = `${cGr.total>0 ? Math.round((cGr.completed/cGr.total)*100) : 0}% <small>Completed</small>`;
+            const todayExp = pDB.expenses.filter(e => e.date === todayStr).reduce((s, e) => s + e.amount, 0);
+            document.getElementById('sum-exp-today').innerHTML = `${todayExp.toLocaleString()} <small>BDT</small>`;
 
-            // Academic (Hardcoded dates for demo)
+            // Learning (Calculate from checkedItems)
+            let mlTotal = 100, mlDone = 0, grTotal = 50, grDone = 0; // rough max
+            Object.keys(lDB.checkedItems).forEach(k => {
+                if(lDB.checkedItems[k]) {
+                    if(k.startsWith('ml_')) mlDone++;
+                    if(k.startsWith('gr_')) grDone++;
+                }
+            });
+            let mlPct = Math.round((mlDone/mlTotal)*100); if(mlPct>100) mlPct=100;
+            let grPct = Math.round((grDone/grTotal)*100); if(grPct>100) grPct=100;
+            
+            document.getElementById('sum-ml-pct').innerHTML = `${mlPct}% <small>Done</small>`;
+            document.getElementById('sum-ml-bar').style.width = `${mlPct}%`;
+            document.getElementById('sum-gr-pct').innerHTML = `${grPct}% <small>Done</small>`;
+            document.getElementById('sum-gr-bar').style.width = `${grPct}%`;
+
+            // Academic (Mocking Routine for today)
             const semStart = new Date('2026-07-19T00:00:00');
             const semEnd = new Date('2026-12-06T00:00:00');
-            const now = new Date();
             let semPct = ((now - semStart) / (semEnd - semStart)) * 100;
             if(semPct < 0) semPct = 0; if(semPct > 100) semPct = 100;
             document.getElementById('sum-sem-pct').innerText = `${semPct.toFixed(1)}%`;
             document.getElementById('sum-sem-bar').style.width = `${semPct}%`;
+
+            const routine = {
+                0: "EEE 3205", // Sun
+                1: "EEE 3201", // Mon
+                2: "EEE 3201", // Tue
+                3: "EEE 3205", // Wed
+                4: "EEE 3207"  // Thu
+            };
+            const cDay = now.getDay();
+            document.getElementById('sum-next-class').innerHTML = routine[cDay] ? `${routine[cDay]} <small>(Today)</small>` : 'No Class Today';
+            document.getElementById('sum-next-exam').innerHTML = `Stats Retake <small>(Aug 31)</small>`;
         }
 
-        // --- 3 & 7. Deadlines and Smart Reminders ---
+        // --- 6. Deadlines & Reminders ---
         function loadDeadlinesAndReminders() {
             const deadlines = [
                 { name: "Statistics Retake", date: new Date('2026-08-31T00:00:00') },
@@ -290,110 +462,209 @@
                 { name: "Final Exams", date: new Date('2026-12-06T00:00:00') }
             ];
 
-            const now = new Date();
             const dlContainer = document.getElementById('deadlines-container');
             const remContainer = document.getElementById('reminders-container');
             
-            // Sort Deadlines
-            const upcoming = deadlines.filter(d => d.date > now).sort((a,b) => a.date - b.date);
+            const upcoming = deadlines.filter(d => d.date >= now).sort((a,b) => a.date - b.date);
             
             dlContainer.innerHTML = '';
-            upcoming.slice(0, 3).forEach(dl => {
+            let nextDeadlineReminder = null;
+
+            upcoming.slice(0, 4).forEach(dl => {
                 const daysLeft = Math.ceil((dl.date - now) / (1000*60*60*24));
+                let colorClass = 'dl-safe';
+                if(daysLeft <= 15) colorClass = 'dl-warn';
+                if(daysLeft <= 7) colorClass = 'dl-danger';
+
+                if(daysLeft <= 15 && !nextDeadlineReminder) {
+                    nextDeadlineReminder = `🚨 <strong>${dl.name}</strong> is in ${daysLeft} days!`;
+                }
+
                 dlContainer.innerHTML += `
-                    <div class="deadline-item">
+                    <div class="deadline-item ${colorClass}">
                         <span class="dl-name">${dl.name}</span>
-                        <span class="dl-days">${daysLeft} <small style="font-size:0.7rem; color:var(--text-muted);">Days</small></span>
+                        <span class="dl-days">${daysLeft} <small style="font-size:0.7rem; color:var(--text-muted); font-weight:700;">Days</small></span>
                     </div>
                 `;
             });
 
-            // Smart Reminders logic
+            // Smart Reminders logic (Priority sorting)
             let reminders = [];
 
-            // Gym
+            // 1. Gym
             const tGym = fDB.gym.find(x => x.date === todayStr);
-            if(!tGym) reminders.push({ type: 'warning', text: "🏋️‍♂️ Gym is not completed today." });
+            if(!tGym) reminders.push({ type: 'danger', text: "🏋️‍♂️ Gym attendance not logged today.", weight: 10 });
+            else if(!tGym.attended) reminders.push({ type: 'warning', text: "❌ You missed the gym today.", weight: 5 });
 
-            // Nutrition
+            // 2. Nutrition
             const tNut = fDB.nutrition.find(x => x.date === todayStr);
-            if(!tNut || tNut.pro < 100) {
-                const p = tNut ? tNut.pro : 0;
-                reminders.push({ type: 'danger', text: `🥩 You still need ${100 - p}g protein today.` });
+            if(!tNut) {
+                reminders.push({ type: 'danger', text: "🍽️ Calories & Protein not logged.", weight: 9 });
+            } else if(tNut.pro < 100) {
+                reminders.push({ type: 'warning', text: `🥩 Protein goal remaining: <strong>${100 - tNut.pro}g</strong>.`, weight: 8 });
             }
 
-            // Water
+            // 3. Water
             const tWat = fDB.water.find(x => x.date === todayStr);
-            if(!tWat || tWat.val < 3.0) {
-                const w = tWat ? tWat.val : 0;
-                reminders.push({ type: '', text: `💧 Drink ${(3.0 - w).toFixed(1)}L more water.` });
+            if(!tWat) {
+                reminders.push({ type: 'warning', text: "💧 Water intake not logged today.", weight: 7 });
+            } else if(tWat.val < 3.0) {
+                reminders.push({ type: 'warning', text: `💧 Drink <strong>${(3.0 - tWat.val).toFixed(1)}L</strong> more water.`, weight: 6 });
             }
 
-            // Learning
-            const cML = lDB.courses.ml || {total:1, completed:0};
-            if(cML.completed < cML.total) {
-                reminders.push({ type: '', text: "🤖 Complete one ML module today to stay on schedule." });
+            // 4. Learning (Check if history has entry today)
+            const todayLmsLogs = lDB.history.filter(h => h.rawDate === todayStr);
+            if(todayLmsLogs.length === 0) {
+                reminders.push({ type: 'warning', text: "📚 No learning progress logged today.", weight: 7 });
             }
 
-            // Deadlines
-            if(upcoming.length > 0) {
-                const closest = upcoming[0];
-                const dLeft = Math.ceil((closest.date - now) / (1000*60*60*24));
-                if(dLeft <= 30) {
-                    reminders.push({ type: 'warning', text: `🚨 ${closest.name} is in ${dLeft} days.` });
-                }
+            // 5. Deadlines
+            if(nextDeadlineReminder) {
+                reminders.push({ type: 'danger', text: nextDeadlineReminder, weight: 15 }); // Highest priority
             }
+
+            // Sort by priority (weight descending)
+            reminders.sort((a,b) => b.weight - a.weight);
 
             remContainer.innerHTML = '';
-            reminders.forEach(r => {
-                remContainer.innerHTML += `<div class="reminder-item ${r.type}">${r.text}</div>`;
-            });
+            if(reminders.length === 0) {
+                remContainer.innerHTML = `<div class="reminder-item" style="border-left-color:#10B981; background:rgba(16,185,129,0.05);">✅ You are all caught up for today!</div>`;
+            } else {
+                reminders.forEach(r => {
+                    remContainer.innerHTML += `<div class="reminder-item ${r.type}">${r.text}</div>`;
+                });
+            }
         }
 
-        // --- 5. Quick Links Management ---
+        // --- 7. Weekly Summary (7-Day Rolling) ---
+        function loadWeeklySummary() {
+            const wStart = new Date(now);
+            wStart.setDate(wStart.getDate() - 7);
+            const wStartStr = wStart.toISOString().split('T')[0];
+
+            // Gym Days
+            const wGym = fDB.gym.filter(x => x.date >= wStartStr && x.attended).length;
+            document.getElementById('ws-gym').innerText = wGym;
+
+            // Avgs
+            const wNut = fDB.nutrition.filter(x => x.date >= wStartStr);
+            const avgCal = wNut.length ? (wNut.reduce((s,x)=>s+x.cal,0)/wNut.length) : 0;
+            const avgPro = wNut.length ? (wNut.reduce((s,x)=>s+x.pro,0)/wNut.length) : 0;
+            document.getElementById('ws-cal').innerText = `${Math.round(avgCal)}`;
+            document.getElementById('ws-pro').innerText = `${Math.round(avgPro)}g`;
+
+            const wSlp = fDB.sleep.filter(x => x.date >= wStartStr);
+            const avgSlp = wSlp.length ? (wSlp.reduce((s,x)=>s+x.duration,0)/wSlp.length) : 0;
+            document.getElementById('ws-slp').innerText = `${avgSlp.toFixed(1)}h`;
+
+            // Expenses
+            const wExp = pDB.expenses.filter(x => x.date >= wStartStr).reduce((s,x)=>s+x.amount, 0);
+            document.getElementById('ws-spent').innerText = `${wExp}`;
+
+            // LMS Items
+            const wLms = lDB.history.filter(x => x.rawDate >= wStartStr).length;
+            document.getElementById('ws-lms').innerText = wLms;
+        }
+
+        // --- 8. Daily Tasks ---
+        let tasks = JSON.parse(localStorage.getItem('lifeos_today_tasks')) || [];
+        // Optional: Auto-clear tasks if not from today (omitted for simplicity, user manually clears/deletes)
+
+        function renderTasks() {
+            const list = document.getElementById('task-list');
+            list.innerHTML = '';
+            
+            // Sort: Incomplete first, completed bottom
+            const sorted = [...tasks].sort((a,b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1);
+
+            let completedCount = 0;
+
+            sorted.forEach(t => {
+                if(t.completed) completedCount++;
+                list.innerHTML += `
+                    <li class="task-item ${t.completed ? 'completed' : ''}">
+                        <input type="checkbox" style="width:18px; height:18px; accent-color:var(--primary); cursor:pointer;" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})">
+                        <span class="task-text" onclick="toggleTask(${t.id})">${t.text}</span>
+                        <span class="tag-badge tag-${t.tag}">${t.tag}</span>
+                        <i class="fas fa-times" style="color:var(--danger); cursor:pointer; margin-left:10px;" onclick="deleteTask(${t.id})"></i>
+                    </li>
+                `;
+            });
+
+            const pct = tasks.length ? Math.round((completedCount/tasks.length)*100) : 0;
+            document.getElementById('task-progress-text').innerText = `${completedCount}/${tasks.length} (${pct}%)`;
+            document.getElementById('task-prog-bar').style.width = `${pct}%`;
+        }
+
+        function addTask(e) {
+            e.preventDefault();
+            const text = document.getElementById('task-input').value;
+            const tag = document.getElementById('task-tag').value;
+            tasks.push({ id: Date.now(), text, tag, completed: false });
+            localStorage.setItem('lifeos_today_tasks', JSON.stringify(tasks));
+            document.getElementById('task-input').value = '';
+            renderTasks();
+        }
+
+        function toggleTask(id) {
+            const t = tasks.find(x => x.id === id);
+            t.completed = !t.completed;
+            localStorage.setItem('lifeos_today_tasks', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(x => x.id !== id);
+            localStorage.setItem('lifeos_today_tasks', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        // --- 9. Quick Links Management ---
         const defaultLinks = [
             { category: "University", links: [
-                { name: "DU Website", url: "https://du.ac.bd" },
-                { name: "Google Classroom", url: "https://classroom.google.com" },
+                { name: "DU Web", url: "https://du.ac.bd" },
+                { name: "Classroom", url: "https://classroom.google.com" },
                 { name: "UniSync", url: "https://uni-sync-beige.vercel.app/#/" }
             ]},
             { category: "Learning", links: [
-                { name: "Coursera", url: "https://coursera.org" },
+                { name: "Coursera ML", url: "https://coursera.org" },
                 { name: "10MS Grammar", url: "https://10minuteschool.com" },
                 { name: "GitHub", url: "https://github.com" }
             ]},
-            { category: "AI Tools", links: [
+            { category: "AI & Tools", links: [
                 { name: "ChatGPT", url: "https://chat.openai.com" },
-                { name: "Gemini", url: "https://gemini.google.com" }
+                { name: "Drive", url: "https://drive.google.com" }
             ]}
         ];
 
-        let qLinks = JSON.parse(localStorage.getItem('lifeos_quick_links')) || defaultLinks;
+        let qLinks = JSON.parse(localStorage.getItem('lifeos_quick_links_v2')) || defaultLinks;
 
         function renderLinks() {
             const container = document.getElementById('links-container');
             container.innerHTML = '';
 
-            qLinks.forEach((cat, catIndex) => {
-                let catHtml = `<div class="link-group"><div class="link-group-title">${cat.category}</div><div class="links-wrapper">`;
-                cat.links.forEach((link, linkIndex) => {
-                    catHtml += `
-                        <div style="display:inline-flex; align-items:center;">
+            qLinks.forEach((cat, catIdx) => {
+                let html = `<div><div class="link-group-title">${cat.category}</div><div class="links-wrapper">`;
+                cat.links.forEach((link, linkIdx) => {
+                    html += `
+                        <div class="q-link-box">
                             <a href="${link.url}" target="_blank" class="q-link">
-                                <img src="https://www.google.com/s2/favicons?domain=${link.url}&sz=32" alt="" style="width:16px; height:16px; border-radius:4px;">
+                                <img src="https://www.google.com/s2/favicons?domain=${link.url}&sz=16" alt="" style="width:14px; height:14px;">
                                 ${link.name}
                             </a>
-                            <span class="delete-link" onclick="deleteLink(${catIndex}, ${linkIndex})"><i class="fas fa-times"></i></span>
+                            <div class="q-link-actions">
+                                <i class="fas fa-trash q-icon" onclick="deleteLink(${catIdx}, ${linkIdx})"></i>
+                            </div>
                         </div>
                     `;
                 });
-                catHtml += `</div></div>`;
-                container.innerHTML += catHtml;
+                html += `</div></div>`;
+                container.innerHTML += html;
             });
         }
 
         function addLinkPrompt() {
-            const cat = prompt("Enter Category (e.g., Learning, AI Tools):", "General");
+            const cat = prompt("Enter Category (University, Learning, AI & Tools, etc.):", "General");
             if(!cat) return;
             const name = prompt("Enter Link Name:");
             if(!name) return;
@@ -401,33 +672,27 @@
             if(!url) return;
 
             let catObj = qLinks.find(c => c.category.toLowerCase() === cat.toLowerCase());
-            if(catObj) {
-                catObj.links.push({name, url});
-            } else {
-                qLinks.push({ category: cat, links: [{name, url}] });
-            }
-            saveLinks();
+            if(catObj) { catObj.links.push({name, url}); } 
+            else { qLinks.push({ category: cat, links: [{name, url}] }); }
+            localStorage.setItem('lifeos_quick_links_v2', JSON.stringify(qLinks));
+            renderLinks();
         }
 
         function deleteLink(catIdx, linkIdx) {
             if(confirm("Delete this link?")) {
                 qLinks[catIdx].links.splice(linkIdx, 1);
-                if(qLinks[catIdx].links.length === 0) {
-                    qLinks.splice(catIdx, 1);
-                }
-                saveLinks();
+                if(qLinks[catIdx].links.length === 0) qLinks.splice(catIdx, 1);
+                localStorage.setItem('lifeos_quick_links_v2', JSON.stringify(qLinks));
+                renderLinks();
             }
-        }
-
-        function saveLinks() {
-            localStorage.setItem('lifeos_quick_links', JSON.stringify(qLinks));
-            renderLinks();
         }
 
         // --- Init ---
         window.addEventListener('DOMContentLoaded', () => {
             loadSummaries();
             loadDeadlinesAndReminders();
+            loadWeeklySummary();
+            renderTasks();
             renderLinks();
         });
     </script>
