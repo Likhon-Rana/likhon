@@ -20,14 +20,13 @@
         }
 
         .dash-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; margin-top: 15px; }
-        .col-3 { grid-column: span 3; }
         .col-4 { grid-column: span 4; }
         .col-6 { grid-column: span 6; }
         .col-8 { grid-column: span 8; }
         .col-12 { grid-column: span 12; }
 
-        @media (max-width: 1200px) { .col-3, .col-4 { grid-column: span 6; } }
-        @media (max-width: 768px) { .col-3, .col-4, .col-6, .col-8, .col-12 { grid-column: span 12; } }
+        @media (max-width: 1200px) { .col-4 { grid-column: span 6; } }
+        @media (max-width: 768px) { .col-4, .col-6, .col-8, .col-12 { grid-column: span 12; } }
 
         .glass-card { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; box-shadow: 0 8px 32px rgba(0,0,0,0.04); transition: 0.3s; }
         .glass-card:hover { box-shadow: 0 12px 40px rgba(15, 118, 110, 0.08); transform: translateY(-2px); }
@@ -52,6 +51,12 @@
         .insight-list { display: flex; flex-direction: column; gap: 10px; }
         .insight-item { padding: 12px 15px; background: linear-gradient(to right, rgba(15, 118, 110, 0.05), transparent); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; font-weight: 600; font-size: 0.9rem; line-height: 1.5; }
         
+        /* Monthly Review Styles */
+        .review-card { background: var(--surface-solid); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .review-header { display: flex; justify-content: space-between; font-weight: 900; color: var(--primary); font-size: 1.1rem; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
+        .review-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 0.85rem; font-weight: 700; }
+        .review-text { font-size: 0.9rem; color: var(--text-main); line-height: 1.6; font-weight: 600; background: rgba(15, 118, 110, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--primary); }
+
         .action-btns { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
         .btn-sm { padding: 8px 12px; font-size: 0.8rem; }
         
@@ -78,7 +83,7 @@
         <header class="glass">
             <div>
                 <h1 style="color: var(--primary); font-weight: 900;">Fitness & Wellness</h1>
-                <p style="color: var(--text-muted); font-weight: 700;">Interactive Data-Driven Health Tracker</p>
+                <p style="color: var(--text-muted); font-weight: 700;">Interactive Health Tracker & Analysis</p>
             </div>
             <button id="theme-toggle" class="btn btn-outline" style="width: auto;"><i class="fas fa-moon"></i></button>
         </header>
@@ -89,7 +94,7 @@
             <div class="col-12"><div class="sec-title" style="border:none; margin-bottom:0;"><i class="fas fa-pen-to-square"></i> Log Daily / Weekly Data</div></div>
             
             <!-- Gym Entry -->
-            <div class="glass-card col-3">
+            <div class="glass-card col-4">
                 <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-dumbbell"></i> Gym Attendance</div>
                 <input type="date" id="gym-date" class="form-control form-group">
                 <div class="form-row">
@@ -99,7 +104,7 @@
             </div>
 
             <!-- Nutrition Entry -->
-            <div class="glass-card col-3">
+            <div class="glass-card col-4">
                 <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-utensils"></i> Nutrition</div>
                 <form onsubmit="logNutrition(event)">
                     <input type="date" id="nut-date" class="form-control form-group" required>
@@ -111,39 +116,28 @@
                 </form>
             </div>
 
-            <!-- Water & Sleep Entry -->
-            <div class="glass-card col-3">
-                <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-glass-water"></i> Water</div>
-                <form onsubmit="logWater(event)" class="form-row form-group">
-                    <input type="date" id="wat-date" class="form-control" required style="flex: 1;">
-                    <input type="number" step="0.1" id="wat-liters" class="form-control" placeholder="Liters" required style="flex: 1;">
-                    <button type="submit" class="btn btn-primary" style="width: auto;"><i class="fas fa-save"></i></button>
-                </form>
-                
-                <div class="sec-title" style="font-size: 1rem; margin-top: 15px;"><i class="fas fa-bed"></i> Sleep</div>
-                <form onsubmit="logSleep(event)" class="form-group">
-                    <input type="date" id="slp-date" class="form-control form-group" required>
+            <!-- Sleep & Weight Entry -->
+            <div class="glass-card col-4">
+                <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-bed"></i> Sleep & <i class="fas fa-weight-scale"></i> Weight</div>
+                <form onsubmit="logSleep(event)" class="form-group" style="margin-bottom: 15px;">
                     <div class="form-row form-group">
+                        <input type="date" id="slp-date" class="form-control" required style="width: 40%;">
                         <input type="time" id="slp-bed" class="form-control" required title="Bed Time">
                         <input type="time" id="slp-wake" class="form-control" required title="Wake Up Time">
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Save Sleep</button>
+                    <button type="submit" class="btn btn-outline" style="width: 100%; padding: 6px;">Save Sleep</button>
+                </form>
+                
+                <form onsubmit="logWeight(event)" class="form-row">
+                    <input type="date" id="wt-date" class="form-control" required style="width: 50%;">
+                    <input type="number" step="0.1" id="wt-val" class="form-control" placeholder="Weight (kg)" required>
+                    <button type="submit" class="btn btn-primary" style="padding: 6px 12px;"><i class="fas fa-save"></i></button>
                 </form>
             </div>
 
-            <!-- Weight Entry (Weekly) -->
-            <div class="glass-card col-3">
-                <div class="sec-title" style="font-size: 1rem;"><i class="fas fa-weight-scale"></i> Weight (Weekly)</div>
-                <form onsubmit="logWeight(event)">
-                    <input type="date" id="wt-date" class="form-control form-group" required>
-                    <input type="number" step="0.1" id="wt-val" class="form-control form-group" placeholder="Weight (kg)" required>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Save Weight</button>
-                </form>
-            </div>
-
-            <!-- AI INSIGHTS -->
+            <!-- AI INSIGHTS (Rolling) -->
             <div class="glass-card col-12">
-                <div class="sec-title"><i class="fas fa-robot"></i> Automated Progress Analysis</div>
+                <div class="sec-title"><i class="fas fa-bolt"></i> Recent Insights</div>
                 <div class="insight-list" id="insights-container">
                     <!-- JS populated based strictly on data -->
                 </div>
@@ -156,7 +150,6 @@
                     <div class="stat-box"><span class="stat-label">Gym Days</span><span class="stat-val" id="w-gym">0</span></div>
                     <div class="stat-box"><span class="stat-label">Avg Calories</span><span class="stat-val" id="w-cal">0 kcal</span></div>
                     <div class="stat-box"><span class="stat-label">Avg Protein</span><span class="stat-val" id="w-pro">0 g</span></div>
-                    <div class="stat-box"><span class="stat-label">Avg Water</span><span class="stat-val" id="w-wat">0 L</span></div>
                     <div class="stat-box"><span class="stat-label">Avg Sleep</span><span class="stat-val" id="w-slp">0h 0m</span></div>
                     <div class="stat-box"><span class="stat-label">Weight Change</span><span class="stat-val" id="w-wt">0 kg</span></div>
                 </div>
@@ -169,7 +162,6 @@
                     <div class="stat-box"><span class="stat-label">Longest Streak</span><span class="stat-val" id="m-streak">0</span></div>
                     <div class="stat-box"><span class="stat-label">Avg Calories</span><span class="stat-val" id="m-cal">0 kcal</span></div>
                     <div class="stat-box"><span class="stat-label">Avg Protein</span><span class="stat-val" id="m-pro">0 g</span></div>
-                    <div class="stat-box"><span class="stat-label">Avg Water</span><span class="stat-val" id="m-wat">0 L</span></div>
                     <div class="stat-box"><span class="stat-label">Avg Sleep</span><span class="stat-val" id="m-slp">0h 0m</span></div>
                 </div>
             </div>
@@ -187,19 +179,24 @@
                 <div class="chart-container"><canvas id="chart-cals"></canvas></div>
             </div>
             
-            <div class="glass-card col-4">
+            <div class="glass-card col-6">
                 <div class="sec-title" style="font-size: 1rem;">Protein Intake</div>
                 <div class="chart-container"><canvas id="chart-pro"></canvas></div>
             </div>
             
-            <div class="glass-card col-4">
-                <div class="sec-title" style="font-size: 1rem;">Water Intake</div>
-                <div class="chart-container"><canvas id="chart-wat"></canvas></div>
-            </div>
-            
-            <div class="glass-card col-4">
+            <div class="glass-card col-6">
                 <div class="sec-title" style="font-size: 1rem;">Sleep Duration</div>
                 <div class="chart-container"><canvas id="chart-slp"></canvas></div>
+            </div>
+
+            <!-- MONTHLY PERFORMANCE REVIEW (NEW) -->
+            <div class="glass-card col-12">
+                <div class="sec-title"><i class="fas fa-file-invoice"></i> Past Monthly Performance Reviews</div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 15px;">Automated AI reviews generated at the end of every month based on your tracked data.</p>
+                
+                <div id="monthly-reviews-container">
+                    <!-- Reviews JS Populated -->
+                </div>
             </div>
 
             <!-- DATA MANAGEMENT -->
@@ -213,8 +210,8 @@
                     <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="resetMetric('weight')">Reset Weight</button>
                     <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="resetMetric('gym')">Reset Gym</button>
                     <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="resetMetric('nutrition')">Reset Nutrition</button>
-                    <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="resetMetric('water')">Reset Water</button>
                     <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="resetMetric('sleep')">Reset Sleep</button>
+                    <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="resetMetric('reviews')">Clear Reviews</button>
                     <button class="btn btn-danger btn-sm" onclick="factoryReset()">Reset ALL Fitness Data</button>
                 </div>
             </div>
@@ -227,14 +224,14 @@
     <script src="js/app.js"></script>
     <script>
         // Set Default Dates to Today
-        const today = new Date().toISOString().split('T')[0];
-        ['gym-date', 'nut-date', 'wat-date', 'slp-date', 'wt-date'].forEach(id => {
-            document.getElementById(id).value = today;
+        const todayStr = new Date().toISOString().split('T')[0];
+        ['gym-date', 'nut-date', 'slp-date', 'wt-date'].forEach(id => {
+            document.getElementById(id).value = todayStr;
         });
 
         // 1. Data Structure Initialization
-        let fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || {
-            weight: [], gym: [], nutrition: [], water: [], sleep: []
+        let fDB = JSON.parse(localStorage.getItem('lifeos_fitness_v2')) || {
+            weight: [], gym: [], nutrition: [], sleep: [], reviews: []
         };
         
         let charts = {};
@@ -249,8 +246,8 @@
 
         // Helper: Save and Refresh
         function saveAndRefresh(msg) {
-            localStorage.setItem('lifeos_fitness_db', JSON.stringify(fDB));
-            showToast(msg);
+            localStorage.setItem('lifeos_fitness_v2', JSON.stringify(fDB));
+            if(msg) showToast(msg);
             updateDashboard();
         }
 
@@ -259,7 +256,6 @@
             e.preventDefault();
             const date = document.getElementById('wt-date').value;
             const val = parseFloat(document.getElementById('wt-val').value);
-            // Overwrite if same date
             fDB.weight = fDB.weight.filter(x => x.date !== date);
             fDB.weight.push({date, val});
             saveAndRefresh("Weight logged!");
@@ -282,25 +278,15 @@
             saveAndRefresh("Nutrition logged!");
         }
 
-        function logWater(e) {
-            e.preventDefault();
-            const date = document.getElementById('wat-date').value;
-            const val = parseFloat(document.getElementById('wat-liters').value);
-            fDB.water = fDB.water.filter(x => x.date !== date);
-            fDB.water.push({date, val});
-            saveAndRefresh("Water logged!");
-        }
-
         function logSleep(e) {
             e.preventDefault();
             const date = document.getElementById('slp-date').value;
             const bed = document.getElementById('slp-bed').value;
             const wake = document.getElementById('slp-wake').value;
             
-            // Calculate duration in hours
             let dBed = new Date(`1970-01-01T${bed}:00`);
             let dWake = new Date(`1970-01-01T${wake}:00`);
-            if (dWake < dBed) dWake.setDate(dWake.getDate() + 1); // crossed midnight
+            if (dWake < dBed) dWake.setDate(dWake.getDate() + 1); 
             const duration = (dWake - dBed) / (1000 * 60 * 60);
 
             fDB.sleep = fDB.sleep.filter(x => x.date !== date);
@@ -310,30 +296,24 @@
 
         // 3. Core Dashboard Logic
         function updateDashboard() {
-            // Sort arrays by date
-            ['weight', 'gym', 'nutrition', 'water', 'sleep'].forEach(k => {
+            ['weight', 'gym', 'nutrition', 'sleep'].forEach(k => {
                 fDB[k].sort((a, b) => new Date(a.date) - new Date(b.date));
             });
 
+            generateMonthlyReviews(); // Process automated monthly reviews first
+
             const now = new Date();
             const mStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
-            const wStart = new Date(now.setDate(now.getDate() - 7)).toISOString().split('T')[0]; // Last 7 days
+            const wStart = new Date(now.setDate(now.getDate() - 7)).toISOString().split('T')[0];
 
-            // --- Summaries ---
             // Filters
             const mGym = fDB.gym.filter(x => x.date >= mStart && x.attended);
             const wGym = fDB.gym.filter(x => x.date >= wStart && x.attended);
-            
             const mNut = fDB.nutrition.filter(x => x.date >= mStart);
             const wNut = fDB.nutrition.filter(x => x.date >= wStart);
-            
-            const mWat = fDB.water.filter(x => x.date >= mStart);
-            const wWat = fDB.water.filter(x => x.date >= wStart);
-
             const mSlp = fDB.sleep.filter(x => x.date >= mStart);
             const wSlp = fDB.sleep.filter(x => x.date >= wStart);
 
-            // Helpers
             const avg = (arr, key) => arr.length ? (arr.reduce((s, x) => s + x[key], 0) / arr.length) : 0;
             const formatHrs = hrs => {
                 if(!hrs) return '0h 0m';
@@ -346,26 +326,20 @@
             document.getElementById('w-gym').innerText = wGym.length;
             document.getElementById('w-cal').innerText = `${Math.round(avg(wNut, 'cal'))} kcal`;
             document.getElementById('w-pro').innerText = `${Math.round(avg(wNut, 'pro'))} g`;
-            document.getElementById('w-wat').innerText = `${avg(wWat, 'val').toFixed(1)} L`;
             document.getElementById('w-slp').innerText = formatHrs(avg(wSlp, 'duration'));
             
-            // Weight change (Week)
             const wWts = fDB.weight.filter(x => x.date >= wStart);
             if(wWts.length >= 2) {
                 const diff = wWts[wWts.length-1].val - wWts[0].val;
                 document.getElementById('w-wt').innerText = `${diff > 0 ? '+':''}${diff.toFixed(1)} kg`;
-            } else {
-                document.getElementById('w-wt').innerText = `-`;
-            }
+            } else { document.getElementById('w-wt').innerText = `-`; }
 
             // Populate Month
             document.getElementById('m-gym').innerText = mGym.length;
             document.getElementById('m-cal').innerText = `${Math.round(avg(mNut, 'cal'))} kcal`;
             document.getElementById('m-pro').innerText = `${Math.round(avg(mNut, 'pro'))} g`;
-            document.getElementById('m-wat').innerText = `${avg(mWat, 'val').toFixed(1)} L`;
             document.getElementById('m-slp').innerText = formatHrs(avg(mSlp, 'duration'));
 
-            // Calculate Streak
             let streak = 0, maxStreak = 0;
             fDB.gym.forEach(g => {
                 if(g.attended) { streak++; maxStreak = Math.max(maxStreak, streak); }
@@ -373,79 +347,144 @@
             });
             document.getElementById('m-streak').innerText = maxStreak;
 
-            // Generate Insights & Charts
             generateInsights();
+            renderReviews();
             updateCharts();
         }
 
-        // 4. Automated AI Insights Generator
+        // 4. Automated Monthly Review Generator
+        function generateMonthlyReviews() {
+            const currentMonthStr = todayStr.substring(0, 7); // e.g. "2026-08"
+            
+            // Collect all unique months from history
+            let allMonths = new Set();
+            [fDB.gym, fDB.nutrition, fDB.sleep].forEach(arr => {
+                arr.forEach(item => { allMonths.add(item.date.substring(0, 7)); });
+            });
+
+            let newReviewAdded = false;
+
+            allMonths.forEach(monthStr => {
+                // Do not generate review for the current ongoing month
+                if(monthStr === currentMonthStr) return;
+
+                // Check if review already exists
+                if(fDB.reviews.find(r => r.month === monthStr)) return;
+
+                // Calculate stats for that month
+                const mGym = fDB.gym.filter(x => x.date.startsWith(monthStr) && x.attended).length;
+                const mNut = fDB.nutrition.filter(x => x.date.startsWith(monthStr));
+                const mSlp = fDB.sleep.filter(x => x.date.startsWith(monthStr));
+
+                if(mGym === 0 && mNut.length === 0 && mSlp.length === 0) return; // Empty data
+
+                const avgCal = mNut.length ? Math.round(mNut.reduce((s, x) => s + x.cal, 0) / mNut.length) : 0;
+                const avgPro = mNut.length ? Math.round(mNut.reduce((s, x) => s + x.pro, 0) / mNut.length) : 0;
+                const avgSlp = mSlp.length ? (mSlp.reduce((s, x) => s + x.duration, 0) / mSlp.length) : 0;
+
+                // AI Feedback Logic
+                let text = "";
+                
+                // Gym feedback
+                if(mGym >= 20) text += "Your gym continuity was outstanding this month! ";
+                else if(mGym >= 12) text += "Your gym attendance was quite good, but a little more consistency would be better. ";
+                else text += "Your gym attendance was quite low this month. Consistency is crucial to maintain fitness. ";
+
+                // Protein feedback
+                if(avgPro >= 100) text += "Your protein intake was perfectly on target, which is great for muscle growth. ";
+                else if(avgPro >= 70) text += "Your protein intake was fairly good, but try to keep it closer to 100 grams for better muscle recovery. ";
+                else if(avgPro > 0) text += "Your average protein intake was very low. Please pay more attention to your diet. ";
+
+                // Sleep feedback
+                if(avgSlp >= 7.5 && avgSlp <= 8.5) text += "Your sleep duration was absolutely perfect. ";
+                else if(avgSlp > 0 && avgSlp < 7.0) text += "However, your average sleep was quite low last month, which is harmful for muscle recovery and focus. Try to go to bed a bit earlier at night. ";
+
+                if(text === "") text = "Keep tracking your data so detailed analysis can be done in the future.";
+
+                const dateObj = new Date(`${monthStr}-01`);
+                const monthName = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+                fDB.reviews.unshift({ // Add to beginning
+                    id: Date.now() + Math.random(),
+                    month: monthStr,
+                    monthName: monthName,
+                    stats: { gym: mGym, pro: avgPro, cal: avgCal, slp: avgSlp.toFixed(1) },
+                    feedback: text
+                });
+                newReviewAdded = true;
+            });
+
+            if(newReviewAdded) {
+                localStorage.setItem('lifeos_fitness_v2', JSON.stringify(fDB));
+            }
+        }
+
+        function renderReviews() {
+            const container = document.getElementById('monthly-reviews-container');
+            container.innerHTML = '';
+            
+            if(!fDB.reviews || fDB.reviews.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-weight:700; padding: 20px;">No monthly reviews generated yet. (Reviews are generated automatically at the end of each month).</div>`;
+                return;
+            }
+
+            fDB.reviews.forEach(r => {
+                container.innerHTML += `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span>${r.monthName} Performance</span>
+                            <i class="fas fa-medal" style="color:var(--accent);"></i>
+                        </div>
+                        <div class="review-stats">
+                            <div>Gym Days: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.gym}</span></div>
+                            <div>Avg Protein: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.pro}g</span></div>
+                            <div>Avg Calories: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.cal}</span></div>
+                            <div>Avg Sleep: <br><span style="color:var(--primary); font-size:1.1rem;">${r.stats.slp}h</span></div>
+                        </div>
+                        <div class="review-text">
+                            <strong>AI Analysis:</strong> ${r.feedback}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 5. Rolling Insights (Current Trends)
         function generateInsights() {
             const container = document.getElementById('insights-container');
             container.innerHTML = '';
             let insights = [];
 
-            const now = new Date();
-            const cMonth = now.toISOString().substring(0, 7); // YYYY-MM
-            now.setMonth(now.getMonth() - 1);
+            const cMonth = todayStr.substring(0, 7);
+            const now = new Date(); now.setMonth(now.getMonth() - 1);
             const pMonth = now.toISOString().substring(0, 7); 
 
-            // Filter sets
             const cGym = fDB.gym.filter(x => x.date.startsWith(cMonth) && x.attended).length;
             const pGym = fDB.gym.filter(x => x.date.startsWith(pMonth) && x.attended).length;
             
-            const cNut = fDB.nutrition.filter(x => x.date.startsWith(cMonth));
-            const pNut = fDB.nutrition.filter(x => x.date.startsWith(pMonth));
-            
-            const wts = fDB.weight.slice(-4); // last 4 entries
-
-            if(fDB.gym.length < 2 && fDB.nutrition.length < 2 && fDB.weight.length < 2) {
+            if(fDB.gym.length < 2 && fDB.nutrition.length < 2) {
                 container.innerHTML = `<div class="insight-item" style="color:var(--text-muted);">Start logging data to generate AI insights.</div>`;
                 return;
             }
 
-            // Insight: Gym
             if(cGym > 0 && pGym > 0) {
                 const diff = cGym - pGym;
-                if(diff > 0) insights.push(`💪 You attended the gym ${cGym} times this month, which is <strong>${diff} more</strong> than last month. Great consistency!`);
-                else if(diff < 0) insights.push(`⚠️ Gym attendance is down. You went ${Math.abs(diff)} times less this month compared to last month.`);
+                if(diff > 0) insights.push(`💪 You attended the gym ${cGym} times this month, which is <strong>${diff} more</strong> than last month.`);
+                else if(diff < 0) insights.push(`⚠️ Gym attendance is down. You went ${Math.abs(diff)} times less this month.`);
             }
 
-            // Insight: Protein
-            if(cNut.length && pNut.length) {
-                const cPro = cNut.reduce((s,x)=>s+x.pro,0)/cNut.length;
-                const pPro = pNut.reduce((s,x)=>s+x.pro,0)/pNut.length;
-                const pDiff = cPro - pPro;
-                if(pDiff > 5) insights.push(`🥩 Your average protein intake increased by <strong>${Math.round(pDiff)}g</strong> compared to last month.`);
-                else if(pDiff < -5) insights.push(`📉 Careful! Your protein intake dropped by ${Math.round(Math.abs(pDiff))}g compared to last month.`);
-            }
-
-            // Insight: Weight
+            const wts = fDB.weight.slice(-4);
             if(wts.length >= 2) {
                 const wDiff = wts[wts.length-1].val - wts[0].val;
                 if(wDiff < 0) insights.push(`📉 You lost <strong>${Math.abs(wDiff).toFixed(1)} kg</strong> recently. You are on track!`);
-                else if(wDiff > 0) insights.push(`⚖️ You gained ${wDiff.toFixed(1)} kg in your recent logs.`);
             }
 
-            // Insight: Sleep on Weekends vs Weekdays
-            if(fDB.sleep.length > 5) {
-                const wk = fDB.sleep.filter(x => { const d = new Date(x.date).getDay(); return d>0 && d<6; });
-                const we = fDB.sleep.filter(x => { const d = new Date(x.date).getDay(); return d===0 || d===6; });
-                const wkAvg = wk.length ? wk.reduce((s,x)=>s+x.duration,0)/wk.length : 0;
-                const weAvg = we.length ? we.reduce((s,x)=>s+x.duration,0)/we.length : 0;
-                
-                if(weAvg && wkAvg && (wkAvg - weAvg > 1)) {
-                    insights.push(`🌙 You usually sleep about ${Math.round(wkAvg - weAvg)} hours <strong>less on weekends</strong>. Try to maintain sleep consistency.`);
-                }
-            }
+            if(insights.length === 0) insights.push("Keep entering daily data to uncover patterns.");
 
-            if(insights.length === 0) insights.push("Keep entering daily data to uncover more patterns.");
-
-            insights.forEach(txt => {
-                container.innerHTML += `<div class="insight-item">💡 ${txt}</div>`;
-            });
+            insights.forEach(txt => { container.innerHTML += `<div class="insight-item">💡 ${txt}</div>`; });
         }
 
-        // 5. Chart Generator Wrapper
+        // 6. Chart Generator Wrapper
         Chart.defaults.color = '#888';
         Chart.defaults.font.family = "system-ui";
         
@@ -453,32 +492,21 @@
             const ctx = document.getElementById(ctxId).getContext('2d');
             if(charts[ctxId]) charts[ctxId].destroy();
             
-            const last30 = dataArr.slice(-30); // Show last 30 entries max
+            const last30 = dataArr.slice(-30);
             if(last30.length === 0) return;
 
             charts[ctxId] = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: last30.map(x => x.date.substring(5)), // MM-DD
+                    labels: last30.map(x => x.date.substring(5)),
                     datasets: [{
-                        label: label,
-                        data: last30.map(x => x[key]),
-                        borderColor: color,
-                        backgroundColor: color + '20',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: true,
-                        pointRadius: 3
+                        label: label, data: last30.map(x => x[key]), borderColor: color,
+                        backgroundColor: color + '20', borderWidth: 2, tension: 0.3, fill: true, pointRadius: 3
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { grid: { display: false } },
-                        y: { grid: { color: 'rgba(0,0,0,0.05)' } }
-                    }
+                    responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                    scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(0,0,0,0.05)' } } }
                 }
             });
         }
@@ -487,11 +515,10 @@
             renderLineChart('chart-weight', 'Weight (kg)', fDB.weight, 'val', '#0F766E');
             renderLineChart('chart-cals', 'Calories', fDB.nutrition, 'cal', '#EF4444');
             renderLineChart('chart-pro', 'Protein (g)', fDB.nutrition, 'pro', '#3B82F6');
-            renderLineChart('chart-wat', 'Water (L)', fDB.water, 'val', '#0EA5E9');
             renderLineChart('chart-slp', 'Sleep (Hrs)', fDB.sleep, 'duration', '#8B5CF6');
         }
 
-        // 6. Data Management
+        // 7. Data Management
         function exportData() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fDB));
             const anchor = document.createElement('a');
@@ -511,6 +538,7 @@
                         const imported = JSON.parse(e.target.result);
                         if(imported.weight && imported.gym) {
                             fDB = imported;
+                            if(!fDB.reviews) fDB.reviews = [];
                             saveAndRefresh("Data imported successfully!");
                         }
                     } catch(err) { alert("Invalid backup file."); }
@@ -527,8 +555,8 @@
         }
 
         function factoryReset() {
-            if(confirm("DANGER: This will delete ALL fitness data forever. Continue?")) {
-                localStorage.removeItem('lifeos_fitness_db');
+            if(confirm("DANGER: This will delete ALL fitness data (including reviews) forever. Continue?")) {
+                localStorage.removeItem('lifeos_fitness_v2');
                 location.reload();
             }
         }
