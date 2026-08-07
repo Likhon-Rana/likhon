@@ -74,10 +74,6 @@
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); }
         .form-row { display: flex; gap: 10px; }
 
-        .quick-add-btns { display: flex; gap: 10px; margin-bottom: 15px; }
-        .btn-quick { flex: 1; padding: 8px; font-size: 0.85rem; font-weight: 800; border: 1px solid var(--primary); background: transparent; color: var(--primary); border-radius: 8px; cursor: pointer; transition: 0.2s; }
-        .btn-quick:hover { background: rgba(15, 118, 110, 0.1); transform: translateY(-2px); }
-
         .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .stat-box { background: var(--surface-solid); padding: 15px; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
         .stat-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
@@ -136,16 +132,10 @@
                     <span class="sec-title" style="border: none; margin: 0; padding: 0;"><i class="fas fa-book-reader"></i> Log Study Session</span>
                     <input type="date" id="study-date" class="form-control" style="width: 125px; padding: 4px 8px; font-size: 0.75rem; text-align: center;">
                 </div>
-                <p style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; margin-bottom: 15px;">Use quick-add buttons or type the total hours manually.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-bottom: 20px;">Enter the total number of hours studied today.</p>
                 
-                <div class="quick-add-btns">
-                    <button class="btn-quick" onclick="addTime(0.5)">+ 30 min</button>
-                    <button class="btn-quick" onclick="addTime(1.0)">+ 1 hour</button>
-                    <button class="btn-quick" onclick="addTime(2.0)">+ 2 hours</button>
-                </div>
-
                 <form onsubmit="logStudyHours(event)" class="form-row">
-                    <input type="number" step="0.1" id="study-hours" class="form-control" placeholder="0.0" required style="flex: 1; font-size: 1.5rem; text-align: center; font-weight: 900; color: var(--primary);">
+                    <input type="number" step="0.1" id="study-hours" class="form-control" placeholder="Hours (e.g., 2.5)" required style="flex: 1; font-size: 1.5rem; text-align: center; font-weight: 900; color: var(--primary);">
                     <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 1rem;"><i class="fas fa-save"></i> Save</button>
                 </form>
             </div>
@@ -177,17 +167,6 @@
                         <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">
                             <span id="days-completed">Completed: 0 Days</span>
                             <span id="days-remaining">Remaining: 0 Days</span>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 25px; padding: 15px; background: var(--surface-solid); border-radius: 12px; border: 1px solid var(--border);">
-                            <div>
-                                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Current Target</div>
-                                <div style="font-size: 1.2rem; font-weight: 900; color: var(--text-main);">BSc in EEE</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Current CGPA</div>
-                                <div style="font-size: 1.6rem; font-weight: 900; color: #10B981;">3.45</div>
-                            </div>
                         </div>
                     </div>
 
@@ -360,13 +339,7 @@
             updateDashboard();
         }
 
-        // --- 4. Study Logging (with Quick Add) ---
-        function addTime(hours) {
-            const input = document.getElementById('study-hours');
-            let current = parseFloat(input.value) || 0;
-            input.value = (current + hours).toFixed(1);
-        }
-
+        // --- 4. Study Logging (Direct Input) ---
         function logStudyHours(e) {
             e.preventDefault();
             const date = document.getElementById('study-date').value;
