@@ -306,12 +306,19 @@
         const todayStr = getLocalDateStr(now);
         const currentMonthStr = todayStr.substring(0, 7); // e.g. "2026-08"
 
-        // --- Database Connections (Fixed strictly to exact keys, no merging) ---
-        const fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || { weight:[], gym:[], nutrition:[], sleep:[] };
-        const pDB = JSON.parse(localStorage.getItem('lifeos_personal_db')) || { budget: 8000, expenses: [], savings: [], habits: [] };
-        const lDB = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || { checkedItems: {}, history: [] };
-        const aDB = JSON.parse(localStorage.getItem('lifeos_academic_db')) || { studyLogs: [] };
+        // --- Database Connections (Fixed BUG: Wipes expenses cleanly ONCE to remove ghost data) ---
+        let fDB = JSON.parse(localStorage.getItem('lifeos_fitness_db')) || { weight:[], gym:[], nutrition:[], sleep:[] };
+        let pDB = JSON.parse(localStorage.getItem('lifeos_personal_db')) || { budget: 8000, expenses: [], savings: [], habits: [] };
+        let lDB = JSON.parse(localStorage.getItem('lifeos_lms_v1')) || { checkedItems: {}, history: [] };
+        let aDB = JSON.parse(localStorage.getItem('lifeos_academic_db')) || { studyLogs: [] };
         let sysReviews = JSON.parse(localStorage.getItem('lifeos_system_reviews')) || [];
+
+        // 🚨 CRITICAL BUG FIX: Clear old ghost data so the user can start fresh as requested.
+        if (!localStorage.getItem('lifeos_expense_bug_fixed_v2')) {
+            pDB.expenses = []; // Wipe expenses to [ ] as requested
+            localStorage.setItem('lifeos_personal_db', JSON.stringify(pDB));
+            localStorage.setItem('lifeos_expense_bug_fixed_v2', 'true');
+        }
 
         // --- Quotes Engine ---
         const quotes = [
@@ -550,7 +557,7 @@
             const fGym = fDB.gym.find(x => x.date === todayStr);
             document.getElementById('snap-gym').innerHTML = fGym ? (fGym.attended ? '<span class="badge badge-green">Done</span>' : '<span class="badge badge-red">Missed</span>') : '<span class="badge" style="background:var(--border);">Pending</span>';
 
-            // Finance (Using strict string matching for foolproof local dates)
+            // Finance
             const monthlyExps = pDB.expenses.filter(e => e.date && e.date.startsWith(currentMonthStr));
             const spent = monthlyExps.reduce((s, e) => s + parseFloat(e.amount), 0);
             
